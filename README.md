@@ -10,3 +10,6 @@
 
 ## 2023_09_20_作業
 [巢狀判斷-多項選擇_if&elif](https://github.com/Rachelyah/11209Python_school/blob/main/0920/回家作業/條件分析回家作業.ipynb)
+
+## 2023_09_22_作業
+[迴圈算因數、質數＆隨機產生範圍內整數](https://github.com/Rachelyah/11209Python_school/blob/main/0922/上課練習/回家作業/0922回家作業.ipynb)
