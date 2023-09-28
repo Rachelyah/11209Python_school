@@ -13,3 +13,6 @@
 
 ## 2023_09_22_作業
 [迴圈算因數、質數＆隨機產生範圍內整數](https://github.com/Rachelyah/11209Python_school/blob/main/0922/上課練習/回家作業/0922回家作業.ipynb)
+
+## 2023_09_26
+[十八辣遊戲](https://github.com/Rachelyah/11209Python_school/blob/main/0926/%E5%9B%9E%E5%AE%B6%E4%BD%9C%E6%A5%AD/0926%E5%9B%9E%E5%AE%B6%E4%BD%9C%E6%A5%AD.ipynb)
