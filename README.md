@@ -16,3 +16,6 @@
 
 ## 2023_09_26
 [十八辣遊戲](https://github.com/Rachelyah/11209Python_school/blob/main/0926/%E5%9B%9E%E5%AE%B6%E4%BD%9C%E6%A5%AD/0926%E5%9B%9E%E5%AE%B6%E4%BD%9C%E6%A5%AD.ipynb)
+
+## 2023_09_28
+[十八辣遊戲-物件導向＆封裝寫法](https://github.com/Rachelyah/11209Python_school/blob/main/0928/回家作業/十八辣遊戲.ipynb)
