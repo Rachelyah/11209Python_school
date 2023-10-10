@@ -19,3 +19,6 @@
 
 ## 2023_09_28
 [十八辣遊戲-物件導向＆封裝寫法](https://github.com/Rachelyah/11209Python_school/blob/main/0928/回家作業/十八辣遊戲.ipynb)
+
+## 2023_10_05
+[檔案下載與存取(csv、json)](https://github.com/Rachelyah/11209Python_school/blob/main/1005/homework.ipynb)
