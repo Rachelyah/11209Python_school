@@ -1,2 +1,4 @@
 PyInputPlus
 requests
+xlwt
+numpy
