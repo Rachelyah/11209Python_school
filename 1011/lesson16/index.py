@@ -5,13 +5,14 @@
 import dataSource  
 
 def main():
-    try:
-        data_list = dataSource.download() #我呼叫dataSource裡面dowload()這個method
-    except Exception as e:     
-        print(f'錯誤:{e}') 
-    else:
-        for row in list(data_list): 
-            print(row)
-            
+    cities = dataSource.cities_info()  #我建立一個cities_data的變數，透過dataSource.cities_info()這個method去運作，回傳值放到cities(也可以是其他變數名)
+    for city in cities: #透過for in迴圈列出我要蒐集的資料，會比較好看
+        print(city)
+
+    names = dataSource.cityNames() #建立names變數接收這個方法的回傳結果(str)
+    city = dataSource.info(name = '基隆市仁愛區') #建立city，並輸入我要查詢的name='地區，會跑出我要查詢的結果
+    print(names)
+    print(city)
+
 if __name__ == "__main__":
     main()                  #很多應用程式的執行點都在main()
