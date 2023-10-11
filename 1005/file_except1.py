@@ -1,7 +1,6 @@
 try:
     f = open('data.txt', 'r', encoding="utf8") 
-    print(f.read( ))
-    
+    print(f.read( ))  
 except FileNotFoundError: 
     print("找不到檔案")
 except PermissionError: 
