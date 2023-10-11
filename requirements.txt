@@ -2,3 +2,5 @@ PyInputPlus
 requests
 xlwt
 numpy
+linetool
+matplotlib
