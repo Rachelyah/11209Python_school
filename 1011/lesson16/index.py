@@ -5,6 +5,7 @@
 import dataSource  
 
 def main():
+    
     cities = dataSource.cities_info()  #我建立一個cities_data的變數，透過dataSource.cities_info()這個method去運作，回傳值放到cities(也可以是其他變數名)
     for city in cities: #透過for in迴圈列出我要蒐集的資料，會比較好看
         print(city)
