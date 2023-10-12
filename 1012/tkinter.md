@@ -99,3 +99,38 @@ label = tk.Label(parent, option, ...)
 
 (以上都是程序導向的寫法)
 
+### tkinter的一些設定
+- 物件.configure(background='black') 設定視窗背景色
+    - 寫bg也可以
+    - 顏色可以用十六進位寫
+    
+    [顏色網站](https://nipponcolors.com/#seiheki)
+
+- tk.Frame() 在視窗中創造一個容器 *這是tk內建的方法
+    - ttk.Frame()也可以，但它換被景色的設定比較麻煩，先跳過(有點像css的寫法)
+    - Frame有預設的背景色
+    - Frame沒有預設大小：當你沒有特別設定大小的時候，它會被裡面放的東西(Label)設定的大小撐開
+
+- tk. StringVar() 設定動態文字(再設定list跟按鈕時需要)
+    - 變數是字串使用：tk.StringVar()
+    - 變數是整數使用：tk.IntVar()
+    - 變數是小數點使用：tk.Double()
+    - 抓取動態變數使用：變數.get()
+    - 設定動態變數使用：變數.set(字串)
+    - 使用者按下時可呼叫方法：command
+
+    ![Alt text](image.png)
+
+
+- Listbox.curselection() 取得目前 Listbox 的選項
+```
+Listbox.curselection()
+```
+- 我的Listbox裡面，被使用者點選了哪一個，可以回傳給我
+- Listbox.curselection() 回傳的變數型態是 tuple
+- 例如：如果選擇了第一個選項會得到 (0,)
+- 如果是複選會是(0, 1, 3)
+- 如果都沒有選擇的話會得到一個空的tuple()
+[補充](https://shengyu7697.github.io/python-tkinter-listbox/)
+
+
