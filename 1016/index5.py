@@ -29,6 +29,11 @@ class MyFrame(ttk.LabelFrame): #跟tk的Frame不一樣，多可以用text寫說�
         
         self.tree.pack()
 
+        self.tree.bind('<<TreeviewSelect>>', self.item_selected)
+
+        def item_selected(self, event):
+            print('selecte')
+
 def main():    
     window = Window()
     myFrame = MyFrame(window, "對齊方式")
