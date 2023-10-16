@@ -4,3 +4,4 @@ xlwt
 numpy
 linetool
 matplotlib
+Pillow
