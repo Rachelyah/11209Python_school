@@ -66,7 +66,6 @@ class MyFrame(tk.LabelFrame):
         for contact in contacts: 
             self.tree.insert('m',tk.END,value=contact)
             #再每一筆資料的結尾新增空字串(空一行)
-            print(contact)
         
         self.tree.pack() #反正一定要寫pack才會把內容顯示出來
 
@@ -74,8 +73,9 @@ class MyFrame(tk.LabelFrame):
         self.tree.bind('<<TreeviewSelect>>',self.item_selected) 
     
     #當我的self.tree被點擊時，觸發這個方法
-    def item_selected(self,event): #一定要有一個參數，不一定是event
-        item_id = self.tree.selection()[0] #設定一個item_id，獲取使用者選擇的行&列 
+    def item_selected(self,event): #一定要有一個參數，不一定要寫event
+        item_id = self.tree.selection()[0] #設定一個item_id，獲取使用者選擇的行&列
+        print(item_id) 
         item_dict = self.tree.item(item_id)
         print(item_dict['values'])
         dialog = GetPassword(self)
