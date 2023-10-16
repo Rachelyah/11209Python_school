@@ -9,6 +9,7 @@ from tkinter import ttk
 
 # 設定listbox
 # listbox = tk.Listbox(container, listvariable, height)
+# 自定一個叫做Windows的class，並且繼承Tk這個包裹裡面所有的Class設定（tk是我們自己取的）
 
 class Window(tk.Tk):
     #建立一個視窗(*父容器)，預設底色與title
