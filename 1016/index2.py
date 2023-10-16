@@ -19,7 +19,6 @@ class MyFrame(tk.Frame):
         petLabel.pack()
         self.pack(expand=1, fill='both')
 
-
 def main():    
     window = Window()
     myFrame = MyFrame(window)

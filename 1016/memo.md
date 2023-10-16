@@ -18,3 +18,17 @@
     - dash = (4,2) 
         - 第一個整數表示虛線段的長度（像素數）
         - 第二個整數表示虛線間隔的長度（像素數）
+
+##### rdio button三選一
+![Alt text](image.png)
+
+#### style and theme
+[講義](https://tkdocs.com/tutorial/styles.html)
+
+- s = ttk.Style() 
+- s.theme_names() 查詢ttk總共有哪些樣式名稱？
+- s.theme_use() 查詢我現在用的樣式名稱
+- s.theme_use('themename') 修改為指定的樣式名稱
+
+[其他線上可下載的樣式資源](https://wiki.tcl-lang.org/page/List+of+ttk+Themes)
+
