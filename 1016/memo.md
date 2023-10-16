@@ -32,3 +32,9 @@
 
 [其他線上可下載的樣式資源](https://wiki.tcl-lang.org/page/List+of+ttk+Themes)
 
+#### ttk.treeView()
+- w = ttk.Treeview(parent, option=value, ...)
+- parent = 父容器＞代表我在哪裡創建treeView，在class裡面就會是self
+- option=value[字串] 樹狀表格欄位的標示符號(e.g. #1、#2、#3 ／ #name、#age、#email)
+![Alt text](image-1.png)
+
