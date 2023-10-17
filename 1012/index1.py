@@ -28,6 +28,7 @@ class Window(tk.Tk):
         label.pack(padx=20, pady=20) 
         topFrame.pack()
 
+    #選單
     #下面再放一個容器bottomFrame，程式由上讀到下，會自動放在topFrame下面
     #放入listbox
     #listbox = tk.Listbox(container, listvariable, height)

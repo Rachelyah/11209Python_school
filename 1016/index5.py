@@ -83,7 +83,7 @@ class MyFrame(tk.LabelFrame):
         #設定一個item_id，獲取使用者選擇的行&列
         #傳回使用者點選的list[0]，通常就是第一欄位的內容
         item_id = self.tree.selection()[0] 
-        #self.tree.item(item_id)
+        self.tree.item(item_id)
         #.item()會傳回dict{}，包含text, image, values等
         item_dict = self.tree.item(item_id)
         #抓出dict{}裡的values
