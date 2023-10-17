@@ -14,7 +14,7 @@ class MyFrame(ttk.LabelFrame): #跟tk的Frame不一樣，多可以用text寫說�
         self.pack(expand=1, fill='both', padx=10, pady=10)
 
         #會員登入標題(column橫跨兩欄)
-        heading = ttk.Label(self, text="會員登入", font=('Helvetica', 20), foreground='blue')
+        heading = ttk.Label(self, text="會員登入", font=('Helvetica', 20), foreground='red')
         heading.grid(column=0, row=0, columnspan=2, padx=(20, 0)) #columnspan=一次橫跨多欄位
 
         #使用者名稱
@@ -35,8 +35,6 @@ class MyFrame(ttk.LabelFrame): #跟tk的Frame不一樣，多可以用text寫說�
         login_button = ttk.Button(self, text="登入",)
         login_button.grid(column=1, row=3, sticky=tk.E, padx=(0,10),pady=10)
         
-
-
 def main():    
     window = Window()
     myFrame = MyFrame(window, "對齊方式")

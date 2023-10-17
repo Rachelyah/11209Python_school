@@ -38,3 +38,10 @@
 - option=value[字串] 樹狀表格欄位的標示符號(e.g. #1、#2、#3 ／ #name、#age、#email)
 ![Alt text](image-1.png)
 
+#### tk.button()
+- button = ttk.Button(container, text, command)
+    - container＝你的按鈕要放在哪裡？>放在box
+    - command=針對按鈕被點擊時觸發的下一步
+[補充](https://steam.oxxostudio.tw/category/python/tkinter/button.html)
+![Alt text](image-2.png)
+![Alt text](image-3.png)

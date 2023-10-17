@@ -12,12 +12,13 @@ class Window(tk.Tk):
         #self.geometry("300x250")
         #self.configure(background='#E79460')
 
-class GetPassword(Dialog):
-
-    def body(self, master):
+class GetPassword(Dialog): #繼承Dialog
+    
+    #重設密碼的自定義方法（現成ㄉ）
+    def body(self, master): #一個叫做body的方法，這裡規定只能被叫body，不能取別的名字
         self.title("Enter New Password")
 
-        tk.Label(master, text='Old Password:').grid(row=0, sticky=tk.W)
+        tk.Label(master, text='Old Password:').grid(row=0, sticky=tk.W) #sticky=tk.W（向左對齊）
         tk.Label(master, text='New Password:').grid(row=1, sticky=tk.W)
         tk.Label(master, text='Enter New Password Again:').grid(row=2, sticky=tk.W)
 
@@ -28,21 +29,26 @@ class GetPassword(Dialog):
         self.oldpw.grid(row=0, column=1, sticky=tk.W)
         self.newpw1.grid(row=1, column=1, sticky=tk.W)
         self.newpw2.grid(row=2, column=1, sticky=tk.W)
-        return self.oldpw
+        return self.oldpw #這邊傳回舊密碼通常是先確認舊密碼是否正確，再寫入新的密碼
     
-    def buttonbox(self):
+    def buttonbox(self): #複寫Dialog說明文件內的程式碼，需要完整複製過來後改（Dialog>查看定義）
         '''add standard button box.
         override if you do not want the standard buttons
         '''
-        box = tk.Frame(self)
+        box = tk.Frame(self) #建立一個容器box
 
+        #button = ttk.Button(container, text, command)
+        #container＝你的按鈕要放在哪裡？>放在box
+        #command=針對按鈕被點擊時觸發的下一步
+        #當選擇確認時，觸發self.ok，並且確認鍵為預設選擇，使用者可以用Enter直接確認
         w = tk.Button(box, text="確認", width=10, command=self.ok, default=tk.ACTIVE)
         w.pack(side=tk.LEFT, padx=5, pady=5)
+        #當選擇到取消時，觸發self.cancel
         w = tk.Button(box, text="取消", width=10, command=self.cancel)
         w.pack(side=tk.LEFT, padx=5, pady=5)
 
-        self.bind("<Return>", self.ok)
-        self.bind("<Escape>", self.cancel)
+        self.bind("<Return>", self.ok) #綁定了對確認事件的操作，點擊確認>觸發self.ok
+        self.bind("<Escape>", self.cancel) #同上
 
         box.pack()
 
@@ -64,7 +70,7 @@ class MyFrame(tk.LabelFrame):
            #會自動執行99次，建立99個list
 
         for contact in contacts: 
-            self.tree.insert('m',tk.END,value=contact)
+            self.tree.insert('',tk.END,value=contact)
             #再每一筆資料的結尾新增空字串(空一行)
         
         self.tree.pack() #反正一定要寫pack才會把內容顯示出來
@@ -74,10 +80,15 @@ class MyFrame(tk.LabelFrame):
     
     #當我的self.tree被點擊時，觸發這個方法
     def item_selected(self,event): #一定要有一個參數，不一定要寫event
-        item_id = self.tree.selection()[0] #設定一個item_id，獲取使用者選擇的行&列
-        print(item_id) 
+        #設定一個item_id，獲取使用者選擇的行&列
+        #傳回使用者點選的list[0]，通常就是第一欄位的內容
+        item_id = self.tree.selection()[0] 
+        #self.tree.item(item_id)
+        #.item()會傳回dict{}，包含text, image, values等
         item_dict = self.tree.item(item_id)
+        #抓出dict{}裡的values
         print(item_dict['values'])
+        #呼叫GetPassword類別
         dialog = GetPassword(self)
 
 def main():    
