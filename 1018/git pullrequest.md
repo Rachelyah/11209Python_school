@@ -10,7 +10,14 @@
     6. 回到你的repo，update原始專案的更新到自己的repo中
     7. 更新自己VS CODE的內容到最新版
     8. 當你在跟大家一起編輯同一個檔案時，很容易有衝突問題，要隨時點選VS CODE左下角的main更新
-    9. 如果不要太麻煩(每次都要去雲端手動更新)
+    9. 如果不要太麻煩(每次都要去雲端手動更新) **待研究目前是失敗**
         - 在自己的repo資料夾終端機中開啟default
         - gh repo set-default(選擇自己的repo，不是原始檔案的repo)
         - gh repo sync (自動更新)
+        - 專案擁有者如何自動同意merge的commit？
+        - 本地端的repo如何自動更新最新檔案(與專案擁有者連動？)
+        [說明文件](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/merging-a-pull-request)
+        [auto merge Doc](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork)
+
+- 如果上傳遇到衝突，
+- git config pull.rebase false
