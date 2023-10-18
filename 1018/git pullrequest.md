@@ -10,3 +10,7 @@
     6. 回到你的repo，update原始專案的更新到自己的repo中
     7. 更新自己VS CODE的內容到最新版
     8. 當你在跟大家一起編輯同一個檔案時，很容易有衝突問題，要隨時點選VS CODE左下角的main更新
+    9. 如果不要太麻煩(每次都要去雲端手動更新)
+        - 在自己的repo資料夾終端機中開啟default
+        - gh repo set-default(選擇自己的repo，不是原始檔案的repo)
+        - gh repo sync (自動更新)
