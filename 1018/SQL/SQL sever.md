@@ -9,3 +9,6 @@ SQL Server有很多種：My SQL(有免費版本)、SQL Server、Oracle、MS SQL
 
 #### 用request套件下載檔案
 [說明文件](https://requests.readthedocs.io/en/latest/api/)
+
+#### sql語法的資料型別
+[SQL資料型別](http://www.eion.com.tw/Blogger/?Pid=1155)

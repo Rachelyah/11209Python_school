@@ -5,7 +5,6 @@
 4. 當點選特定資料時，可以顯示點選欄位的詳細資訊
 '''
 
-import datasource
 import csv
 import tkinter as tk
 from tkinter import ttk
