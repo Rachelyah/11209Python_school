@@ -26,7 +26,7 @@
 ## 2023_10_11
 [LINE Notify](https://github.com/Rachelyah/11209Python_school/blob/main/1011/LINE-homework/LINE%20notify.ipynb)
 
-[LINE bot](https://github.com/Rachelyah/11209Python_school/blob/main/1011/LINE_bot/index.py)
+[LINE bot](https://github.com/Rachelyah/LINE-bot)
 
 ## 2023_10_16
 [台積電股市資訊查詢](https://github.com/Rachelyah/11209Python_school/blob/main/1016/homework.py)
