@@ -24,7 +24,7 @@
 [檔案下載與存取(csv、json)](https://github.com/Rachelyah/11209Python_school/blob/main/1005/homework.ipynb)
 
 ## 2023_10_11
-[LINE Notify](https://github.com/Rachelyah/11209Python_school/blob/main/1011/LINE-homework/LINE%20notify.ipynb)
+[LINE Notify]([https://github.com/Rachelyah/11209Python_school/blob/main/1011/LINE-homework/LINE%20notify.ipynb](https://github.com/Rachelyah/11209Python_school/tree/main/1011/LINE_Notify))
 
 [LINE bot](https://github.com/Rachelyah/LINE-bot)
 
