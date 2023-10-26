@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import ttk
 import datasource
 from tkinter import messagebox
+from threading import Timer
 
 class Window(tk.Tk):
     def __init__(self, **kwargs): #自定義class的屬性
@@ -21,11 +22,28 @@ class Window(tk.Tk):
             messagebox.showerror('下載錯誤', '網路不正常\n將關閉應用程式\n請稍後再試') 
             self.destroy() #自動關閉視窗
 
+t=None  #先建立一個全域變數定義t
+
+def on_closing(w:Window):
+    print('window關閉')
+    t.cancel()                  #執行緒中斷(取消Timer)
+    w.destroy()                 #關閉視窗
+
+#更新資料的function
+def update_data()->None:
+    print('做事')
+    global t                    #表示我呼叫的是全域變數的t，不是單純這個function的t
+    t = Timer(20, update_data)  #每20秒呼叫一次function
+    t.start()                   #開始執行這個thread
+
 def main():
     window = Window() #建立一個window執行Window()
     window.title('台北市youbike2.0') #設定視窗的title
     window.geometry('600x300') #設定視窗大小
     window.resizable(width=False ,height=False) #固定視窗大小
+    update_data()
+    window.protocol("WM_DELETE_WINDOW",lambda : on_closing(window)) 
+    # lambda 匿名的function，請執行冒號後的動作，把這個function的window傳到on_closing裡
     window.mainloop() #永遠執行視窗，直到使用者下一個動作
 
 if __name__ == '__main__':

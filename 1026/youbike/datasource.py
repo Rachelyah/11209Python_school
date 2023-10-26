@@ -47,7 +47,8 @@ def __create_table(conn:sqlite3.Connection): #資料型別是sqlite3.Connection
             "總車輛數"	INTEGER,
             "可借"	INTEGER,
             "可還"	INTEGER,
-            PRIMARY KEY("id" AUTOINCREMENT)   
+            PRIMARY KEY("id" AUTOINCREMENT),
+            UNIQUE(站點名稱,更新時間) ON CONFLICT REPLACE
         ); 
         '''
     ) 
@@ -55,8 +56,10 @@ def __create_table(conn:sqlite3.Connection): #資料型別是sqlite3.Connection
 
 def __insert_data(conn:sqlite3.Connection,values:list[any])->None:
     cursor = conn.cursor()
+    #[INSERT OR]REPLACE INTO TABLE(COLUMN_LIST) VALUES
+    #輸入資料，如果已經有前一筆資料就用新的重新覆蓋，如果沒有的話就輸入在後面
     sql='''
-    INSERT INTO 台北市youbike(站點名稱,行政區,更新時間,地址,總車輛數,可借,可還)
+    REPLACE INTO 台北市youbike(站點名稱,行政區,更新時間,地址,總車輛數,可借,可還)
         VALUES(?,?,?,?,?,?,?)
     '''
     cursor.execute(sql,values)
