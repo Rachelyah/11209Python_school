@@ -8,14 +8,14 @@
 
 import tkinter as tk
 from tkinter import ttk
-import datasource
+import d_datasource
 from tkinter import messagebox
 
 class Window(tk.Tk):
     def __init__(self, **kwargs): #自定義class的屬性
         super().__init__(**kwargs) #繼承原本Tk的屬性(self不用寫)
         try:
-            datasource.update_sqlite_data()
+            d_datasource.update_sqlite_data()
         except Exception: #當datasource傳出Exception(錯誤訊息時，)
             #套用messangebox.showerror方法，跳出另一個視窗呈現錯誤訊息
             messagebox.showerror('下載錯誤', '網路不正常\n將關閉應用程式\n請稍後再試') 

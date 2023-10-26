@@ -5,12 +5,11 @@
 import requests
 import sqlite3
 
+
 # module裡面可以放function、變數、class
 # function內要寫說明用多行文字
 # import建議放在最上面，不然放在def裡面每進到程式一次就會執行一次
 # lambda 就是一個匿名(沒有名稱、參數)的function，只能用一行寫完
-
-__all__=['update_sqlite_data']
 
 def __download_youbike_data() ->list[dict]:
     '''
@@ -45,31 +44,19 @@ def __create_table(conn:sqlite3.Connection): #資料型別是sqlite3.Connection
             "更新時間"	TEXT NOT NULL,
             "地址"	TEXT NOT NULL,
             "總車輛數"	INTEGER,
-            "可借"	INTEGER,
-            "可還"	INTEGER,
+            "可借數量"	INTEGER,
+            "可還數量"	INTEGER,
             PRIMARY KEY("id" AUTOINCREMENT)   
         ); 
         '''
     ) 
     conn.commit() #執行建立表格
 
-def __insert_data(conn:sqlite3.Connection,values:list[any])->None:
-    cursor = conn.cursor()
-    sql='''
-    INSERT INTO 台北市youbike(站點名稱,行政區,更新時間,地址,總車輛數,可借,可還)
-        VALUES(?,?,?,?,?,?,?)
-    '''
-    cursor.execute(sql,values)
-    conn.commit()
-
 #把資料匯入資料庫sqlite
-def update_sqlite_data()->None:
+def update_sqlite_data():
     '''
     下載資料並更新資料庫
     '''
     data = __download_youbike_data()
     conn = sqlite3.connect('youbike.db')
     __create_table(conn)
-    for item in data:
-        __insert_data(conn, values=[item['sna'], item['sarea'], item['mday'], item['ar'], item['tot'], item['sbi'], item['bemp']])
-    conn.close()
