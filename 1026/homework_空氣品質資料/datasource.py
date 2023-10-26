@@ -13,18 +13,18 @@ from datetime import datetime
 
 __all__=['update_sqlite_data']
 
-train_url = 'https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard?%24top=100&%24format=JSON'
+
 
 def __download_data() ->list[dict]:
     '''
     下載台鐵即時列車資料
     即時資料網址：https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard?%24top=100&%24format=JSON
     '''
-
-    response = requests.get(train_url) 
+    train_url = 'https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard?%24top=100&%24format=JSON'
+    response = requests.get(train_url)
     response.raise_for_status()
     print('下載成功')
-    return response.json() 
+    return response.json()
 
 def __create_table(conn:sqlite3.Connection): 
     cursor = conn.cursor() 
