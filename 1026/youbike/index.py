@@ -16,8 +16,8 @@ class Window(tk.Tk):
         super().__init__(**kwargs) #繼承原本Tk的屬性(self不用寫)
         try:
             datasource.update_sqlite_data()
-        except Exception: #當datasource傳出Exception(錯誤訊息時，)
-            #套用messangebox.showerror方法，跳出另一個視窗呈現錯誤訊息
+        except Exception: #當datasource傳出Exception
+                          #套用messangebox.showerror方法，跳出另一個視窗呈現錯誤訊息
             messagebox.showerror('下載錯誤', '網路不正常\n將關閉應用程式\n請稍後再試') 
             self.destroy() #自動關閉視窗
 

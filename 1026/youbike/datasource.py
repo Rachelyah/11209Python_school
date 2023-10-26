@@ -72,4 +72,4 @@ def update_sqlite_data()->None:
     __create_table(conn)
     for item in data:
         __insert_data(conn, values=[item['sna'], item['sarea'], item['mday'], item['ar'], item['tot'], item['sbi'], item['bemp']])
-    conn.close()
+    conn.close() #資料庫必須要關閉
