@@ -3,8 +3,8 @@
 '''
 
 import csv
-
 import sqlite3 
+
 def create_table(conn):
     cursor = conn.cursor()
     cursor.execute( 
