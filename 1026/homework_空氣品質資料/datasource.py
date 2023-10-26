@@ -4,6 +4,7 @@
 
 import requests
 import sqlite3
+from datetime import datetime
 
 # module裡面可以放function、變數、class
 # function內要寫說明用多行文字
@@ -12,15 +13,15 @@ import sqlite3
 
 __all__=['update_sqlite_data']
 
+train_url = 'https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard?%24top=100&%24format=JSON'
+
 def __download_data() ->list[dict]:
     '''
-    下載台北市youbike2.0的資料
-    即時資料網址：https://data.moenv.gov.tw/api/v2/aqx_p_07?api_key=133f5725-c027-46fd-9aca-d97096ead024
+    下載台鐵即時列車資料
+    即時資料網址：https://tdx.transportdata.tw/api/basic/v3/Rail/TRA/TrainLiveBoard?%24top=100&%24format=JSON
     '''
-    
-    air_quality_url = 'https://data.moenv.gov.tw/api/v2/aqx_p_07?api_key=133f5725-c027-46fd-9aca-d97096ead024'
 
-    response = requests.get(air_quality_url) 
+    response = requests.get(train_url) 
     response.raise_for_status()
     print('下載成功')
     return response.json() 
@@ -29,33 +30,36 @@ def __create_table(conn:sqlite3.Connection):
     cursor = conn.cursor() 
     cursor.execute( 
         '''
-        CREATE TABLE  IF NOT EXISTS '環境部空氣品質'(        
-            "id"	INTEGER,
-            "測站名稱"	TEXT NOT NULL,
-            "測站英文名稱"	TEXT NOT NULL,
-            "空品區"	TEXT NOT NULL,
-            "城市"	TEXT NOT NULL,
-            "鄉鎮"	TEXT NOT NULL,
-            "測站地址"	TEXT NOT NULL,
-            "經度"	TEXT NOT NULL,
-            "緯度"	TEXT NOT NULL,
-            "測站類型"	TEXT,
-            "測站編號"	TEXT,
-            "資訊更新時間"	DATETIME,
+        CREATE TABLE  IF NOT EXISTS '台鐵列車即時狀態'(        
+            "id"	INTEGER NOT NULL,
+            "車站代碼"	TEXT NOT NULL,
+            "車種代碼"	TEXT NOT NULL,
+            "車種簡碼"	TEXT,
+            "車種名稱_中文"	TEXT,
+            "車種名稱_英文"	TEXT,
+            "車站代號"	TEXT NOT NULL,
+            "車站名稱_中文"	TEXT NOT NULL,
+            "車站名稱_英文"	TEXT NOT NULL,
+            "列車目前所在之車站狀態	INTEGER NOT NULL,
+            "延誤分鐘"	INTEGER,
+            "網頁更新時間"	TEXT NOT NULL,
+            "資訊下載時間"	DATETIME NOT NULL,
             PRIMARY KEY("id" AUTOINCREMENT),
-            UNIQUE(站點名稱,更新時間) ON CONFLICT REPLACE
+            UNIQUE(id,資訊更新時間) ON CONFLICT REPLACE
         ); 
         '''
     ) 
     conn.commit() #執行建立表格
 
+def __update_time():
+    time = datetime.now()
+    return time
+
 def __insert_data(conn:sqlite3.Connection,values:list[any])->None:
     cursor = conn.cursor()
-    #[INSERT OR]REPLACE INTO TABLE(COLUMN_LIST) VALUES
-    #輸入資料，如果已經有前一筆資料就用新的重新覆蓋，如果沒有的話就輸入在後面
     sql='''
-    REPLACE INTO 台北市youbike(站點名稱,行政區,更新時間,地址,總車輛數,可借,可還)
-        VALUES(?,?,?,?,?,?,?)
+    REPLACE INTO 台鐵列車即時狀態(車站代碼,車種代碼,車種簡碼,車種名稱_中文,車種名稱_英文,車站代號,車站名稱_中文,車站名稱_英文,列車目前所在之車站狀態,延誤分鐘,網頁更新時間,資訊下載時間)
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?)
     '''
     cursor.execute(sql,values)
     conn.commit()
@@ -65,9 +69,14 @@ def update_sqlite_data()->None:
     '''
     下載資料並更新資料庫
     '''
-    data = __download_youbike_data()
-    conn = sqlite3.connect('youbike.db')
+    data = __download_data()
+    conn = sqlite3.connect('train.db')
+    time = __update_time()
+
     __create_table(conn)
     for item in data:
-        __insert_data(conn, values=[item['sna'], item['sarea'], item['mday'], item['ar'], item['tot'], item['sbi'], item['bemp']])
+        for row in item:
+            row['UpdateTime'] = time
+        __insert_data(conn, values=[item['TrainNo'], item['TrainTypeID'], item['TrainTypeCode'], item['TrainTypeName:Zh_tw'], item['TrainTypeName:En'], item['StationID'], item['StationName:Zh_tw'],item['StationName:En'],item['TrainStationStatus'],item['DelayTime']])
+        
     conn.close() #資料庫必須要關閉
