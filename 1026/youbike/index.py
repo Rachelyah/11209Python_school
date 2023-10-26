@@ -23,28 +23,30 @@ class Window(tk.Tk):
             self.destroy() #自動關閉視窗
 
 t=None  #先建立一個全域變數定義t
-
-def on_closing(w:Window):
-    print('window關閉')
-    t.cancel()                  #執行緒中斷(取消Timer)
-    w.destroy()                 #關閉視窗
+def main():
+    def on_closing():               #括號內的w:Window可以省略，因為跟window在同一個function裡
+        print('window關閉')
+        t.cancel()                  #執行緒中斷(取消Timer)
+        window.destroy()            #關閉視窗
 
 #更新資料的function
-def update_data()->None:
-    print('做事')
-    global t                    #表示我呼叫的是全域變數的t，不是單純這個function的t
-    t = Timer(20, update_data)  #每20秒呼叫一次function
-    t.start()                   #開始執行這個thread
+    def update_data()->None:
+        datasource.update_sqlite_data()
+        print('資訊更新')
+        global t                    #表示我呼叫的是全域(文件)變數的t，不是單純這個function的t
+        t = Timer(20, update_data)  #每20秒呼叫一次function
+        t.start()                   #開始執行這個thread
 
-def main():
-    window = Window() #建立一個window執行Window()
-    window.title('台北市youbike2.0') #設定視窗的title
-    window.geometry('600x300') #設定視窗大小
+    window = Window()               #建立一個window執行Window()
+    window.title('台北市youbike2.0')    #設定視窗的title
+    window.geometry('600x300')          #設定視窗大小
     window.resizable(width=False ,height=False) #固定視窗大小
     update_data()
-    window.protocol("WM_DELETE_WINDOW",lambda : on_closing(window)) 
+    window.protocol("WM_DELETE_WINDOW",on_closing)
+    # window.protocol("WM_DELETE_WINDOW",lambda : on_closing(window)) 
+    # 沒有傳遞東西過去就不用寫lambda 不同def之間互傳才要寫上面這樣，但上面的def全部包在main裡
     # lambda 匿名的function，請執行冒號後的動作，把這個function的window傳到on_closing裡
-    window.mainloop() #永遠執行視窗，直到使用者下一個動作
+    window.mainloop()               #永遠執行視窗，直到使用者下一個動作
 
 if __name__ == '__main__':
     main()
