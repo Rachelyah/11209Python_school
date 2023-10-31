@@ -24,9 +24,12 @@
 [檔案下載與存取(csv、json)](https://github.com/Rachelyah/11209Python_school/blob/main/1005/homework.ipynb)
 
 ## 2023_10_11
-[LINE Notify]([https://github.com/Rachelyah/11209Python_school/blob/main/1011/LINE-homework/LINE%20notify.ipynb](https://github.com/Rachelyah/11209Python_school/tree/main/1011/LINE_Notify))
+[LINE Notify](https://github.com/Rachelyah/11209Python_school/tree/main/1011/LINE_Notify)
 
 [LINE bot](https://github.com/Rachelyah/LINE-bot)
 
 ## 2023_10_16
 [台積電股市資訊查詢](https://github.com/Rachelyah/11209Python_school/blob/main/1016/homework.py)
+
+## 2023_10_30
+[SQLite資料匯入] (https://github.com/Rachelyah/11209Python_school/tree/main/1026/homework_%E7%A9%BA%E6%B0%A3%E5%93%81%E8%B3%AA%E8%B3%87%E6%96%99)
