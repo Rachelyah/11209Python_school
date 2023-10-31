@@ -14,7 +14,7 @@ class Window(tk.Tk):
         try:
             datasource.update_sqlite_data()
         except Exception as e: 
-            messagebox.showerror(f'下載錯誤, 網路不正常{e},將關閉應用程式\n請稍後再試') 
+            messagebox.showerror(f'下載錯誤 {e}') 
             self.destroy()
 
 t=None 
@@ -28,7 +28,7 @@ def main():
         datasource.update_sqlite_data()
         print('資訊更新')
         global t                   
-        t = Timer(20, update_data) 
+        t = Timer(10, update_data) 
         t.start()                 
 
     window = Window()             
@@ -38,6 +38,7 @@ def main():
     update_data()
     window.protocol("WM_DELETE_WINDOW",on_closing)
     window.mainloop()            
+
 
 if __name__ == '__main__':
     main()
