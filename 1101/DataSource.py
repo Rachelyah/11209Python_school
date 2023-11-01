@@ -78,16 +78,34 @@ def update_sqlite_data()->None:
     conn.close() #資料庫必須要關閉
 
 #從資料庫中呼叫最新的資料
-def lastest_datetime_data(): 
+def lastest_datetime_data()->list[tuple]: 
     conn = sqlite3.connect('youbike.db')    
     cursor = conn.cursor() 
     #匯入SQL語法
     sql = '''
-    SELECT 站點名稱,MAX(更新時間) AS 更新時間,行政區,地址,總車輛數,可借,可還 
+    SELECT 站點名稱,行政區,MAX(更新時間) AS 更新時間,地址,總車輛數,可借,可還 
     FROM 台北市youbike
     GROUP BY 站點名稱
     '''
     cursor.execute(sql) #執行SQL
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return rows
+
+#新增查詢功能
+#SQL內的要查詢的資訊先寫問號
+def search_sitename(word:str) ->list[tuple]:
+    conn = sqlite3.connect('youbike.db')    
+    cursor = conn.cursor() 
+    sql = '''
+        SELECT 站點名稱,MAX(更新時間) AS 更新時間,行政區,地址,總車輛數,可借,可還 
+        FROM 台北市youbike
+        GROUP BY 站點名稱
+        HAVING 站點名稱 LIKE ?
+    '''
+    cursor.execute(sql,[f'%{word}%'])
     rows = cursor.fetchall()
     cursor.close()
     conn.close()

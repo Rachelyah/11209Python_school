@@ -11,6 +11,8 @@ from tkinter import ttk
 import DataSource
 from tkinter import messagebox
 from threading import Timer
+import YoubikeTreeView
+from tkinter.simpledialog import Dialog
 
 class Window(tk.Tk):
     def __init__(self, **kwargs): #自定義class的屬性
@@ -30,33 +32,51 @@ class Window(tk.Tk):
         #建立Label標籤放在topFrame裡面，設定與邊框的距離
         tk.Label(topFrame,text='台北市youbike即時資料',font=('arial,30'),bg='#333333',fg='#FFFFFF',pady=20).pack(pady=20, padx=20)  
         topFrame.pack(pady=30)
+#-----------------------------建立查詢介面------------------------------------------
+        middleFrame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
+        tk.Label(middleFrame,text='站點查詢').pack()
+        entry = tk.Entry(middleFrame)
+        entry.pack()
+        
+        #check_button = tk.Button(middleFrame, text="查詢")
+        #check_button.grid(column=1, row=3, sticky=tk.E, padx=(0,10),pady=10)
 
-        bottomFrame = tk.Frame(self)
+        middleFrame.pack()
+
+        print(DataSource.search_sitename('大安'))
+
 #------------------------------建立treeView-----------------------------------------
-        #建立treeView，記得要先建立View再放入資料，因為資料會一直更新
-        #寫self代表未來它可以被其他的def呼叫
-        self.tree = ttk.Treeview(bottomFrame, columns=('sna','sarea','mday','ar','tot', 'sbi', 'bemp'))  
-        self.tree.heading('sna', text="站點名稱")
-        self.tree.heading('sarea', text="行政區")
-        self.tree.heading('mday', text="更新時間")
-        self.tree.heading('ar', text="地址")
-        self.tree.heading('tot', text="總車輛數")
-        self.tree.heading('sbi', text="可借")
-        self.tree.heading('bemp', text="可還")
-        self.tree.pack()
-        bottomFrame.pack(pady=15)
+#另外寫一個YoubikeTreeView模組，把TreeView設定寫在模組裡，再回來呼叫+pack
+#建立treeView，記得要先建立View再放入資料，因為資料會一直更新
+#寫self代表未來它可以被其他的def呼叫
+        bottomFrame = tk.Frame(self)
+        self.youbikeTreeView = YoubikeTreeView.YoubikeTreeView(bottomFrame, columns=('sna','sarea','mday','ar','tot', 'sbi', 'bemp'),show="headings") 
+        #設定捲動軸 
+        self.youbikeTreeView.pack(side='left')
+        vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.youbikeTreeView.yview)
+        vsb.pack(side='left',fill='y')
+        self.youbikeTreeView.configure(yscrollcommand=vsb.set)
+        bottomFrame.pack(pady=30)
+        
+
+#-----------------------------更新treeView資料--------------------------------------
+        #lastest_data = DataSource.lastest_datetime_data()   #呼叫資料庫中最新的資料，用lastest_data接收
+        #self.youbikeTreeView.update_content(site_datas=lastest_data) #傳入treeView的method中
         
 def main():     
 #更新資料的function
-    def update_data(w:Window)->None:    
+    def update_data(w:Window)->None:   
         DataSource.update_sqlite_data()
+        #-----------------------------更新treeView資料--------------------------------------
+        latest_data = DataSource.lastest_datetime_data()    #呼叫資料接收
+        w.youbikeTreeView.update_content(latest_data)       #傳入Window裡
         print('資訊更新')
         window.after(3*60*1000,update_data, w) #after(self, ms, func=None， *args) 1000ms=1s
+        #每隔三分鐘更新一次
 
     window = Window()               #建立一個window執行Window()
     window.title('台北市youbike2.0')    #設定視窗的title
-    #window.geometry('600x300')          #設定視窗大小
-    window.resizable(width=True ,height=True) #設定可開放調整視窗大小
+    window.resizable(width=False ,height=False) #設定可開放調整視窗大小
     update_data(window)
     window.mainloop()               #永遠執行視窗，直到使用者下一個動作
 
