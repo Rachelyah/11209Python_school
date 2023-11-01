@@ -44,6 +44,7 @@ def main():
     update_data()
     window.protocol("WM_DELETE_WINDOW",on_closing)
     # window.protocol("WM_DELETE_WINDOW",lambda : on_closing(window)) 
+    # 一個註冊的寫法
     # 沒有傳遞東西過去就不用寫lambda 不同def之間互傳才要寫上面這樣，但上面的def全部包在main裡
     # lambda 匿名的function，請執行冒號後的動作，把這個function的window傳到on_closing裡
     window.mainloop()               #永遠執行視窗，直到使用者下一個動作
