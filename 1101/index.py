@@ -32,18 +32,49 @@ class Window(tk.Tk):
         #建立Label標籤放在topFrame裡面，設定與邊框的距離
         tk.Label(topFrame,text='台北市youbike即時資料',font=('arial,30'),bg='#333333',fg='#FFFFFF',pady=20).pack(pady=20, padx=20)  
         topFrame.pack(pady=30)
+
 #-----------------------------建立查詢介面------------------------------------------
         middleFrame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
         tk.Label(middleFrame,text='站點查詢').pack()
-        entry = tk.Entry(middleFrame)
-        entry.pack()
-        
-        #check_button = tk.Button(middleFrame, text="查詢")
-        #check_button.grid(column=1, row=3, sticky=tk.E, padx=(0,10),pady=10)
+        tk.Label(middleFrame,text='請輸入第一階段關鍵字').pack()
+        entryone = tk.Entry(middleFrame)
+        entryone.pack()
+        entry_one = entryone.get()
+
+        #第一階段搜尋
+        def search_stepone()->list:
+            rows = (DataSource.search_sitename(entryone.get()))
+            print(rows)
+            return rows
+
+        def clear():
+            entryone.delete(0,tk.END)
+
+        btn_search = tk.Button(middleFrame,text='搜尋',command=search_stepone).pack()
+        btn_clear = tk.Button(middleFrame,text='清除',command=clear).pack()
+
+
+        #第二階段搜尋
+        tk.Label(middleFrame,text='請輸入進階搜尋關鍵字').pack()
+        entrytwo = tk.Entry(middleFrame)
+        entrytwo.pack()
+
+        def search_steptwo():
+            rows = search_stepone()
+            print(rows)
+            search = []
+            if entrytwo.get() in rows:
+                    search.append(rows)
+            print(search)
+            return search
+
+        def clear():
+            entrytwo.delete(0,tk.END)
+
+        btn_search = tk.Button(middleFrame,text='搜尋',command=search_steptwo).pack(side='left')
+        btn_clear = tk.Button(middleFrame,text='清除',command=clear).pack(side='right')
 
         middleFrame.pack()
-
-        print(DataSource.search_sitename('大安'))
 
 #------------------------------建立treeView-----------------------------------------
 #另外寫一個YoubikeTreeView模組，把TreeView設定寫在模組裡，再回來呼叫+pack

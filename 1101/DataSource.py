@@ -94,7 +94,7 @@ def lastest_datetime_data()->list[tuple]:
 
     return rows
 
-#新增查詢功能
+#查詢第一個關鍵字
 #SQL內的要查詢的資訊先寫問號
 def search_sitename(word:str) ->list[tuple]:
     conn = sqlite3.connect('youbike.db')    
@@ -104,6 +104,7 @@ def search_sitename(word:str) ->list[tuple]:
         FROM 台北市youbike
         GROUP BY 站點名稱
         HAVING 站點名稱 LIKE ?
+        AND 可借 >= 1
     '''
     cursor.execute(sql,[f'%{word}%'])
     rows = cursor.fetchall()
