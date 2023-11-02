@@ -43,7 +43,7 @@ class YoubikeTreeView(ttk.Treeview):
        data_dict = self.item(selectedItem)  #儲存抓出來的值(dict型別)
        #print(data_dict)
        data_list = data_dict['values']      #儲存Value值(list型別)
-       #print(data_list)
+       print(data_list)
        title_name = data_list[0]            #抓出名稱放在title
        detail = ShowDetail(self.parent, data = data_list, title=title_name)    
        #呼叫ShowDetail並傳入parent(title)，並把我的data傳入
