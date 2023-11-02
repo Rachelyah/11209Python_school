@@ -8,10 +8,11 @@
 
 import tkinter as tk
 from tkinter import ttk
-import DataSource
+from youbikeTreeView import YoubikeTreeView
 from tkinter import messagebox
 from threading import Timer
-import YoubikeTreeView
+import DataSource
+
 
 
 class Window(tk.Tk):
@@ -45,7 +46,6 @@ class Window(tk.Tk):
         search_entry = tk.Entry(middleFrame)
         search_entry.bind("<KeyRelease>", self.on_key_release)  #透過bind註冊事件，當輸入發生時啟動on_key_release方法
         search_entry.pack(side='left')     
-
         middleFrame.pack(fill='x',padx=20)
         #不能直接.pack，執行初始化會直接傳出None，必須先得到實體再做pack
         #判斷能不能直接.pack()，你前面的東西是不是一個實體
@@ -59,21 +59,21 @@ class Window(tk.Tk):
 #建立treeView，記得要先建立View再放入資料，因為資料會一直更新
 #寫self代表未來它可以被其他的def呼叫
         bottomFrame = tk.Frame(self)
-        self.YoubikeTreeView = YoubikeTreeView.YoubikeTreeView(bottomFrame
+        self.youbikeTreeView = YoubikeTreeView(bottomFrame
                                                                ,columns=('sna','sarea','mday','ar','tot', 'sbi', 'bemp')
                                                                ,show="headings"
                                                                ,height=20) #height的單位是行數的概念，注意不要太大
         #設定捲動軸 
-        self.YoubikeTreeView.pack(side='left')
-        vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.YoubikeTreeView.yview)
+        self.youbikeTreeView.pack(side='left')
+        vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.youbikeTreeView.yview)
         vsb.pack(side='left',fill='y')
-        self.YoubikeTreeView.configure(yscrollcommand=vsb.set)
+        self.youbikeTreeView.configure(yscrollcommand=vsb.set)
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
         
 
 #-----------------------------更新treeView資料--------------------------------------
         lastest_data = DataSource.lastest_datetime_data()               #呼叫資料庫中最新的資料，用lastest_data接收
-        self.YoubikeTreeView.update_content(site_datas=lastest_data)    #傳入treeView的method中
+        self.youbikeTreeView.update_content(site_datas=lastest_data)    #傳入treeView的method中
 
 #-----------------------------接收輸入的資料，並查詢&更新TreeView--------------------------------------
     def on_key_release(self, event):
@@ -84,10 +84,10 @@ class Window(tk.Tk):
         print(input_word)
         if input_word == '':                                          #如果是空的，就自動更新最新資料在TreeView
             lastest_data = DataSource.lastest_datetime_data()
-            self.YoubikeTreeView.update_content(lastest_data)
+            self.youbikeTreeView.update_content(lastest_data)
         else:
             search_data = DataSource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
-            self.YoubikeTreeView.update_content(search_data)
+            self.youbikeTreeView.update_content(search_data)
 
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
@@ -95,7 +95,7 @@ def main():
         DataSource.update_sqlite_data()
         #-----------------------------更新treeView資料--------------------------------------
         latest_data = DataSource.lastest_datetime_data()    #呼叫資料接收
-        w.YoubikeTreeView.update_content(latest_data)       #傳入Window裡
+        w.youbikeTreeView.update_content(latest_data)       #傳入Window裡
         print('資訊更新')
         window.after(3*60*1000,update_data, w) #after(self, ms, func=None， *args) 1000ms=1s
         #每隔三分鐘更新一次

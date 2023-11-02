@@ -19,9 +19,10 @@ class Window(tk.Tk):
         topFrame = tk.Frame(self, background='#261E47')
         tk.Label(topFrame, text = "台北市立圖書館剩餘座位", font=('Helvetica', '30')).pack(padx=20, pady=20)
         topFrame.pack()
-        bottomFrame = tk.Frame(self)
+        #bottomFrame = tk.Frame(self)
         
         #----------建立TreeView------------------------
+'''
 class MyFrame(tk.LabelFrame):
     def __init__(self,master,title,**kwargs):
         super().__init__(master,text=title,**kwargs)
@@ -35,7 +36,7 @@ class MyFrame(tk.LabelFrame):
         self.tree.heading('#5', text="Close")
         self.tree.heading('#6', text="Adj Close")
         self.tree.heading('#7', text="Volume")
-
+'''
 def main():       
     def update_data(w:Window)->None:
         datasource.update_sqlite_data()      

@@ -1,9 +1,10 @@
+import tkinter as tk
 from tkinter import ttk
 from tkinter.simpledialog import Dialog
 
 class YoubikeTreeView(ttk.Treeview):
-    def __init__(self,parent,**kwargs):
-        super().__init__(parent,**kwargs)
+    def __init__(self,parent,**kwargs):   
+        super().__init__(parent,**kwargs) 
         self.parent = parent
     #--------------設定欄位名稱--------------------
         self.heading('sna', text="站點名稱")
@@ -21,9 +22,9 @@ class YoubikeTreeView(ttk.Treeview):
         self.column('tot',width=100)
         self.column('sbi',width=80)
         self.column('bemp',width=80)
-
+        
     #--------------bind button1-------------------------
-        self.bind('<Button-1>',self.selectionItem)
+        self.bind('<ButtonRelease-1>',self.selectionItem)
 
     #-------------更新資料內容------------------------
     def update_content(self,site_datas):
@@ -37,10 +38,72 @@ class YoubikeTreeView(ttk.Treeview):
 
     #點擊按鈕時，啟動此方法，print出資料內容，不用另外去資料庫找
     def selectionItem(self, event):
-       selectedItem = self.focus()
-       print(selectedItem)
-       print(self.item(selectedItem))
-       get_password = GetPassword(self.parent)
+       selectedItem = self.focus()      #抓出選擇的值
+       print(selectedItem)                  
+       data_dict = self.item(selectedItem)  #儲存抓出來的值(dict型別)
+       #print(data_dict)
+       data_list = data_dict['values']      #儲存Value值(list型別)
+       #print(data_list)
+       title_name = data_list[0]            #抓出名稱放在title
+       detail = ShowDetail(self.parent, data = data_list, title=title_name)    
+       #呼叫ShowDetail並傳入parent(title)，並把我的data傳入
 
-class GetPassword(Dialog):
-    pass
+class ShowDetail(Dialog):
+    def __init__(self,parent, data:list,**kwargs):    #定義，parent的是自訂的籃子，是呼叫時必要的參數，並加入data的參數需求(父類別沒有的)
+        #把傳入的data資料傳給self.data(屬性)，這樣之後可以在這個class所有實體方法都可以使用
+        self.sna = data[0]                    
+        self.sarea = data[1]
+        self.mday = data[2]
+        self.ar = data[3]
+        self.tot = data[4]
+        self.sbi = data[5]
+        self.bemp = data[6]
+        super().__init__(parent, **kwargs)  #呼叫父類別的
+        #print(data)
+
+        #overridden def body：以後呼叫body都以我的規定為主
+        #父類別裡面有我要的東西，我子類別就要用super接收
+        #但body的父類別裡面根本沒東西，所以我可以根本就不用super
+    def body(self, master):
+        #super().body(master)   #省略
+        mainFrame= tk.Frame(master) #init要寫在父容器master裡面
+        mainFrame.pack(padx=100, pady=100) 
+
+        #建立彈出視窗欄位（橫：row；直：column）
+        tk.Label(mainFrame, text='站點名稱').grid(column=0, row=0)
+        tk.Label(mainFrame, text='行政區').grid(column=0, row=1)
+        tk.Label(mainFrame, text='更新時間').grid(column=0, row=2)
+        tk.Label(mainFrame, text='地址').grid(column=0, row=3)
+        tk.Label(mainFrame, text='總車輛數').grid(column=0, row=4)
+        tk.Label(mainFrame, text='可借').grid(column=0, row=5)
+        tk.Label(mainFrame, text='可還').grid(column=0, row=6)
+
+        #建立欄位內容，內容文字為texrvariable=StringVar，用這個接收
+        #state = disabled 不可被修改
+        snaVar = tk.StringVar()
+        snaVar.set(self.sna)
+        tk.Entry(mainFrame,textvariable=snaVar, state='disabled').grid(column=1,row=0)
+
+        sareaVar = tk.StringVar()
+        sareaVar.set(self.sarea)
+        tk.Entry(mainFrame,textvariable=sareaVar, state='disabled').grid(column=1,row=1)
+
+        mdayVar = tk.StringVar()
+        mdayVar.set(self.mday)
+        tk.Entry(mainFrame,textvariable=mdayVar, state='disabled').grid(column=1,row=2)
+
+        arVar = tk.StringVar()
+        arVar.set(self.ar)
+        tk.Entry(mainFrame,textvariable=arVar, state='disabled').grid(column=1,row=3)
+
+        totVar = tk.StringVar()
+        totVar.set(self.tot)
+        tk.Entry(mainFrame,textvariable=totVar, state='disabled').grid(column=1,row=4)
+
+        sbiVar = tk.StringVar()
+        sbiVar.set(self.sbi)
+        tk.Entry(mainFrame,textvariable=sbiVar, state='disabled').grid(column=1,row=5)
+
+        bempVar = tk.StringVar()
+        bempVar.set(self.bemp)
+        tk.Entry(mainFrame,textvariable=bempVar, state='disabled').grid(column=1,row=6)
