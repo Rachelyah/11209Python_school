@@ -13,6 +13,7 @@ from tkinter import messagebox
 from threading import Timer
 import YoubikeTreeView
 
+
 class Window(tk.Tk):
     def __init__(self, **kwargs): #自定義class的屬性
         super().__init__(**kwargs) #繼承原本Tk的屬性(self不用寫)

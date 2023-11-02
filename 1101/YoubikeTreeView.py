@@ -1,8 +1,10 @@
 from tkinter import ttk
+from tkinter.simpledialog import Dialog
 
 class YoubikeTreeView(ttk.Treeview):
     def __init__(self,parent,**kwargs):
         super().__init__(parent,**kwargs)
+        self.parent = parent
     #--------------設定欄位名稱--------------------
         self.heading('sna', text="站點名稱")
         self.heading('sarea', text="行政區")
@@ -38,3 +40,7 @@ class YoubikeTreeView(ttk.Treeview):
        selectedItem = self.focus()
        print(selectedItem)
        print(self.item(selectedItem))
+       get_password = GetPassword(self.parent)
+
+class GetPassword(Dialog):
+    pass
