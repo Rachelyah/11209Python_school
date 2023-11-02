@@ -12,6 +12,7 @@ import DataSource
 from tkinter import messagebox
 from threading import Timer
 import YoubikeTreeView
+from tkinter.simpledialog import Dialog
 
 class Window(tk.Tk):
     def __init__(self, **kwargs): #自定義class的屬性
@@ -32,69 +33,78 @@ class Window(tk.Tk):
         tk.Label(topFrame,text='台北市youbike即時資料',font=('arial,30'),bg='#333333',fg='#FFFFFF',pady=20).pack(pady=20, padx=20)  
         topFrame.pack(pady=30)
 
-#-----------------------------建立查詢介面(老師的答案)------------------------------------------
-        #建立容器元素
-        middleFrame = ttk.LabelFrame(self,text='',relief=tk.GROOVE,borderwidth=1)
+#-----------------------------建立查詢介面------------------------------------------
+        middleFrame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
+        tk.Label(middleFrame,text='站點查詢').pack()
+        tk.Label(middleFrame,text='請輸入第一階段關鍵字').pack()
+        self.e = tk.StringVar()
+        entryone = tk.Entry(middleFrame,textvariable=self.e)
+        entryone.pack()
         
-        
-        #建立標籤
-        tk.Label(middleFrame,text='站點名稱搜尋').pack(side='left')
-        
-        #建立輸入欄位
-        search_entry = tk.Entry(middleFrame)
-        search_entry.bind("<KeyRelease>", self.on_key_release)  #透過bind註冊事件，當輸入發生時啟動on_key_release方法
-        search_entry.pack(side='left')     
+        '''
+        #第一階段搜尋
+        def search_stepone()->list:
+            rows = (DataSource.search_sitename(entryone.get()))
+            print(rows)
+            return rows
 
-        middleFrame.pack(fill='x',padx=20)
-        #不能直接.pack，執行初始化會直接傳出None，必須先得到實體再做pack
-        #判斷能不能直接.pack()，你前面的東西是不是一個實體
-        #search_entry的東西，我未來還會呼叫使用，所以我先傳入self.search_entry裡，而傳入之後我的tk.Entry()就會變成None，如果直接pack就會是None
+        def clear():
+            entryone.delete(0,tk.END)
 
-        #註冊輸入事件並設定傳回接收位置
-        #使用者每打一個字(在python的世界被稱為「一個事件」)，我希望他回傳到我這，這時我就必須用StringVar儲存隨時會變動的字串值，並且搭配bind控制每次事件發生時，我都可以接收到事件內容
+        btn_search = tk.Button(middleFrame,text='搜尋',command=search_stepone).pack(side='left')
+        btn_clear = tk.Button(middleFrame,text='清除',command=clear).pack(side='right')
+
+        #第二階段搜尋
+        tk.Label(middleFrame,text='請輸入進階搜尋關鍵字').pack()
+        entrytwo = tk.Entry(middleFrame)
+        entrytwo.pack()
+
+        def search_steptwo():
+            rows = search_stepone()
+            print(rows)
+            search = []
+            if entrytwo.get() in rows:
+                    search.append(rows)
+            print(search)
+            return search
+
+        def clear():
+            entrytwo.delete(0,tk.END)
+
+        btn_search = tk.Button(middleFrame,text='搜尋',command=search_steptwo).pack(side='left')
+        btn_clear = tk.Button(middleFrame,text='清除',command=clear).pack(side='right')
         
+        '''
+        middleFrame.pack()
+
 #------------------------------建立treeView-----------------------------------------
 #另外寫一個YoubikeTreeView模組，把TreeView設定寫在模組裡，再回來呼叫+pack
 #建立treeView，記得要先建立View再放入資料，因為資料會一直更新
 #寫self代表未來它可以被其他的def呼叫
         bottomFrame = tk.Frame(self)
-        self.YoubikeTreeView = YoubikeTreeView.YoubikeTreeView(bottomFrame
+        self.youbikeTreeView = YoubikeTreeView.YoubikeTreeView(bottomFrame
                                                                ,columns=('sna','sarea','mday','ar','tot', 'sbi', 'bemp')
                                                                ,show="headings"
                                                                ,height=20) #height的單位是行數的概念，注意不要太大
         #設定捲動軸 
-        self.YoubikeTreeView.pack(side='left')
-        vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.YoubikeTreeView.yview)
+        self.youbikeTreeView.pack(side='left')
+        vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.youbikeTreeView.yview)
         vsb.pack(side='left',fill='y')
-        self.YoubikeTreeView.configure(yscrollcommand=vsb.set)
-        bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
+        self.youbikeTreeView.configure(yscrollcommand=vsb.set)
+        bottomFrame.pack(pady=30, padx=20)
         
 
 #-----------------------------更新treeView資料--------------------------------------
-        lastest_data = DataSource.lastest_datetime_data()               #呼叫資料庫中最新的資料，用lastest_data接收
-        self.YoubikeTreeView.update_content(site_datas=lastest_data)    #傳入treeView的method中
-
-#-----------------------------接收輸入的資料，並查詢&更新TreeView--------------------------------------
-    def on_key_release(self, event):
-        search_entry = event.widget                                   #接收event儲存的entry資料，並使用widget取出值
-        #print(search_entry)    
-        #使用者輸入的文字  
-        input_word = search_entry.get()
-        print(input_word)
-        if input_word == '':                                          #如果是空的，就自動更新最新資料在TreeView
-            lastest_data = DataSource.lastest_datetime_data()
-            self.YoubikeTreeView.update_content(lastest_data)
-        else:
-            search_data = DataSource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
-            self.YoubikeTreeView.update_content(search_data)
-
-#-----------------------------主程式定期自動更新資料--------------------------------------
+        #lastest_data = DataSource.lastest_datetime_data()   #呼叫資料庫中最新的資料，用lastest_data接收
+        #self.youbikeTreeView.update_content(site_datas=lastest_data) #傳入treeView的method中
+        
 def main():     
+#更新資料的function
     def update_data(w:Window)->None:   
         DataSource.update_sqlite_data()
         #-----------------------------更新treeView資料--------------------------------------
         latest_data = DataSource.lastest_datetime_data()    #呼叫資料接收
-        w.YoubikeTreeView.update_content(latest_data)       #傳入Window裡
+        w.youbikeTreeView.update_content(latest_data)       #傳入Window裡
         print('資訊更新')
         window.after(3*60*1000,update_data, w) #after(self, ms, func=None， *args) 1000ms=1s
         #每隔三分鐘更新一次

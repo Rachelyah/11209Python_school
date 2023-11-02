@@ -22,3 +22,12 @@ GROUP BY 站點名稱
     1. 建立datasource.py，確定資料庫下載+定期自動更新的function
     2. 建立資料庫SQL語法
     3. 建立視窗&樹狀表格
+
+- ttk.LabelFrame() 
+![Alt text](image-1.png)
+
+- 哪些可以直接pack，哪些不行？
+
+- Frame元素，預設底下會有一個畫布，Frame會因為內容大小而被撐大，但我在沒有內容的時候可以先用expand=True(0)，把我的畫布先擴展，未來內容才可以占滿視窗，畫布是看不到的東西，但我擴展之後，我就可以把我的內容在畫布內靠左靠右排版(e.g. fill=x)
+
+![Alt text](image-2.png)
