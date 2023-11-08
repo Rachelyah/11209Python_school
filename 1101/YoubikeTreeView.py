@@ -61,8 +61,9 @@ class ShowDetail(Dialog):
         super().__init__(parent, **kwargs)  #呼叫父類別的
         #print(data)
 
-        #overridden def body：以後呼叫body都以我的規定為主
-        #父類別裡面有我要的東西，我子類別就要用super接收
+        #overridden def body：Dialog裡面有def body，但我把它複寫
+        #以後呼叫body都以我的規定為主
+        #如果父類別裡面有我要的東西，我子類別就要用super接收
         #但body的父類別裡面根本沒東西，所以我可以根本就不用super
     def body(self, master):
         #super().body(master)   #省略
@@ -107,3 +108,8 @@ class ShowDetail(Dialog):
         bempVar = tk.StringVar()
         bempVar.set(self.bemp)
         tk.Entry(mainFrame,textvariable=bempVar, state='disabled').grid(column=1,row=6)
+
+# 複寫Dialog內建的def buttonbox
+# 要super接收他的init，才會有OK跟cancel，如果沒有寫，就不會有
+    def buttonbox(self):
+        pass
