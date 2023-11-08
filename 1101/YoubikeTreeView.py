@@ -112,4 +112,13 @@ class ShowDetail(Dialog):
 # 複寫Dialog內建的def buttonbox
 # 要super接收他的init，才會有OK跟cancel，如果沒有寫，就不會有
     def buttonbox(self):
-        pass
+        '''
+        override buttonbox，可以自訂body的外觀內容
+        '''
+        box = tk.Frame(self)
+
+        w = tk.Button(box, text="確認", width=10, command=self.ok, default=tk.ACTIVE)
+        w.pack(padx=5, pady=(5,20)) #(對上的y距離，對下的y距離)
+
+        self.bind("<Return>", self.ok)
+        box.pack()

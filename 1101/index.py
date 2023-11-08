@@ -8,7 +8,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-from youbikeTreeView import YoubikeTreeView
+from YoubikeTreeView import YoubikeTreeView
 from tkinter import messagebox
 from threading import Timer
 import DataSource
