@@ -12,7 +12,7 @@ def __download_data() ->list[dict]:
     response.raise_for_status()
     print('下載成功')
     data = response.json()
-    #print(data)
+    print(data)
     return data
 
 def __create_table(conn:sqlite3.Connection): 
@@ -46,7 +46,7 @@ def __insert_data(conn:sqlite3.Connection,values:list[any])->None:
     conn.commit()
     cursor.close()
 
-#把資料匯入資料庫sqlite
+#把資料匯入資料庫sqlite(更新資訊更新時間欄位)
 def update_sqlite_data()->None:
     '''
     下載資料並更新資料庫
@@ -57,18 +57,19 @@ def update_sqlite_data()->None:
     for item in data:
         __insert_data(conn, values=[item['areaId'], item['branchName'], item['floorName'], item['areaName'], item['freeCount'], item['totalCount']])
     
-    conn.close() #資料庫必須要關閉
-
-    #從資料庫中呼叫最新的資料
+    conn.close()#資料庫必須要關閉
+    
+#從資料庫中呼叫最新的資料
 def lastest_datetime_data(): 
     conn = sqlite3.connect('台北市圖書館座位.db')    
     cursor = conn.cursor() 
     #匯入SQL語法
-    sql = '''
-    SELECT 區域編號, 分館名稱, 樓層, 區域名稱, 剩餘座位數, 總座位數, MAX(資訊更新時間)AS 資訊更新時間
-    FROM 台北市圖書館即時座位
-    GROUP BY 區域編號
-    '''
+    sql =''' 
+        SELECT 區域編號, 分館名稱, 樓層, 區域名稱, 剩餘座位數, 總座位數, MAX(資訊更新時間)AS 資訊更新時間
+        FROM 台北市圖書館即時座位
+        GROUP BY 區域編號
+        '''
+    
     cursor.execute(sql) #執行SQL
     rows = cursor.fetchall()
     cursor.close()

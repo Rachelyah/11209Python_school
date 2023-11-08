@@ -7,3 +7,4 @@ matplotlib
 Pillow
 yfinance
 tkintermapview
+psycopg2-binary
