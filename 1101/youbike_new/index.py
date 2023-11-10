@@ -8,7 +8,7 @@
 
 import tkinter as tk
 from tkinter import ttk
-from YoubikeTreeView import YoubikeTreeView
+from YoubikeTreeView import youbikeTreeView
 from tkinter import messagebox
 from threading import Timer
 import DataSource
@@ -59,7 +59,7 @@ class Window(tk.Tk):
 #建立treeView，記得要先建立View再放入資料，因為資料會一直更新
 #寫self代表未來它可以被其他的def呼叫
         bottomFrame = tk.Frame(self)
-        self.youbikeTreeView = YoubikeTreeView(bottomFrame
+        self.youbikeTreeView = youbikeTreeView(bottomFrame
                                                                ,columns=('sna','sarea','mday','ar','tot', 'sbi', 'bemp')
                                                                ,show="headings"
                                                                ,height=20) #height的單位是行數的概念，注意不要太大

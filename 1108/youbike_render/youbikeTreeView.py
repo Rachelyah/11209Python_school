@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.simpledialog import Dialog
 
-class YoubikeTreeView(ttk.Treeview):
+class youbikeTreeView(ttk.Treeview):
     def __init__(self,parent,**kwargs):   
         super().__init__(parent,**kwargs) 
         self.parent = parent
@@ -122,3 +122,6 @@ class ShowDetail(Dialog):
 
         self.bind("<Return>", self.ok)
         box.pack()
+    
+    
+   
