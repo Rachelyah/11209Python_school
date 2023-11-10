@@ -40,3 +40,27 @@ ON CONFLICT (站點名稱, 更新時間) DO NOTHING;
 SELECT * 
 FROM 台北市youbike
 WHERE 站點名稱='YouBike2.0_臺大明達館北側(員工宿舍)'
+
+--查詢每個站點最新時間的資料
+SELECT 站點名稱, 行政區, MAX(更新時間) AS 更新時間, 地址, 總車輛數, 可借, 可還
+FROM 台北市youbike
+GROUP BY 站點名稱, 行政區, 地址, 總車輛數, 可借, 可還;
+
+
+SELECT 站點名稱,更新時間,行政區, 地址, 總車輛數, 可借, 可還
+FROM 台北市youbike
+WHERE 更新時間 IN (
+	SELECT MAX(更新時間)
+	FROM 台北市youbike
+	GROUP BY 站點名稱
+);
+
+
+
+
+--待解決：如何一次出現1322筆資料？
+SELECT 站點名稱 ,MAX(更新時間)更新時間
+FROM 台北市youbike
+GROUP BY 站點名稱
+
+GROUP BY 站點名稱, 行政區, 地址, 總車輛數, 可借, 可還
