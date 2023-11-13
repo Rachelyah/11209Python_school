@@ -31,7 +31,7 @@ class Window(tk.Tk):
     #------------------------------建立treeView-------------------------
         bottomFrame = tk.Frame(self)
         self.youbikeTreeView = youbikeTreeView(bottomFrame
-                                                ,columns=('sna','sarea','mday','ar','tot', 'sbi', 'bemp')
+                                                ,columns=('sna','mday','sarea','ar','tot', 'sbi', 'bemp')
                                                 ,show="headings"
                                                 ,height=20) #height的單位是行數的概念，注意不要太大
         #設定捲動軸 
@@ -48,7 +48,7 @@ class Window(tk.Tk):
         #使用者輸入的文字  
         input_word = search_entry.get()
         print(input_word)
-        if input_word == '':                                          #如果是空的，就自動更新最新資料在TreeView
+        if input_word == "":                                          #如果是空的，就自動更新最新資料在TreeView
             lastest_data = datasource.lastest_datetime_data()
             self.youbikeTreeView.update_content(lastest_data)
         else:

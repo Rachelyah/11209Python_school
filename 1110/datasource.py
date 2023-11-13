@@ -20,8 +20,8 @@ def __create_table(conn)->None:
         CREATE TABLE  IF NOT EXISTS 台北市youbike(
             "id"	SERIAL,
             "站點名稱"	TEXT NOT NULL,
-            "行政區"	TEXT NOT NULL,
             "更新時間"	TEXT NOT NULL,
+            "行政區"	TEXT NOT NULL,
             "地址"	TEXT,
             "總車輛數"	INTEGER,
             "可借"	INTEGER,
@@ -38,7 +38,7 @@ def __create_table(conn)->None:
 def __insert_data(conn,values:list[any])->None:
     cursor = conn.cursor()
     sql = '''
-    INSERT INTO 台北市youbike (站點名稱, 行政區, 更新時間, 地址, 總車輛數, 可借, 可還) 
+    INSERT INTO 台北市youbike (站點名稱, 更新時間, 行政區, 地址, 總車輛數, 可借, 可還) 
     VALUES (%s,%s,%s,%s,%s,%s,%s)
     ON CONFLICT (站點名稱,更新時間) DO NOTHING
     '''
@@ -59,7 +59,7 @@ def updata_render_data()->None:
         
     __create_table(conn)
     for item in data:
-        __insert_data(conn,[item['sna'],item['sarea'],item['mday'],item['ar'],item['tot'],item['sbi'],item['bemp']])
+        __insert_data(conn,[item['sna'],item['mday'],item['sarea'],item['ar'],item['tot'],item['sbi'],item['bemp']])
     conn.close()
 
 def lastest_datetime_data()->list[tuple]:
