@@ -36,6 +36,7 @@ class pm25_treeview(ttk.Treeview):
         print(selectedItem)
         data_dict = self.item(selectedItem)
         data_list = data_dict['values']
+        print(data_list)
         title = data_list[0]
         print(title)
         detail = ShowDetail(self.parent,data=data_list,title=title)
@@ -43,10 +44,10 @@ class pm25_treeview(ttk.Treeview):
 #抓取使用者輸入的資料查詢結果
 class ShowDetail(Dialog):
     def __init__(self,parent,data,**kwargs):
-        self.site = data[0]
-        self.county = data[1]
-        self.pm25 = data[2]
-        self.datacreationdate = data[3]
+        self.site = data[1]
+        self.county = data[2]
+        self.pm25 = data[3]
+        self.datacreationdate = data[4]
         super().__init__(parent,**kwargs)
 
     #設定使用者點選時彈出視窗呈現詳細資訊   
