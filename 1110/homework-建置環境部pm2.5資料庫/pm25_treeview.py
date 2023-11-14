@@ -55,26 +55,26 @@ class ShowDetail(Dialog):
         '''
         mainFrame = tk.Frame(master)
         mainFrame.pack(padx=100,pady=100)
-        tk.Label(mainFrame,text="測站名稱").grid(column=0, row=0)
-        tk.Label(mainFrame,text="縣市名稱").grid(column=0, row=1)
-        tk.Label(mainFrame,text="細懸浮微粒濃度").grid(column=0, row=2)
-        tk.Label(mainFrame,text="資料建置時間").grid(column=0, row=3)
+        tk.Label(mainFrame,text="測站名稱", pady=5).grid(column=0, row=0)
+        tk.Label(mainFrame,text="縣市名稱", pady=5).grid(column=0, row=1)
+        tk.Label(mainFrame,text="細懸浮微粒濃度", pady=5).grid(column=0, row=2)
+        tk.Label(mainFrame,text="資料建置時間", pady=5).grid(column=0, row=3)
 
         siteVar = tk.StringVar()
         siteVar.set(self.site)
-        tk.Entry(mainFrame,textvariable=siteVar,state='disabled').grid(column=1,row=0)
+        tk.Entry(mainFrame,textvariable=siteVar,state='disabled',width=40,justify='center').grid(column=1,row=0)
 
         countyVar = tk.StringVar()
         countyVar.set(self.county)
-        tk.Entry(mainFrame,textvariable=countyVar,state='disabled').grid(column=1,row=1)
+        tk.Entry(mainFrame,textvariable=countyVar,state='disabled',width=40,justify='center').grid(column=1,row=1)
 
         pm25Var = tk.StringVar()
         pm25Var.set(self.pm25)
-        tk.Entry(mainFrame,textvariable=pm25Var,state='disabled').grid(column=1,row=2)
+        tk.Entry(mainFrame,textvariable=pm25Var,state='disabled',width=40,justify='center').grid(column=1,row=2)
 
         dateVar = tk.StringVar()
         dateVar.set(self.datacreationdate)
-        tk.Entry(mainFrame,textvariable=dateVar,state='disabled').grid(column=1,row=3)
+        tk.Entry(mainFrame,textvariable=dateVar,state='disabled',width=40,justify='center').grid(column=1,row=3)
 
 
     def buttonbox(self):

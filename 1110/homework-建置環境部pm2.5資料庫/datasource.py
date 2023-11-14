@@ -5,7 +5,7 @@ import password as pw
 #--------------下載資料---------------
 def __download_pm25_data()->list[dict]:
     #下載環境部pm2.5資料：
-    air_url = f'https://data.moenv.gov.tw/api/v2/aqx_p_02?api_key={pw.api_key}'
+    air_url = f'https://data.moenv.gov.tw/api/v2/aqx_p_02?api_key={pw.API_KEY}'
     response = requests.get(air_url)
     response.raise_for_status()
     print("下載成功")
@@ -51,10 +51,12 @@ def updata_render_data()->None:
                             password=pw.PASSWORD,
                             host=pw.HOST, 
                             port="5432")
-    
+
     __create_table(conn)
     for item in data:
+        print(item)
         __insert_data(conn,[item['site'],item['county'],item['pm25'],item['datacreationdate']])
+        print('資料建置成功')
     conn.close()
 
 #--------------找出每個站點的最新資料---------------
