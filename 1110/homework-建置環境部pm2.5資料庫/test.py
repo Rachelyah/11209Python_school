@@ -1,6 +1,23 @@
 import requests
 import psycopg2
 import password as pw
+from pprint import pprint
+
+#--------------下載資料---------------
+air_url = f'https://data.moenv.gov.tw/api/v2/aqx_p_02?api_key={pw.API_KEY}'
+response = requests.get(air_url)
+response.raise_for_status()
+data = response.json()
+print("下載成功")
+pprint(data)
+records = data.get('records', [])
+#print(records)
+#print(data)
+#print(type(data))
+
+import requests
+import psycopg2
+import password as pw
 
 #--------------下載資料---------------
 def __download_pm25_data()->list[dict]:
@@ -81,22 +98,3 @@ def lastest_datetime_data()->list[tuple]:
     conn.close()
     return rows
 
-#--------------使用者輸入測站名稱搜尋---------------
-def search_sitename(word:str) -> list[tuple]:
-    conn = psycopg2.connect(database=pw.DATABASE,
-                            user=pw.USER, 
-                            password=pw.PASSWORD,
-                            host=pw.HOST, 
-                            port="5432")
-    cursor = conn.cursor()
-    sql = '''
-        SELECT 測站名稱, 縣市名稱, pm25 ,MAX(資料建置時間) AS 資料建置時間
-        FROM taiwan_pm25
-        GROUP BY 測站名稱,縣市名稱,pm25
-        HAVING 測站名稱 like %s
-        '''
-    cursor.execute(sql,[f'%{word}%'])
-    rows = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return rows

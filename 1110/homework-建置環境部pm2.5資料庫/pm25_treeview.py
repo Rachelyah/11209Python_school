@@ -37,6 +37,7 @@ class pm25_treeview(ttk.Treeview):
         data_dict = self.item(selectedItem)
         data_list = data_dict['values']
         title = data_list[0]
+        print(title)
         detail = ShowDetail(self.parent,data=data_list,title=title)
 
 #抓取使用者輸入的資料查詢結果
@@ -53,6 +54,7 @@ class ShowDetail(Dialog):
         '''
         override body,可以自訂body的外觀內容
         '''
+        #----------Label--------------
         mainFrame = tk.Frame(master)
         mainFrame.pack(padx=100,pady=100)
         tk.Label(mainFrame,text="測站名稱", pady=5).grid(column=0, row=0)
@@ -60,6 +62,7 @@ class ShowDetail(Dialog):
         tk.Label(mainFrame,text="細懸浮微粒濃度", pady=5).grid(column=0, row=2)
         tk.Label(mainFrame,text="資料建置時間", pady=5).grid(column=0, row=3)
 
+        #----------Entry--------------
         siteVar = tk.StringVar()
         siteVar.set(self.site)
         tk.Entry(mainFrame,textvariable=siteVar,state='disabled',width=40,justify='center').grid(column=1,row=0)
