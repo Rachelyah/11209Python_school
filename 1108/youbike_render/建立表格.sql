@@ -53,6 +53,19 @@ select a.* from 台北市youbike as a --把資料表所有欄位的資料集定�
  join (select distinct 站點名稱,max(更新時間) 更新時間 from 台北市youbike group by 站點名稱) as b --把子查詢結果定義為b
  on a.更新時間=b.更新時間 and a.站點名稱=b.站點名稱
 
+--找到每個站點最新資料
+ select 站點名稱, 更新時間, 行政區, 地址, 總車輛數, 可借, 可還
+    from  台北市youbike
+    where (更新時間, 站點名稱) in(
+	select max(更新時間), 站點名稱
+	from 台北市youbike
+	group by 站點名稱 )
 
---原本的想法，但這樣無法抓到最新時間，會超過1322筆資料
-select distinct 站點名稱,max(更新時間) 更新時間,行政區, 地址, 總車輛數, 可借, 可還 from 台北市youbike group by 站點名稱,行政區, 地址, 總車輛數, 可借, 可還
+--找到指定關鍵字站點最新資料
+ select 站點名稱, 更新時間, 行政區, 地址, 總車輛數, 可借, 可還
+    from  台北市youbike
+    where (更新時間, 站點名稱) in(
+	select max(更新時間), 站點名稱
+	from 台北市youbike
+	group by 站點名稱
+	) and 站點名稱 like '%台北%'
