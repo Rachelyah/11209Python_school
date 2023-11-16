@@ -6,7 +6,8 @@ from tkinter import ttk
 from tkinter import messagebox
 from youbikeTreeView import YoubikeTreeView
 from threading import Timer
-
+from threading import Thread
+import time
 
 class Window(tk.Tk):
     def __init__(self,**kwargs):
@@ -54,9 +55,9 @@ class Window(tk.Tk):
 
 
 def main():
-    def update_data(w:Window)->None:
+    def update_data(w:Window, n:int)->None:
         #-----------更新treeView資料---------------
-              
+        global t #global t 一般都寫在function最上面
         try:
             datasource.updata_render_data()
             #pass
@@ -68,24 +69,31 @@ def main():
         w.youbikeTreeView.update_content(lastest_data)
         
         
-
         #w.after(5*60*1000,update_data,w) #每隔5分鐘
         t = Timer(5*60, update_data,args=(window,))
         t.start()
 
+    global t, window
     window = Window()
     window.title('台北市youbike2.0')
     #window.geometry('600x300')
     window.resizable(width=False,height=False)
+    window.protocol("WM_DELETE_WINDOW", on_closing) #註冊當視窗關閉時，執行on_closing動作
     lastest_data = datasource.lastest_datetime_data()
     window.youbikeTreeView.update_content(lastest_data)
     #window.after(1000,update_data,window) 
     t = Timer(1, update_data,args=(window,))
+    #t = Thread(target=update_data, args=(window,5*60))
     t.start()         
     window.mainloop()
     
-
+def on_closing():
+    window.destroy() 
+    t.cancel()
+    #停止Timer，小猴子不跑了 #只有要使用t，沒有要建立，不用寫global t
     
 
 if __name__ == "__main__":
+    t= None #聲明變數的類型提示，是一個用到Thread類型的變數，可寫可不寫
+    window:tk.Tk= None
     main()
