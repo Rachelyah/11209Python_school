@@ -9,6 +9,22 @@ from threading import Timer
 from threading import Thread
 import time
 
+'''
+解決視窗結束時，主程式執行無法中止的問題：
+
+*datasource
+1. 給一個全域變數threadRun=True
+2. 在insert data的for迴圈前，判斷threadRun=True才執行insert，若是False就停止執行
+
+*index.py
+1. 註冊視窗關閉時的動作 window.protocol("WM_DELETE_WINDOW", on_closing)
+2. 在on_closing中，放入datasource.threadRun = False，傳回datasource
+3. 其中更新treeView資訊的方法 w.youbikeTreeView.update_content(lastest_data) 在關閉視窗之後會出現錯誤，寫入try&excpet條件，當發生錯誤時，傳回空值
+
+
+
+'''
+
 class Window(tk.Tk):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
@@ -52,10 +68,8 @@ class Window(tk.Tk):
             search_data = datasource.search_sitename(word=input_word)
             self.youbikeTreeView.update_content(search_data)
 
-
-
 def main():
-    def update_data(w:Window, n:int)->None:
+    def update_data(w:Window)->None:
         #-----------更新treeView資料---------------
         global t #global t 一般都寫在function最上面
         try:
@@ -66,7 +80,13 @@ def main():
             #window.destroy()
 
         lastest_data = datasource.lastest_datetime_data()
-        w.youbikeTreeView.update_content(lastest_data)
+        
+        try :
+            w.youbikeTreeView.update_content(lastest_data)
+        
+        #RuntimeError：代表程式在執行過程(runtime)中出現錯誤，當發生此錯誤時直接return不傳回東西，並結束這個地方的執行，不耽誤其他程式的執行
+        except RuntimeError: #次執行中只會產生Runtime的錯誤
+            return
         
         
         #w.after(5*60*1000,update_data,w) #每隔5分鐘
@@ -88,6 +108,7 @@ def main():
     window.mainloop()
     
 def on_closing():
+    datasource.threadRun = False
     window.destroy() 
     t.cancel()
     #停止Timer，小猴子不跑了 #只有要使用t，沒有要建立，不用寫global t
@@ -95,5 +116,5 @@ def on_closing():
 
 if __name__ == "__main__":
     t= None #聲明變數的類型提示，是一個用到Thread類型的變數，可寫可不寫
-    window:tk.Tk= None
+    window= None
     main()

@@ -69,8 +69,13 @@ def main():
             #window.destroy() #自動關閉視窗
 
         latest_data = datasource.lastest_datetime_data()    #呼叫資料接收
-        w.youbikeTreeView.update_content(latest_data)       #傳入Window裡
 
+        try:
+            w.youbikeTreeView.update_content(latest_data)       #傳入Window裡
+
+        except RuntimeError: #次執行中只會產生Runtime的錯誤
+            return
+        
         #-----------------------------更新treeView資料--------------------------------------
             
         #w.after(5*60*1000,update_data, w)  #每隔五分鐘更新一次
@@ -80,17 +85,26 @@ def main():
         #after(self, ms, func=None， *args) 1000ms=1s
         #每隔五分鐘更新一次
 
+    global t, window
     window = Window()             
     window.title('台北市youbike2.0')   
     #window.geometry('600x300')
+    window.resizable(width=False ,height=False) 
+    window.protocol("WM_DELETE_WINDOW", on_closing) #註冊當視窗關閉時，執行on_closing動作
+
     latest_data = datasource.lastest_datetime_data()    #呼叫資料接收
     window.youbikeTreeView.update_content(latest_data)       #傳入Window裡          
-    window.resizable(width=False ,height=False) 
+    
     #window.after(1000,update_data, window) #在一秒後先讓這行執行->視窗會先出現
     t = Timer(1, update_data, args=(window,))
     t.start()
     window.mainloop()
 
+def on_closing():
+    datasource.threadRun = False
+    window.destroy() 
+    t.cancel()
+    #停止Timer，小猴子不跑了 #只有要使用t，沒有要建立，不用寫global t
 
 if __name__ == "__main__":
     main()

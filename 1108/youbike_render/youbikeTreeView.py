@@ -16,8 +16,8 @@ class youbikeTreeView(ttk.Treeview):
         self.heading('bemp', text="可還")
     #--------------設定欄位寬度-----------------------
         self.column('sna',width=250) #也可以用minwidth設定最小寬度
-        self.column('mday',width=120)
-        self.column('sarea',width=250)
+        self.column('mday',width=250)
+        self.column('sarea',width=100)
         self.column('ar',width=280)
         self.column('tot',width=100)
         self.column('sbi',width=80)
@@ -67,47 +67,48 @@ class ShowDetail(Dialog):
         #但body的父類別裡面根本沒東西，所以我可以根本就不用super
     def body(self, master):
         #super().body(master)   #省略
-        mainFrame= tk.Frame(master) #init要寫在父容器master裡面
-        mainFrame.pack(padx=100, pady=100) 
+        #init要寫在父容器master裡面
 
         #建立彈出視窗欄位（橫：row；直：column）
-        tk.Label(mainFrame, text='站點名稱').grid(column=0, row=0)
-        tk.Label(mainFrame, text='更新時間').grid(column=0, row=1)
-        tk.Label(mainFrame, text='行政區').grid(column=0, row=2)
-        tk.Label(mainFrame, text='地址').grid(column=0, row=3)
-        tk.Label(mainFrame, text='總車輛數').grid(column=0, row=4)
-        tk.Label(mainFrame, text='可借').grid(column=0, row=5)
-        tk.Label(mainFrame, text='可還').grid(column=0, row=6)
+        mainFrame = tk.Frame(master)
+        mainFrame.pack(padx=100,pady=100)
+        tk.Label(mainFrame,text="站點名稱", pady=5).grid(column=0, row=0)
+        tk.Label(mainFrame,text="更新時間", pady=5).grid(column=0, row=1)
+        tk.Label(mainFrame,text="行政區", pady=5).grid(column=0, row=2)
+        tk.Label(mainFrame,text="地址", pady=5).grid(column=0, row=3)
+        tk.Label(mainFrame,text="總量", pady=5).grid(column=0, row=4)
+        tk.Label(mainFrame,text="可借", pady=5).grid(column=0, row=5)
+        tk.Label(mainFrame,text="可還", pady=5).grid(column=0, row=6)
 
         #建立欄位內容，內容文字為texrvariable=StringVar，用這個接收
         #state = disabled 不可被修改
         snaVar = tk.StringVar()
         snaVar.set(self.sna)
-        tk.Entry(mainFrame,textvariable=snaVar, state='disabled').grid(column=1,row=0)
+        tk.Entry(mainFrame,textvariable=snaVar, state='disabled',width=40,justify='center').grid(column=1,row=0)
 
         mdayVar = tk.StringVar()
         mdayVar.set(self.mday)
-        tk.Entry(mainFrame,textvariable=mdayVar, state='disabled').grid(column=1,row=1)
+        tk.Entry(mainFrame,textvariable=mdayVar,state='disabled',width=40,justify='center').grid(column=1,row=1)
 
         sareaVar = tk.StringVar()
         sareaVar.set(self.sarea)
-        tk.Entry(mainFrame,textvariable=sareaVar, state='disabled').grid(column=1,row=2)
+        tk.Entry(mainFrame,textvariable=sareaVar,state='disabled',width=40,justify='center').grid(column=1,row=2)
 
         arVar = tk.StringVar()
         arVar.set(self.ar)
-        tk.Entry(mainFrame,textvariable=arVar, state='disabled').grid(column=1,row=3)
+        tk.Entry(mainFrame,textvariable=arVar,state='disabled',width=40,justify='center').grid(column=1,row=3)
 
         totVar = tk.StringVar()
         totVar.set(self.tot)
-        tk.Entry(mainFrame,textvariable=totVar, state='disabled').grid(column=1,row=4)
+        tk.Entry(mainFrame,textvariable=totVar,state='disabled',width=40,justify='center').grid(column=1,row=4)
 
         sbiVar = tk.StringVar()
         sbiVar.set(self.sbi)
-        tk.Entry(mainFrame,textvariable=sbiVar, state='disabled').grid(column=1,row=5)
+        tk.Entry(mainFrame,textvariable=sbiVar,state='disabled',width=40,justify='center').grid(column=1,row=5)
 
         bempVar = tk.StringVar()
         bempVar.set(self.bemp)
-        tk.Entry(mainFrame,textvariable=bempVar, state='disabled').grid(column=1,row=6)
+        tk.Entry(mainFrame,textvariable=bempVar,state='disabled',width=40,justify='center').grid(column=1,row=6)
 
 # 複寫Dialog內建的def buttonbox
 # 要super接收他的init，才會有OK跟cancel，如果沒有寫，就不會有

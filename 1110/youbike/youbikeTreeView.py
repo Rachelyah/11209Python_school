@@ -74,6 +74,7 @@ class ShowDetail(Dialog):
         tk.Label(mainFrame,text="總量", pady=5).grid(column=0, row=4)
         tk.Label(mainFrame,text="可借", pady=5).grid(column=0, row=5)
         tk.Label(mainFrame,text="可還", pady=5).grid(column=0, row=6)
+        
         snaVar = tk.StringVar()
         snaVar.set(self.sna)
         tk.Entry(mainFrame,textvariable=snaVar, state='disabled',width=40,justify='center').grid(column=1,row=0)

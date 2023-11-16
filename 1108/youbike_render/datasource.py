@@ -2,6 +2,10 @@ import requests
 import psycopg2
 import render_password as rpw
 
+threadRun = True
+
+#次執行緒是否執行(次執行緒：一樣是孫悟空，先放下手邊的事情來做的事情，原本手上的事情會等他)
+
 def __download_youbike_data()->list[dict]:
     '''
     下載台北市youbike資料2.0
@@ -63,7 +67,11 @@ def update_render_data()->None:
                                 port="5432") 
     __create_table(conn)
     for item in data:
-        __insert_data(conn, values=[item['sna'], item['mday'], item['sarea'], item['ar'], item['tot'], item['sbi'], item['bemp']])
+        if threadRun == True:
+            __insert_data(conn, values=[item['sna'], item['mday'], item['sarea'], item['ar'], item['tot'], item['sbi'], item['bemp']])
+        else:
+            break #次執行緒強制執行
+
     conn.close()
 
 #從資料庫中呼叫最新的資料
@@ -99,11 +107,11 @@ def search_sitename(word:str) ->list[tuple]:
     sql = '''
     select 站點名稱, 更新時間, 行政區, 地址, 總車輛數, 可借, 可還
     from  台北市youbike
-    where (更新時間, 站點名稱)in(
+    where (更新時間, 站點名稱) in(
 	select max(更新時間), 站點名稱
 	from 台北市youbike
 	group by 站點名稱
-	)and 站點名稱 like %s
+	) and 站點名稱 like %s
     '''
     cursor.execute(sql,[f'%{word}%'])
     rows = cursor.fetchall()
