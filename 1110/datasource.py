@@ -89,10 +89,13 @@ def search_sitename(word:str) -> list[tuple]:
                             port="5432")
     cursor = conn.cursor()
     sql = '''
-        SELECT 站點名稱,MAX(更新時間) AS 更新時間,行政區,地址,總車輛數,可借,可還
-        FROM 台北市youbike
-        GROUP BY 站點名稱,更新時間,行政區,地址,總車輛數,可借,可還
-        HAVING 站點名稱 like %s
+    select 站點名稱, 更新時間, 行政區, 地址, 總車輛數, 可借, 可還
+    from  台北市youbike
+    where (更新時間, 站點名稱)in(
+	select max(更新時間), 站點名稱
+	from 台北市youbike
+	group by 站點名稱
+	)and 站點名稱 like %s
         '''
     cursor.execute(sql,[f'%{word}%'])
     rows = cursor.fetchall()
