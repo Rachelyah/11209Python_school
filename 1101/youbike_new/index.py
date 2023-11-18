@@ -38,7 +38,6 @@ class Window(tk.Tk):
         #建立容器元素
         middleFrame = ttk.LabelFrame(self,text='',relief=tk.GROOVE,borderwidth=1)
         
-        
         #建立標籤
         tk.Label(middleFrame,text='站點名稱搜尋').pack(side='left')
         
