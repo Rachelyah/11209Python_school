@@ -42,34 +42,25 @@ class Window(tk.Tk):
         middleFrame.pack(fill='x',padx=20)
 
 ##-----------------------------建立下拉選單-----------------------------------
-        '''
+
         def team_selected(event):
             selected_value = selectVar.get()
             print(f"隊伍選擇: {selected_value}")
             if selected_value == '樂天桃猿':
-                print('我走到這了') 
-        '''
+                print('我走到這了')
 
         middle1Frame = ttk.LabelFrame(self,text='',relief=tk.GROOVE,borderwidth=1)
         tk.Label(middle1Frame,text='選擇球隊').pack
-        middle1Frame.pack(fill='x', padx=20)
-        '''
+        middle1Frame.pack(fill='x',padx=20)
         selectVar = tk.StringVar()
         box = ttk.Combobox(middle1Frame, textvariable=selectVar, values=['統一7-ELEVEn獅','富邦悍將','中信兄弟','樂天桃猿','味全龍'])
         box.bind("<<ComboboxSelected>>", team_selected)
         box.pack()
-        '''
 
-        def team_search(event:None, word:str):
-            print(word)
-            rows = datasource.search_by_team(event=None, word=word)
-            self.cpblTreeView.update_content(site_datas=rows)
+       
 
-        tk.Button(middle1Frame, text='中信兄弟', command=lambda: team_search(event=None,word='中信')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
-        tk.Button(middle1Frame, text='樂天桃猿',command=lambda: team_search(event=None,word='樂天')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
-        tk.Button(middle1Frame, text='統一7-ELEVEn獅',command=lambda: team_search(event=None,word='統一')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
-        tk.Button(middle1Frame, text='富邦悍將',command=lambda: team_search(event=None,word='富邦')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
-        tk.Button(middle1Frame, text='味全龍',command=lambda: team_search(event=None,word='味全')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
+
+
 
 #------------------------------建立treeView-----------------------------------------
         bottomFrame = tk.Frame(self)
@@ -91,8 +82,8 @@ class Window(tk.Tk):
 
 #-----------------------------接收輸入的資料，並查詢&更新TreeView--------------------------------------
     def on_key_release(self, event):
-        search_entry = event.widget    
-        print(search_entry)    
+        search_entry = event.widget                             
+        #print(search_entry)    
         #使用者輸入的文字  
         input_word = search_entry.get()
         print(input_word)
@@ -102,7 +93,8 @@ class Window(tk.Tk):
             self.cpblTreeView.update_content(lastest_data)
         else:
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
-            self.cpblTreeView.update_content(search_data)      
+            self.cpblTreeView.update_content(search_data)
+            
 
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
