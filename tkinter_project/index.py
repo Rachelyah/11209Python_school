@@ -91,8 +91,8 @@ class Window(tk.Tk):
 
 #-----------------------------接收輸入的資料，並查詢&更新TreeView--------------------------------------
     def on_key_release(self, event):
-        search_entry = event.widget    
-        print(search_entry)    
+        search_entry = event.widget  
+        #print(search_entry)    
         #使用者輸入的文字  
         input_word = search_entry.get()
         print(input_word)
