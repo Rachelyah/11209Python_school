@@ -6,7 +6,6 @@ class cpblTreeView(ttk.Treeview):
     def __init__(self,parent,**kwargs):   
         super().__init__(parent,**kwargs) 
         self.parent = parent
-    #--------------設定欄位名稱--------------------
         self.heading('Year', text="年份")
         self.heading('Team Name', text="所屬球隊")
         self.heading('ID', text="球員編號")
@@ -25,11 +24,6 @@ class cpblTreeView(ttk.Treeview):
         self.heading('BB', text="保送數")
         self.heading('SO', text="三振數")
         self.heading('ER', text="自責分")
-        self.heading('B_t', text="投打習慣")
-        self.heading('Number', text="背號")
-        self.heading('Ht_wt', text="身高體重")
-        self.heading('Born', text="生日")
-        self.heading('Img', text="照片網址")
     #--------------設定欄位寬度-----------------------
         self.column('Year',width=70,anchor='center') #也可以用minwidth設定最小寬度
         self.column('Team Name',width=70,anchor='center')
@@ -49,11 +43,7 @@ class cpblTreeView(ttk.Treeview):
         self.column('BB',width=70,anchor='center')
         self.column('SO',width=70,anchor='center')
         self.column('ER',width=70,anchor='center')
-        self.column('B_t',width=70,anchor='center')
-        self.column('Number',width=70,anchor='center')
-        self.column('Ht_wt',width=70,anchor='center')
-        self.column('Born',width=70,anchor='center')
-        self.column('Img',width=70,anchor='center')
+
         
     #--------------bind button1-------------------------
         self.bind('<ButtonRelease-1>',self.selectionItem)
@@ -68,8 +58,8 @@ class cpblTreeView(ttk.Treeview):
         for index, site in enumerate(site_datas):
             self.insert('','end',text=f'abc{index}',values=site)
 
-    #點擊按鈕時，啟動此方法，print出資料內容，不用另外去資料庫找
-    def selectionItem(self, event):
+    #點擊treeView時，啟動此方法，回傳使用者點擊資料
+    def selectionItem(self, event)->list:
        selectedItem = self.focus()      #抓出選擇的值
        print(selectedItem)                  
        data_dict = self.item(selectedItem)  #儲存抓出來的值(dict型別)
@@ -77,8 +67,14 @@ class cpblTreeView(ttk.Treeview):
        data_list = data_dict['values']      #儲存Value值(list型別)
        print(data_list)
        title_name = data_list[0]            #抓出名稱放在title
-       detail = ShowDetail(self.parent, data = data_list, title=title_name)    
+
        #呼叫ShowDetail並傳入parent(title)，並把我的data傳入
+       data = data_list
+       detail = ShowDetail(self.parent, data=data, title=title_name)  
+
+       #調用回呼函數，將數據傳遞給外部
+       if hasattr(self,'callback'):
+        self.callback(data)
 
 class ShowDetail(Dialog):
     def __init__(self,parent, data:list,**kwargs):
@@ -100,12 +96,8 @@ class ShowDetail(Dialog):
         self.BB = data[15]
         self.SO = data[16]
         self.ER = data[17]
-        self.B_t = data[18]
-        self.Number = data[19]                    
-        self.Ht_wt = data[20]
-        self.Born = data[21]
-        self.Img = data[22]
         super().__init__(parent, **kwargs)  
+
     def body(self, master):
         mainFrame= tk.Frame(master)
         mainFrame.pack(padx=100, pady=100) 
@@ -129,11 +121,6 @@ class ShowDetail(Dialog):
         tk.Label(mainFrame, text='保送數').grid(column=0, row=15)
         tk.Label(mainFrame, text='三振數').grid(column=0, row=16)
         tk.Label(mainFrame, text='自責分').grid(column=0, row=17)
-        tk.Label(mainFrame, text='投打習慣').grid(column=0, row=18)
-        tk.Label(mainFrame, text='背號').grid(column=0, row=19)
-        tk.Label(mainFrame, text='身高體重').grid(column=0, row=20)
-        tk.Label(mainFrame, text='生日').grid(column=0, row=21)
-        tk.Label(mainFrame, text='照片網址').grid(column=0, row=22)
 
         #建立欄位內容，內容文字為texrvariable=StringVar，用這個接收
         #state = disabled 不可被修改

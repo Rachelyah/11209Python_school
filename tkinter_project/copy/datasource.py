@@ -5,29 +5,6 @@ __all__=['update_sqlite_data']
 
 def __open_cpbl_data() ->list[dict]:
     
-    # 原有的csv檔案
-    cpbl_pitchings_csv = 'pitchings.csv'
-
-    # 建立一個新的csv文件，加入紀錄年份2022後儲存
-    new_csv = 'pitchings_2022.csv'
-
-    with open(cpbl_pitchings_csv, 'r', encoding='utf-8') as csvfile:
-        csv_reader = csv.DictReader(csvfile)
-        
-        # 取得欄位名稱，並加上Year欄位
-        fieldnames= csv_reader.fieldnames + ['Year']
-        
-        # 開啟新的csv文件，寫入欄位名稱
-        with open(new_csv, 'w', encoding='utf-8', newline='') as output_file:
-            csv_writer = csv.DictWriter(output_file, fieldnames=fieldnames)
-            csv_writer.writeheader()
-            
-        # 將原本的資料寫入新的csv，同時在每一筆資料的最後面加上 'Year': '2022'
-            for row in csv_reader:
-                row['Year'] = '2022'
-                csv_writer.writerow(row)
-    print(f'修改後的資料已寫入 {new_csv}')
-
     #讀取新的csv檔案
     pitchings_2022 = 'pitchings_2022.csv'
     try:

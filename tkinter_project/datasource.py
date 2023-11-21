@@ -4,31 +4,7 @@ import sqlite3
 __all__=['update_sqlite_data']
 
 def __open_cpbl_data() ->list[dict]:
-    
-    # 原有的csv檔案
-    #cpbl_pitchings_csv = 'pitchings_2022.csv'
 
-    # 建立一個新的csv文件，加入紀錄年份2022後儲存
-    #csv = 'pitchings_2022.csv'
-
-    #with open(cpbl_pitchings_csv, 'r', encoding='utf-8') as csvfile:
-        #csv_reader = csv.DictReader(csvfile)
-        
-        # 取得欄位名稱，並加上Year欄位
-        #fieldnames= csv_reader.fieldnames + ['Year']
-        
-        # 開啟新的csv文件，寫入欄位名稱
-        #with open(new_csv, 'w', encoding='utf-8', newline='') as #output_file:
-            #csv_writer = csv.DictWriter(output_file, #fieldnames=fieldnames)
-            #csv_writer.writeheader()
-            
-        # 將原本的資料寫入新的csv，同時在每一筆資料的最後面加上 'Year': '2022'
-            #for row in csv_reader:
-                #row['Year'] = '2022'
-                #csv_writer.writerow(row)
-    #print(f'修改後的資料已寫入 {new_csv}')
-
-    #讀取新的csv檔案
     pitchings_2022 = 'pitchings_2022.csv'
     try:
         with open (pitchings_2022, mode='r', encoding='utf-8', newline='') as pitchings_file:
@@ -108,7 +84,7 @@ def lastest_datetime_data()->list[tuple]:
     cursor = conn.cursor() 
     #匯入SQL語法
     sql = '''
-    SELECT 年份, 所屬球隊, 球員編號, 球員姓名, 出場數, 先發次數, 中繼次數, 勝場數, 敗場數, 救援成功, 中繼成功, 有效局數, 面對打者數, 被安打數, 被全壘打數, 保送數, 三振數, 自責分, 投打習慣, 背號, 身高體重, 生日, 照片網址
+    SELECT 年份, 所屬球隊, 球員編號, 球員姓名, 出場數, 先發次數, 中繼次數, 勝場數, 敗場數, 救援成功, 中繼成功, 有效局數, 面對打者數, 被安打數, 被全壘打數, 保送數, 三振數, 自責分
     FROM cpbl_pitchings
     '''
     cursor.execute(sql) #執行SQL
@@ -117,7 +93,6 @@ def lastest_datetime_data()->list[tuple]:
     conn.close()
 
     return rows
-
 
 
 #---------------------查詢功能------------------------
@@ -144,8 +119,7 @@ def search_sitename(word:str) ->list[tuple]:
         被全壘打數, 
         保送數, 
         三振數, 
-        自責分,
-        投打習慣, 背號, 身高體重, 生日, 照片網址
+        自責分
     FROM cpbl_pitchings
     WHERE 球員姓名 LIKE ?
     GROUP BY 年份, 
@@ -165,8 +139,7 @@ def search_sitename(word:str) ->list[tuple]:
         被全壘打數, 
         保送數, 
         三振數, 
-        自責分,
-        投打習慣, 背號, 身高體重, 生日, 照片網址;
+        自責分;
         '''
     
     cursor.execute(sql,[f'%{word}%'])
@@ -179,6 +152,7 @@ def search_sitename(word:str) ->list[tuple]:
 def team_selected(event, selectVar):
     select_value = selectVar.get()
     print(f"隊伍選擇: {select_value}")
+    return select_value
 
 def search_by_team(event,word:str):
     print(word) #使用者輸入的文字

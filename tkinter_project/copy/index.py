@@ -43,13 +43,6 @@ class Window(tk.Tk):
         middleFrame.pack(fill='x',padx=20)
 
 ##-----------------------------建立下拉選單-----------------------------------
-        '''
-        def team_selected(event):
-            selected_value = selectVar.get()
-            print(f"隊伍選擇: {selected_value}")
-            if selected_value == '樂天桃猿':
-                print('我走到這了') 
-        '''
 
         middle1Frame = ttk.LabelFrame(self,text='',relief=tk.GROOVE,borderwidth=1)
         tk.Label(middle1Frame,text='選擇球隊').pack
