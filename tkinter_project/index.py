@@ -8,6 +8,7 @@ from cpbl_treeview import cpblTreeView
 from tkinter import messagebox
 from threading import Timer
 import datasource
+from PIL import Image
 
 
 #自定義class 呼叫datasource讀取csv檔案跟匯入資料庫的function
@@ -34,7 +35,7 @@ class Window(tk.Tk):
         
         #建立標籤
         tk.Label(middleFrame,text='球員搜尋').pack(side='left')
-        
+
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
         search_entry.bind("<KeyRelease>", self.on_key_release)
@@ -74,7 +75,7 @@ class Window(tk.Tk):
 #------------------------------建立treeView-----------------------------------------
         bottomFrame = tk.Frame(self)
         self.cpblTreeView = cpblTreeView(bottomFrame
-                                                               ,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER')
+                                                               ,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER','B_t','Number','Ht_wt','Born','Img')
                                                                ,show="headings"
                                                                ,height=20)
         #設定捲動軸 

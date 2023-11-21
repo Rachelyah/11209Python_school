@@ -6,27 +6,27 @@ __all__=['update_sqlite_data']
 def __open_cpbl_data() ->list[dict]:
     
     # 原有的csv檔案
-    cpbl_pitchings_csv = 'pitchings.csv'
+    #cpbl_pitchings_csv = 'pitchings_2022.csv'
 
     # 建立一個新的csv文件，加入紀錄年份2022後儲存
-    new_csv = 'pitchings_2022.csv'
+    #csv = 'pitchings_2022.csv'
 
-    with open(cpbl_pitchings_csv, 'r', encoding='utf-8') as csvfile:
-        csv_reader = csv.DictReader(csvfile)
+    #with open(cpbl_pitchings_csv, 'r', encoding='utf-8') as csvfile:
+        #csv_reader = csv.DictReader(csvfile)
         
         # 取得欄位名稱，並加上Year欄位
-        fieldnames= csv_reader.fieldnames + ['Year']
+        #fieldnames= csv_reader.fieldnames + ['Year']
         
         # 開啟新的csv文件，寫入欄位名稱
-        with open(new_csv, 'w', encoding='utf-8', newline='') as output_file:
-            csv_writer = csv.DictWriter(output_file, fieldnames=fieldnames)
-            csv_writer.writeheader()
+        #with open(new_csv, 'w', encoding='utf-8', newline='') as #output_file:
+            #csv_writer = csv.DictWriter(output_file, #fieldnames=fieldnames)
+            #csv_writer.writeheader()
             
         # 將原本的資料寫入新的csv，同時在每一筆資料的最後面加上 'Year': '2022'
-            for row in csv_reader:
-                row['Year'] = '2022'
-                csv_writer.writerow(row)
-    print(f'修改後的資料已寫入 {new_csv}')
+            #for row in csv_reader:
+                #row['Year'] = '2022'
+                #csv_writer.writerow(row)
+    #print(f'修改後的資料已寫入 {new_csv}')
 
     #讀取新的csv檔案
     pitchings_2022 = 'pitchings_2022.csv'
@@ -36,7 +36,8 @@ def __open_cpbl_data() ->list[dict]:
             print('讀取成功')
             return list(pitchings_dictReader)
     except Exception as e:
-            return print(f'讀取錯誤{e}')
+            print(f'讀取錯誤{e}')
+            return  []
 
 
 #-------------------建立資料庫--------------------
@@ -64,6 +65,11 @@ def __create_table(conn:sqlite3.Connection):
             "保送數" INTEGER,
             "三振數" INTEGER,
             "自責分" INTEGER,
+            "投打習慣" TEXT NOT NULL,
+            "背號" INTEGER,
+            "身高體重" TEXT NOT NULL,
+            "生日" TEXT NOT NULL,
+            "照片網址" TEXT NOT NULL,
             PRIMARY KEY("id" AUTOINCREMENT),
             UNIQUE(id, 年份) ON CONFLICT REPLACE
         ); 
@@ -75,8 +81,8 @@ def __create_table(conn:sqlite3.Connection):
 def __insert_data(conn:sqlite3.Connection,values:list[any])->None:
     cursor = conn.cursor()
     sql='''
-    REPLACE INTO cpbl_pitchings(年份, 所屬球隊, 球員編號, 球員姓名, 出場數, 先發次數, 中繼次數, 勝場數, 敗場數, 救援成功, 中繼成功, 有效局數, 面對打者數, 被安打數, 被全壘打數, 保送數, 三振數, 自責分)
-            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    REPLACE INTO cpbl_pitchings(年份, 所屬球隊, 球員編號, 球員姓名, 出場數, 先發次數, 中繼次數, 勝場數, 敗場數, 救援成功, 中繼成功, 有效局數, 面對打者數, 被安打數, 被全壘打數, 保送數, 三振數, 自責分, 投打習慣, 背號, 身高體重, 生日, 照片網址)
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
     '''
     cursor.execute(sql,values)
     conn.commit()
@@ -93,7 +99,7 @@ def update_sqlite_data()->None:
     print(data)
     __create_table(conn)
     for item in data:
-        __insert_data(conn, values=[item['Year'], item['Team Name'], item['ID'], item['Name'], item['G'], item['GS'], item['GR'],item['W'], item['L'], item['SV'], item['HLD'], item['IP'], item['BF'], item['H'],item['HR'], item['BB'], item['SO'], item['ER']])
+        __insert_data(conn, values=[item['Year'], item['Team Name'], item['ID'], item['Name'], item['G'], item['GS'], item['GR'],item['W'], item['L'], item['SV'], item['HLD'], item['IP'], item['BF'], item['H'],item['HR'], item['BB'], item['SO'], item['ER'], item['B_t'], item['Number'], item['Ht_wt'],item['Born'],item['Img']])
     conn.close() 
 
 #從資料庫中呼叫最新的資料
@@ -102,7 +108,7 @@ def lastest_datetime_data()->list[tuple]:
     cursor = conn.cursor() 
     #匯入SQL語法
     sql = '''
-    SELECT 年份, 所屬球隊, 球員編號, 球員姓名, 出場數, 先發次數, 中繼次數, 勝場數, 敗場數, 救援成功, 中繼成功, 有效局數, 面對打者數, 被安打數, 被全壘打數, 保送數, 三振數, 自責分
+    SELECT 年份, 所屬球隊, 球員編號, 球員姓名, 出場數, 先發次數, 中繼次數, 勝場數, 敗場數, 救援成功, 中繼成功, 有效局數, 面對打者數, 被安打數, 被全壘打數, 保送數, 三振數, 自責分, 投打習慣, 背號, 身高體重, 生日, 照片網址
     FROM cpbl_pitchings
     '''
     cursor.execute(sql) #執行SQL
@@ -138,7 +144,8 @@ def search_sitename(word:str) ->list[tuple]:
         被全壘打數, 
         保送數, 
         三振數, 
-        自責分
+        自責分,
+        投打習慣, 背號, 身高體重, 生日, 照片網址
     FROM cpbl_pitchings
     WHERE 球員姓名 LIKE ?
     GROUP BY 年份, 
@@ -158,7 +165,8 @@ def search_sitename(word:str) ->list[tuple]:
         被全壘打數, 
         保送數, 
         三振數, 
-        自責分;
+        自責分,
+        投打習慣, 背號, 身高體重, 生日, 照片網址;
         '''
     
     cursor.execute(sql,[f'%{word}%'])
@@ -171,13 +179,10 @@ def search_sitename(word:str) ->list[tuple]:
 def team_selected(event, selectVar):
     select_value = selectVar.get()
     print(f"隊伍選擇: {select_value}")
-    if select_value == '樂天桃猿':
-        print('我走到這了')
-        return select_value
 
 def search_by_team(event,word:str):
     print(word) #使用者輸入的文字
-    sql=conn = sqlite3.connect('cpbl.db')    
+    conn = sqlite3.connect('cpbl.db')    
     cursor = conn.cursor() 
     sql = '''
     SELECT 
@@ -224,5 +229,5 @@ def search_by_team(event,word:str):
     rows = cursor.fetchall()
     cursor.close()
     conn.close()
-    print(rows)
+    #print(rows)
     return rows

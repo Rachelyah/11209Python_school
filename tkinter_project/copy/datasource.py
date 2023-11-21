@@ -169,8 +169,60 @@ def search_sitename(word:str) ->list[tuple]:
     return rows
 
 def team_selected(event, selectVar):
-            select_value = selectVar.get()
-            print(f"隊伍選擇: {select_value}")
-            if select_value == '樂天桃猿':
-                print('我走到這了')
-            return select_value
+    select_value = selectVar.get()
+    print(f"隊伍選擇: {select_value}")
+    if select_value == '樂天桃猿':
+        print('我走到這了')
+        return select_value
+
+def search_by_team(event,word:str):
+    print(word) #使用者輸入的文字
+    sql=conn = sqlite3.connect('cpbl.db')    
+    cursor = conn.cursor() 
+    sql = '''
+    SELECT 
+        年份, 
+        所屬球隊, 
+        球員編號, 
+        球員姓名, 
+        出場數, 
+        先發次數, 
+        中繼次數, 
+        勝場數, 
+        敗場數, 
+        救援成功, 
+        中繼成功, 
+        有效局數, 
+        面對打者數, 
+        被安打數, 
+        被全壘打數, 
+        保送數, 
+        三振數, 
+        自責分
+    FROM cpbl_pitchings
+    WHERE 所屬球隊 LIKE ?
+    GROUP BY 年份, 
+        所屬球隊, 
+        球員編號, 
+        球員姓名, 
+        出場數, 
+        先發次數, 
+        中繼次數, 
+        勝場數, 
+        敗場數, 
+        救援成功, 
+        中繼成功, 
+        有效局數, 
+        面對打者數, 
+        被安打數, 
+        被全壘打數, 
+        保送數, 
+        三振數, 
+        自責分;
+    '''
+    cursor.execute(sql, [f'%{word}%'])
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    print(rows)
+    return rows
