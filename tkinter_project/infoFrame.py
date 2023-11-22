@@ -15,9 +15,6 @@ class InfoDisplay(tk.Frame):
 
 #----------建立欄位---------------
     def create_widgets(self):
-        #self.treeview_frame = cpblTreeView(self)
-        #self.treeview_frame.callback = self.on_treeview_click
-
         tk.Label(self, text='球員姓名：').grid(row=0, column=0, sticky='w')
         tk.Label(self, text='背號：').grid(row=1, column=0, sticky='w')
         tk.Label(self, text='投打習慣：').grid(row=2, column=0, sticky='w')

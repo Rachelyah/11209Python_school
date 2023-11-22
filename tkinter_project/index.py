@@ -10,8 +10,6 @@ from tkinter import messagebox
 from threading import Timer
 import datasource
 from PIL import Image
-import infoFrame
-
 
 #自定義class 呼叫datasource讀取csv檔案跟匯入資料庫的function
 class Window(tk.Tk):
@@ -48,8 +46,9 @@ class Window(tk.Tk):
 #------------------------------球員個人資料、PR數據---------------------------------------
         
         info_main_Frame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
-        info_display = InfoDisplay.create_widgets(info_main_Frame)
+        #info_display = InfoDisplay(data = cpblTreeView.selectionItem())
         info_main_Frame.pack()
+        
 
 
 ##-----------------------------建立隊伍按鈕-----------------------------------

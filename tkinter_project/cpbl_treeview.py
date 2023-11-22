@@ -3,6 +3,9 @@ from tkinter import ttk
 from tkinter.simpledialog import Dialog
 import sqlite3
 
+#index：創造母盒，呼叫cpbl的grid，包含左邊的欄位跟右邊的變數欄位
+#cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
+
 class cpblTreeView(ttk.Treeview):
     def __init__(self,parent,**kwargs):   
         super().__init__(parent,**kwargs) 
@@ -47,7 +50,6 @@ class cpblTreeView(ttk.Treeview):
 
     #--------------bind button1-------------------------
         self.bind('<ButtonRelease-1>',self.selectionItem)
-        self.bind('<ButtonRelease-2>',InfoDisplay.selectPlayer)
 
     #-------------更新資料內容------------------------
     def update_content(self,site_datas):
@@ -64,21 +66,17 @@ class cpblTreeView(ttk.Treeview):
        selectedItem = self.focus()      #抓出選擇的值
        print(selectedItem)                  
        data_dict = self.item(selectedItem)  #儲存抓出來的值(dict型別)
-       #print(data_dict)
+       print(data_dict)
        data_list = data_dict['values']      #儲存Value值(list型別)
        print(data_list)
        title_name = data_list[0]            #抓出名稱放在title
 
        #呼叫ShowDetail並傳入parent(title)，並把我的data傳入
        detail = ShowDetail(self.parent, data=data_list, title=title_name)
-       
-       InfoDisplay.selectPlayer(self.parent,data=data_list)
 
+       info_display = InfoDisplay(self.parent, data=data_list)
 
        return data_list
-       #調用回呼函數，將數據傳遞給外部
-       #if hasattr(self,'callback'):
-        #self.callback(data_list)
 
 class ShowDetail(Dialog):
     def __init__(self,parent, data:list,**kwargs):
@@ -217,97 +215,46 @@ class ShowDetail(Dialog):
 
 
 class InfoDisplay(tk.Frame):
-    def __init__(self, master=None, **kwargs):
+    def __init__(self,master, data, **kwargs):
+        self.id = data[2]   
         super().__init__(master, **kwargs)
-        self.selectPlayer()
-        self.create_widgets()
 
-        return data
-    
-    def create_widgets(self, data=selectPlayer(), **kwargs):
-            self.Team = data[0]   
-            self.Name = data[1]                   
-            self.Number = data[2]
-            self.B_t = data[3]
-            self.Ht_wt = data[4]
-            self.Born = data[5]
-            super().__init__(self, **kwargs)  
+        def info_search(self, word=self.id,**kwargs):
+                conn = sqlite3.connect('cpbl.db')    
+                cursor = conn.cursor() 
+                sql='''
+                SELECT DISTINCT 所屬球隊, 球員姓名,  背號,  投打習慣, 身高體重, 生日
+                    from cpbl_pitchings
+                    where 球員編號 = ?
+                '''
+                cursor.execute(sql, [f'%{word}%'])
+                rows = cursor.fetchall()
+                cursor.close()
+                conn.close()
+                print(f'查詢結果{rows}')
+                return rows
 
-            tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
-            tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
-            tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
-            tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
-            tk.Label(self, text='身高體重：').grid(row=4, column=0, sticky='w')
-            tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
-
-            tk.Label(self, text='').grid(row=0, column=1, sticky='w')
-            tk.Label(self, text='').grid(row=1, column=1, sticky='w')
-            tk.Label(self, text='').grid(row=2, column=1, sticky='w')
-            tk.Label(self, text='').grid(row=3, column=1, sticky='w')
-            tk.Label(self, text='').grid(row=4, column=1, sticky='w')
-            tk.Label(self, text='').grid(row=5, column=1, sticky='w')
-
-            #建立欄位內容，內容文字為texrvariable=StringVar，用這個接收
-            #state = disabled 不可被修改
-            
-            TeamVar = tk.StringVar()
-            TeamVar.set(self.Team)
-            tk.Entry(self,textvariable=TeamVar, state='disabled').grid(column=0,row=1)
-            
-            NameVar = tk.StringVar()
-            NameVar.set(self.Name)
-            tk.Entry(self,textvariable=NameVar, state='disabled').grid(column=1,row=1)
-
-            NumberVar = tk.StringVar()
-            NumberVar.set(self.Number)
-            tk.Entry(self,textvariable=NumberVar, state='disabled').grid(column=2,row=1)
-
-            B_tVar = tk.StringVar()
-            B_tVar.set(self.B_t)
-            tk.Entry(self,textvariable=B_tVar, state='disabled').grid(column=3,row=1)
-
-            Ht_wtVar = tk.StringVar()
-            Ht_wtVar.set(self.Ht_wt)
-            tk.Entry(self,textvariable=Ht_wtVar, state='disabled').grid(column=4,row=1)
-
-            BornVar = tk.StringVar()
-            BornVar.set(self.Born)
-            tk.Entry(self,textvariable=BornVar, state='disabled').grid(column=5,row=1)
-
-
-
-'''
-#----------建立欄位---------------
-    def create_widgets(self, data:list, parent, **kwargs):
+    def create_widgets(self, data, **kwargs):     
+        testFrame= tk.Frame(self)
+        testFrame.pack(padx=100, pady=100) 
         self.Team = data[0]   
         self.Name = data[1]                   
         self.Number = data[2]
         self.B_t = data[3]
         self.Ht_wt = data[4]
         self.Born = data[5]
-
-        super().__init__(parent, **kwargs)  
+        
         tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
         tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
         tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
         tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
         tk.Label(self, text='身高體重：').grid(row=4, column=0, sticky='w')
         tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
-
-        tk.Label(self, text='').grid(row=0, column=1, sticky='w')
-        tk.Label(self, text='').grid(row=1, column=1, sticky='w')
-        tk.Label(self, text='').grid(row=2, column=1, sticky='w')
-        tk.Label(self, text='').grid(row=3, column=1, sticky='w')
-        tk.Label(self, text='').grid(row=4, column=1, sticky='w')
-        tk.Label(self, text='').grid(row=5, column=1, sticky='w')
-
-        #建立欄位內容，內容文字為texrvariable=StringVar，用這個接收
-        #state = disabled 不可被修改
-        
+    '''    
         TeamVar = tk.StringVar()
         TeamVar.set(self.Team)
         tk.Entry(self,textvariable=TeamVar, state='disabled').grid(column=0,row=1)
-        
+            
         NameVar = tk.StringVar()
         NameVar.set(self.Name)
         tk.Entry(self,textvariable=NameVar, state='disabled').grid(column=1,row=1)
@@ -328,9 +275,3 @@ class InfoDisplay(tk.Frame):
         BornVar.set(self.Born)
         tk.Entry(self,textvariable=BornVar, state='disabled').grid(column=5,row=1)
 '''
-
-       
-    
-        
-
-
