@@ -46,8 +46,8 @@ def __create_table(conn:sqlite3.Connection):
             "身高體重" TEXT NOT NULL,
             "生日" TEXT NOT NULL,
             "照片網址" TEXT NOT NULL,
-            PRIMARY KEY("id" AUTOINCREMENT),
-            UNIQUE(id, 年份) ON CONFLICT REPLACE
+            PRIMARY KEY("球員編號" AUTOINCREMENT),
+            UNIQUE(年份, 球員編號, 球員姓名) ON CONFLICT REPLACE
         ); 
         '''
     ) 
@@ -72,7 +72,7 @@ def update_sqlite_data()->None:
     data = __open_cpbl_data()
     conn = sqlite3.connect('cpbl.db')
     print('寫入環節')
-    print(data)
+    #print(data)
     __create_table(conn)
     for item in data:
         __insert_data(conn, values=[item['Year'], item['Team Name'], item['ID'], item['Name'], item['G'], item['GS'], item['GR'],item['W'], item['L'], item['SV'], item['HLD'], item['IP'], item['BF'], item['H'],item['HR'], item['BB'], item['SO'], item['ER'], item['B_t'], item['Number'], item['Ht_wt'],item['Born'],item['Img']])
@@ -91,9 +91,7 @@ def lastest_datetime_data()->list[tuple]:
     rows = cursor.fetchall()
     cursor.close()
     conn.close()
-
     return rows
-
 
 #---------------------查詢功能------------------------
 

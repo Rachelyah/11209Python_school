@@ -50,30 +50,7 @@ class Window(tk.Tk):
         info_main_Frame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
         info_display = InfoDisplay.create_widgets(info_main_Frame)
         info_main_Frame.pack()
-        '''
-       
-        
-        
-        info_main_Frame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
-        info_main_Frame.grid(row=0, column=0)
 
-
-        info_left_Frame =tk.Frame(info_main_Frame,relief=tk.GROOVE,borderwidth=1)
-        tk.Label(info_left_Frame, text='球員姓名').grid(row=0, column=0, sticky='w')
-        tk.Label(info_left_Frame, text='背號').grid(row=1, column=0, sticky='w')
-        tk.Label(info_left_Frame, text='投打習慣').grid(row=2, column=0, sticky='w')
-        tk.Label(info_left_Frame, text='身高體重').grid(row=3, column=0, sticky='w')
-        tk.Label(info_left_Frame, text='生日').grid(row=4, column=0, sticky='w')
-        tk.Label(info_left_Frame, text='照片').grid(row=5, column=0, sticky='w')
-        info_left_Frame.grid(row=0, column=0, padx=20, pady=20)
-        
-        info_middle_Frame=tk.LabelFrame(info_main_Frame,text='',relief=tk.GROOVE,borderwidth=1)
-        tk.Label(info_middle_Frame, text='投打習慣').grid(row=0, column=0)
-        tk.Label(info_middle_Frame, text='身高體重').grid(row=1, column=0)
-        tk.Label(info_middle_Frame, text='生日').grid(row=2, column=0)
-        tk.Label(info_middle_Frame, text='照片').grid(row=3, column=0)
-        info_middle_Frame.grid(row=0, column=0, padx=20, pady=20)
-'''
 
 ##-----------------------------建立隊伍按鈕-----------------------------------
 
@@ -105,7 +82,6 @@ class Window(tk.Tk):
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
         
-
 #-----------------------------更新treeView資料--------------------------------------
         lastest_data = datasource.lastest_datetime_data()               
         self.cpblTreeView.update_content(site_datas=lastest_data)
@@ -142,7 +118,6 @@ def main():
 
     window = Window() 
     window.title('中華職棒球員資料查詢')
-    #window.geometry('1200x500')
     window.resizable(width=True,height=True) 
     update_data(window)
     window.mainloop() 

@@ -1,12 +1,19 @@
 {% extends "bs/base.html" %}
-{%block title%}bootstrap{%endblock%}
+{% block title %}bootstrap{% endblock %}
 {% block csslink %}
-<link rel="stylesheet" href="{{url_for('static',filename='css/bs/index.css')}}">{% endblock %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/bs/index.css')}}">
+{% endblock %}
+
 {% block head %}
-{{ super ()}} <!--繼承base的head區內容後，super下面寫我head區要加的東西-->
+{{ super() }}
 <style>
-    body{
-        background-color: black;
+    body {
+        background-color: blueviolet;
     }
 </style>
+{% endblock %}
+
+
+{% block main %}
+<h1>我是bootstrap</h1>
 {% endblock %}
