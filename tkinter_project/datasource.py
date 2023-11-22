@@ -141,7 +141,6 @@ def search_sitename(word:str) ->list[tuple]:
         三振數, 
         自責分;
         '''
-    
     cursor.execute(sql,[f'%{word}%'])
     rows = cursor.fetchall()
     cursor.close()
@@ -206,9 +205,10 @@ def search_by_team(event,word:str):
     #print(rows)
     return rows
 
+
     #查詢球員資料
-def Palyer_search(name):
-        name = Paly_info()
+def Palyer_search():
+        #name = Paly_info()
         conn = sqlite3.connect('cpbl.db')    
         cursor = conn.cursor() 
         sql = '''
@@ -252,7 +252,7 @@ def Palyer_search(name):
         三振數, 
         自責分;
     '''
-    cursor.execute(sql, [f'%{word}%'])
-    rows = cursor.fetchall()
-    cursor.close()
-    conn.close()
+        #cursor.execute(sql, [f'%{word}%'])
+        #rows = cursor.fetchall()
+        cursor.close()
+        conn.close()

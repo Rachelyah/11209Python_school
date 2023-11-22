@@ -44,9 +44,10 @@ class cpblTreeView(ttk.Treeview):
         self.column('SO',width=70,anchor='center')
         self.column('ER',width=70,anchor='center')
 
-        
+        #self.create_widgets()
     #--------------bind button1-------------------------
         self.bind('<ButtonRelease-1>',self.selectionItem)
+        self.bind('<ButtonRelease-1>',InfoDisplay.selectPlayer)
 
     #-------------更新資料內容------------------------
     def update_content(self,site_datas):
@@ -209,3 +210,45 @@ class ShowDetail(Dialog):
 
         self.bind("<Return>", self.ok)
         box.pack()
+
+
+class InfoDisplay(tk.Frame):
+    def __init__(self, master=None, **kwargs):
+        super().__init__(master, **kwargs)
+        self.create_widgets()
+
+#----------建立欄位---------------
+    def create_widgets(self):
+            #self.treeview_frame = cpblTreeView(self)
+            #self.treeview_frame.callback = self.on_treeview_click
+
+            tk.Label(self, text='球員姓名：').grid(row=0, column=0, sticky='w')
+            tk.Label(self, text='背號：').grid(row=1, column=0, sticky='w')
+            tk.Label(self, text='投打習慣：').grid(row=2, column=0, sticky='w')
+            tk.Label(self, text='身高體重：').grid(row=3, column=0, sticky='w')
+            tk.Label(self, text='生日：').grid(row=4, column=0, sticky='w')
+            tk.Label(self, text='照片：').grid(row=5, column=0, sticky='w')
+
+            tk.Label(self, text='').grid(row=0, column=1, sticky='w')
+            tk.Label(self, text='').grid(row=1, column=1, sticky='w')
+            tk.Label(self, text='').grid(row=2, column=1, sticky='w')
+            tk.Label(self, text='').grid(row=3, column=1, sticky='w')
+            tk.Label(self, text='').grid(row=4, column=1, sticky='w')
+            tk.Label(self, text='').grid(row=5, column=1, sticky='w')
+
+    def selectPlayer():
+        selectedItem = self.focus()      #抓出選擇的值
+        print(selectedItem)                  
+        data_dict = self.item(selectedItem)  #儲存抓出來的值(dict型別)
+        #print(data_dict)
+        data_list = data_dict['values']      #儲存Value值(list型別)
+        print(data_list)
+        title_name = data_list[0]            #抓出名稱放在title
+
+       #呼叫ShowDetail並傳入parent(title)，並把我的data傳入
+        detail = ShowDetail(self.parent, data=data_list, title=title_name)
+        return data_list
+       #調用回呼函數，將數據傳遞給外部
+       #if hasattr(self,'callback'):
+        #self.callback(data_list)
+

@@ -31,8 +31,3 @@ class InfoDisplay(tk.Frame):
         tk.Label(self, text='').grid(row=3, column=1, sticky='w')
         tk.Label(self, text='').grid(row=4, column=1, sticky='w')
         tk.Label(self, text='').grid(row=5, column=1, sticky='w')
-
-'''
-    def on_treeview_click(self, data_list):
-        year = data_list[0]
-        print(year)'''

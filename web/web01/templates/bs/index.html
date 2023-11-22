@@ -1,50 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BS的根目錄</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/boostrap.min.css')}}">
-    <style>
-        body{
-            background-color: bisque;
-        }
-        /*手機橫的*/
-        @media (min-width: 576px) { 
-            body{
-                background-color: burlywood;
-            }
-         }
-        /*平板*/
-        @media (min-width: 768px) { 
-            body{
-                background-color: aquamarine;
-            }
-         }
-        /*一般家中桌機螢幕*/
-        @media (min-width: 992px) { 
-            body{
-                background-color: rgb(5, 51, 53);
-            }
-         }
-        /*一般桌機寬螢幕*/
-        @media (min-width: 1200px) { 
-            body{
-                background-color: chocolate;
-            }
-         }
-        /*超大桌機螢幕*/
-        @media (min-width: 1400px) {
-            body{
-                background-color: crimson;
-            }
-        }
-    </style>
-</head>
-<body>
-    <h1>BS的根目錄</h1>
-    <p>boostrap container</p>
-    <script src="{{url_for('static', filename='js/bootstrap.bundle.min.js')}}"
-        ></script>
-</body>
-</html>
+{% extends "bs/base.html" %}
+{%block title%}bootstrap{%endblock%}
+{% block csslink %}
+<link rel="stylesheet" href="{{url_for('static',filename='css/bs/index.css')}}">{% endblock %}
+{% block head %}
+{{ super ()}} <!--繼承base的head區內容後，super下面寫我head區要加的東西-->
+<style>
+    body{
+        background-color: black;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,38 @@
+#main {
+    background-color: bisque;
+}
+
+/*手機橫的*/
+@media (min-width: 576px) {
+    #main {
+        background-color: burlywood;
+    }
+}
+
+/*平板*/
+@media (min-width: 768px) {
+    #main {
+        background-color: aquamarine;
+    }
+}
+
+/*一般家中桌機螢幕*/
+@media (min-width: 992px) {
+    #main {
+        background-color: rgb(5, 51, 53);
+    }
+}
+
+/*一般桌機寬螢幕*/
+@media (min-width: 1200px) {
+    #main {
+        background-color: chocolate;
+    }
+}
+
+/*超大桌機螢幕*/
+@media (min-width: 1400px) {
+    #main {
+        background-color: crimson;
+    }
+}

@@ -5,6 +5,7 @@ cpbl
 import tkinter as tk
 from tkinter import ttk
 from cpbl_treeview import cpblTreeView
+from cpbl_treeview import InfoDisplay
 from tkinter import messagebox
 from threading import Timer
 import datasource
@@ -45,10 +46,14 @@ class Window(tk.Tk):
 
 
 #------------------------------球員個人資料、PR數據---------------------------------------
-        info_display = infoFrame.InfoDisplay(self)
-        info_display.pack()
         
+        info_main_Frame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
+        info_display = InfoDisplay.create_widgets(info_main_Frame)
+        info_main_Frame.pack()
         '''
+       
+        
+        
         info_main_Frame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
         info_main_Frame.grid(row=0, column=0)
 
@@ -69,10 +74,6 @@ class Window(tk.Tk):
         tk.Label(info_middle_Frame, text='照片').grid(row=3, column=0)
         info_middle_Frame.grid(row=0, column=0, padx=20, pady=20)
 '''
-
-
-
-
 
 ##-----------------------------建立隊伍按鈕-----------------------------------
 
