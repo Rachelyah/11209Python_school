@@ -124,6 +124,12 @@ class Window(tk.Tk):
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
             self.cpblTreeView.update_content(search_data)      
 
+    #傳球員資料的值
+    def Paly_info():
+        info = cpblTreeView.selectionItem()
+        name = info[3]
+        return name
+    
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
     def update_data(w:Window)->None:   

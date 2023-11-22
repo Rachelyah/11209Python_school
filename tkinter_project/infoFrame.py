@@ -15,6 +15,9 @@ class InfoDisplay(tk.Frame):
 
 #----------建立欄位---------------
     def create_widgets(self):
+        #self.treeview_frame = cpblTreeView(self)
+        #self.treeview_frame.callback = self.on_treeview_click
+
         tk.Label(self, text='球員姓名：').grid(row=0, column=0, sticky='w')
         tk.Label(self, text='背號：').grid(row=1, column=0, sticky='w')
         tk.Label(self, text='投打習慣：').grid(row=2, column=0, sticky='w')
@@ -29,9 +32,7 @@ class InfoDisplay(tk.Frame):
         tk.Label(self, text='').grid(row=4, column=1, sticky='w')
         tk.Label(self, text='').grid(row=5, column=1, sticky='w')
 
-        self.treeview_frame = cpblTreeView(self)
-        self.treeview_frame.callback = self.on_treeview_click(data)
-
-    def on_treeview_click(self, data):
-        # 在這裡處理點擊事件
-        print(f'Clicked on Year {data_list}')             
+'''
+    def on_treeview_click(self, data_list):
+        year = data_list[0]
+        print(year)'''

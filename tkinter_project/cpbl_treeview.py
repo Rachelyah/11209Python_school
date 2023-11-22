@@ -69,12 +69,11 @@ class cpblTreeView(ttk.Treeview):
        title_name = data_list[0]            #抓出名稱放在title
 
        #呼叫ShowDetail並傳入parent(title)，並把我的data傳入
-       data = data_list
-       detail = ShowDetail(self.parent, data=data, title=title_name)  
-
+       detail = ShowDetail(self.parent, data=data_list, title=title_name)
+       return data_list
        #調用回呼函數，將數據傳遞給外部
-       if hasattr(self,'callback'):
-        self.callback(data)
+       #if hasattr(self,'callback'):
+        #self.callback(data_list)
 
 class ShowDetail(Dialog):
     def __init__(self,parent, data:list,**kwargs):
