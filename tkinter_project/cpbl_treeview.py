@@ -219,20 +219,20 @@ class InfoDisplay(tk.Frame):
         self.id = data[2]   
         super().__init__(master, **kwargs)
 
-        def info_search(self, word=self.id,**kwargs):
-                conn = sqlite3.connect('cpbl.db')    
-                cursor = conn.cursor() 
-                sql='''
-                SELECT DISTINCT 所屬球隊, 球員姓名,  背號,  投打習慣, 身高體重, 生日
-                    from cpbl_pitchings
-                    where 球員編號 = ?
-                '''
-                cursor.execute(sql, [f'%{word}%'])
-                rows = cursor.fetchall()
-                cursor.close()
-                conn.close()
-                print(f'查詢結果{rows}')
-                return rows
+    def info_search(self, word=self.id,**kwargs):
+        conn = sqlite3.connect('cpbl.db')    
+        cursor = conn.cursor() 
+        sql='''
+        SELECT DISTINCT 所屬球隊, 球員姓名,  背號,  投打習慣, 身高體重, 生日
+        from cpbl_pitchings
+        where 球員編號 = ?
+        '''
+        cursor.execute(sql, [f'%{word}%'])
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        print(f'查詢結果{rows}')
+        return rows
 
     def create_widgets(self, data, **kwargs):     
         testFrame= tk.Frame(self)
