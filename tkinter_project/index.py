@@ -5,7 +5,6 @@ cpbl
 import tkinter as tk
 from tkinter import ttk
 from cpbl_treeview import cpblTreeView
-from cpbl_treeview import InfoDisplay
 from tkinter import messagebox
 from threading import Timer
 import datasource
@@ -42,14 +41,14 @@ class Window(tk.Tk):
         search_entry.pack(side='left')     
         middleFrame.pack(fill='x',padx=20)
 
-
 #------------------------------球員個人資料、PR數據---------------------------------------
+        infoFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
         
-        info_main_Frame = tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
-        #info_display = InfoDisplay(data = cpblTreeView.selectionItem())
-        info_main_Frame.pack()
         
-
+        #info = tk.Label(InfoDisplay.create_widgets(infoFrame, data=None))
+        #info.pack()
+        infoFrame.pack()
+        
 
 ##-----------------------------建立隊伍按鈕-----------------------------------
 
@@ -70,10 +69,7 @@ class Window(tk.Tk):
 
 #------------------------------建立treeView-----------------------------------------
         bottomFrame = tk.Frame(self)
-        self.cpblTreeView = cpblTreeView(bottomFrame
-                                                               ,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER')
-                                                               ,show="headings"
-                                                               ,height=20)
+        self.cpblTreeView = cpblTreeView(bottomFrame,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER'),show="headings",height=20)
         #設定捲動軸 
         self.cpblTreeView.pack(side='left')
         vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.cpblTreeView.yview)

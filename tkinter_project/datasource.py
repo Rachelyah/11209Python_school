@@ -22,10 +22,9 @@ def __create_table(conn:sqlite3.Connection):
     cursor.execute( 
         '''
         CREATE TABLE  IF NOT EXISTS 'cpbl_pitchings'(        
-            "id"	INTEGER,
             "年份"	TEXT NOT NULL,
             "所屬球隊" TEXT NOT NULL,
-            "球員編號" TEXT NOT NULL,
+            "球員編號" INTEGER NOT NULL,
             "球員姓名" TEXT NOT NULL,
             "出場數" TEXT NOT NULL,
             "先發次數" INTEGER,
@@ -84,7 +83,7 @@ def lastest_datetime_data()->list[tuple]:
     cursor = conn.cursor() 
     #匯入SQL語法
     sql = '''
-    SELECT 年份, 所屬球隊, 球員編號, 球員姓名, 出場數, 先發次數, 中繼次數, 勝場數, 敗場數, 救援成功, 中繼成功, 有效局數, 面對打者數, 被安打數, 被全壘打數, 保送數, 三振數, 自責分
+    SELECT *
     FROM cpbl_pitchings
     '''
     cursor.execute(sql) #執行SQL
@@ -203,13 +202,13 @@ def search_by_team(event,word:str):
     #print(rows)
     return rows
 
-
+'''
     #查詢球員資料
 def Palyer_search():
         #name = Paly_info()
         conn = sqlite3.connect('cpbl.db')    
         cursor = conn.cursor() 
-        sql = '''
+        sql = 
         SELECT 
         年份, 
         所屬球隊, 
@@ -249,8 +248,9 @@ def Palyer_search():
         保送數, 
         三振數, 
         自責分;
-    '''
         #cursor.execute(sql, [f'%{word}%'])
         #rows = cursor.fetchall()
         cursor.close()
         conn.close()
+
+       ''' 
