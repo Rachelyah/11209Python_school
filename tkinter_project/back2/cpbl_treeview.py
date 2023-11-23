@@ -1,16 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter.simpledialog import Dialog
-import sqlite3
 
-#index：創造母盒，呼叫cpbl的grid，包含左邊的欄位跟右邊的變數欄位
-#cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
-
-#global data
-class cpblTreeView(ttk.Treeview, tk.Frame):
+class cpblTreeView(ttk.Treeview):
     def __init__(self,parent,**kwargs):   
         super().__init__(parent,**kwargs) 
         self.parent = parent
+    #--------------設定欄位名稱--------------------
         self.heading('Year', text="年份")
         self.heading('Team Name', text="所屬球隊")
         self.heading('ID', text="球員編號")
@@ -29,14 +25,6 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
         self.heading('BB', text="保送數")
         self.heading('SO', text="三振數")
         self.heading('ER', text="自責分")
-
-        #self.callback = lambda data: None
-        self.callback = self.create_widgets
-        #tree_view = cpblTreeView(parent)
-        #self.details_frame = tk.Frame(self)
-        #self.details_frame.pack(pady=10)
-        #self.frame()
-
     #--------------設定欄位寬度-----------------------
         self.column('Year',width=70,anchor='center') #也可以用minwidth設定最小寬度
         self.column('Team Name',width=70,anchor='center')
@@ -56,7 +44,7 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
         self.column('BB',width=70,anchor='center')
         self.column('SO',width=70,anchor='center')
         self.column('ER',width=70,anchor='center')
-
+        
     #--------------bind button1-------------------------
         self.bind('<ButtonRelease-1>',self.selectionItem)
 
@@ -68,75 +56,20 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
             self.delete(i)
         
         for index, site in enumerate(site_datas):
-            self.insert('','end',text=f'abc{index}' ,values=site)
+            self.insert('','end',text=f'abc{index}',values=site)
 
-    #點擊treeView時，啟動此方法，回傳使用者點擊資料
-    def selectionItem(self, event:None)->list:
-       selectedItem = self.focus()
-       data_dict = self.item(selectedItem)
-       self.data = data_dict['values']
-       self.callback(self.data)
-       print(f'查詢結果{self.data}')
+    #點擊按鈕時，啟動此方法，print出資料內容，不用另外去資料庫找
+    def selectionItem(self, event):
+       selectedItem = self.focus()      #抓出選擇的值
+       print(selectedItem)                  
+       data_dict = self.item(selectedItem)  #儲存抓出來的值(dict型別)
+       #print(data_dict)
+       data_list = data_dict['values']      #儲存Value值(list型別)
+       print(data_list)
+       title_name = data_list[0]            #抓出名稱放在title
+       detail = ShowDetail(self.parent, data = data_list, title=title_name)    
+       #呼叫ShowDetail並傳入parent(title)，並把我的data傳入
 
-       #將資料傳入彈出視窗
-       title_name = self.data[0]
-       detail = ShowDetail(self.parent, data=self.data, title=title_name)
-
-       data_frame = cpblTreeView.frame(self.data)
-
-       return self.data
-
-#問題出在這！！！！！！！！！
-    def frame(self, **kwargs):
-        data = cpblTreeView.selectionItem(self, event=None)
-        print(f'資料成功輸出{data}')
-        return data
-
-'''
-    def create_widgets(self, data, **kwargs):     
-        print(f'是否成功{data}')
-        self.Team = data[2]
-        self.Name = data[4]
-        self.B_t = data[19]                 
-        self.Number = data[20]
-        self.Ht_wt = data[21]
-        self.Born = data[21]
-        print(f'生日{self.Born}')
-     
-        tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
-        tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
-        tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
-        tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
-        tk.Label(self, text='身高體重：').grid(row=4, column=0,sticky='w')
-        tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
-
-      
-        TeamVar = tk.StringVar()
-        TeamVar.set(self.Team)
-        tk.Label(self,textvariable=TeamVar, state='disabled').grid(column=0,row=1)
-            
-        NameVar = tk.StringVar()
-        NameVar.set(self.Name)
-        tk.Label(self,textvariable=NameVar, state='disabled').grid(column=1,row=1)
-
-        NumberVar = tk.StringVar()
-        NumberVar.set(self.Number)
-        tk.Label(self,textvariable=NumberVar, state='disabled').grid(column=2,row=1)
-
-        B_tVar = tk.StringVar()
-        B_tVar.set(self.B_t)
-        tk.Label(self,textvariable=B_tVar, state='disabled').grid(column=3,row=1)
-
-        Ht_wtVar = tk.StringVar()
-        Ht_wtVar.set(self.Ht_wt)
-        tk.Label(self,textvariable=Ht_wtVar, state='disabled').grid(column=4,row=1)
-
-        BornVar = tk.StringVar()
-        BornVar.set(self.Born)
-        tk.Label(self,textvariable=BornVar, state='disabled').grid(column=5,row=1)
-
-        print(f'跑到這{self.Born}')
-'''
 class ShowDetail(Dialog):
     def __init__(self,parent, data:list,**kwargs):
         self.Year = data[0]                    
@@ -158,7 +91,6 @@ class ShowDetail(Dialog):
         self.SO = data[16]
         self.ER = data[17]
         super().__init__(parent, **kwargs)  
-
     def body(self, master):
         mainFrame= tk.Frame(master)
         mainFrame.pack(padx=100, pady=100) 
@@ -271,5 +203,3 @@ class ShowDetail(Dialog):
 
         self.bind("<Return>", self.ok)
         box.pack()
-
-

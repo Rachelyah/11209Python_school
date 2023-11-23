@@ -10,6 +10,7 @@ from threading import Timer
 import datasource
 from PIL import Image
 
+
 #自定義class 呼叫datasource讀取csv檔案跟匯入資料庫的function
 class Window(tk.Tk):
     def __init__(self, **kwargs):
@@ -21,11 +22,11 @@ class Window(tk.Tk):
             self.destroy() 
 
 #-------------------------------建立介面--------------------------------------------
-#------------------------------最上面的標題---------------------------------------
+        #最上面的視窗topFrame，設定rekief視窗樣式
         topFrame =tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
         #只要裡面有內容，topFrame的邊框&預設大小就會失效，除非下Label的邊框距離設定
         #建立Label標籤放在topFrame裡面，設定與邊框的距離
-        tk.Label(topFrame,text='中華職棒球員資料查詢',font=('arial,40'),bg='#333333',fg='#FFFFFF',pady=20).pack(fill='both', pady=20, padx=20)  
+        tk.Label(topFrame,text='中華職棒球員資料查詢',font=('arial,40'),bg='#333333',fg='#FFFFFF',pady=20).pack(pady=20, padx=20)  
         topFrame.pack(pady=30)
 
 #-----------------------------建立查詢介面-----------------------------------
@@ -41,31 +42,17 @@ class Window(tk.Tk):
         search_entry.pack(side='left')     
         middleFrame.pack(fill='x',padx=20)
 
-#------------------------------球員個人資料、PR數據---------------------------------------
-        infoFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        infoFrame.pack()
-        data = cpblTreeView.frame(self)
-        print('傳入index{data}')
-        
+##-----------------------------建立下拉選單-----------------------------------
 
-
-
-
-        label1 = tk.Label(infoFrame, text='測試').pack()
-        label1 = tk.Label(infoFrame, text='測試').pack()
-        label1 = tk.Label(infoFrame, text='測試').pack()
-        label1 = tk.Label(infoFrame, text='測試').pack()
-        label1 = tk.Label(infoFrame, text='測試').pack()
-        label1 = tk.Label(infoFrame, text='測試').pack()
-
-        
-        
-
-##-----------------------------建立隊伍按鈕-----------------------------------
-
-        middle1Frame = ttk.LabelFrame(self,text='選擇球隊',relief=tk.GROOVE,borderwidth=1)
+        middle1Frame = ttk.LabelFrame(self,text='',relief=tk.GROOVE,borderwidth=1)
         tk.Label(middle1Frame,text='選擇球隊').pack
-        middle1Frame.pack(fill='x', padx=20, pady=20)
+        middle1Frame.pack(fill='x', padx=20)
+        '''
+        selectVar = tk.StringVar()
+        box = ttk.Combobox(middle1Frame, textvariable=selectVar, values=['統一7-ELEVEn獅','富邦悍將','中信兄弟','樂天桃猿','味全龍'])
+        box.bind("<<ComboboxSelected>>", team_selected)
+        box.pack()
+        '''
 
         def team_search(event:None, word:str):
             print(word)
@@ -80,7 +67,10 @@ class Window(tk.Tk):
 
 #------------------------------建立treeView-----------------------------------------
         bottomFrame = tk.Frame(self)
-        self.cpblTreeView = cpblTreeView(bottomFrame,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER'),show="headings",height=20)
+        self.cpblTreeView = cpblTreeView(bottomFrame
+                                                               ,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER')
+                                                               ,show="headings"
+                                                               ,height=20)
         #設定捲動軸 
         self.cpblTreeView.pack(side='left')
         vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.cpblTreeView.yview)
@@ -88,6 +78,7 @@ class Window(tk.Tk):
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
         
+
 #-----------------------------更新treeView資料--------------------------------------
         lastest_data = datasource.lastest_datetime_data()               
         self.cpblTreeView.update_content(site_datas=lastest_data)
@@ -107,12 +98,6 @@ class Window(tk.Tk):
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
             self.cpblTreeView.update_content(search_data)      
 
-    #傳球員資料的值
-    def Paly_info():
-        info = cpblTreeView.selectionItem()
-        name = info[3]
-        return name
-    
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
     def update_data(w:Window)->None:   
@@ -124,7 +109,8 @@ def main():
 
     window = Window() 
     window.title('中華職棒球員資料查詢')
-    window.resizable(width=True,height=True) 
+    #window.geometry('1200x500')
+    window.resizable(width=False ,height=False) 
     update_data(window)
     window.mainloop() 
 
