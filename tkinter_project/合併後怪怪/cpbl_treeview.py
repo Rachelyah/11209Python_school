@@ -2,12 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.simpledialog import Dialog
 import sqlite3
-#from tkinter.ttk import _Padding
 
 #index：創造母盒，呼叫cpbl的grid，包含左邊的欄位跟右邊的變數欄位
 #cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
+t = ['請選擇']
 
-t = [None]
 class cpblTreeView(ttk.Treeview, tk.Frame):
 
     def __init__(self,parent,**kwargs):   
@@ -53,7 +52,7 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
         self.column('ER',width=70,anchor='center')
 
     #--------------bind button1-------------------------
-        self.bind('<ButtonRelease-1>',self.selectionItem, Player_info.frame)
+        self.bind('<ButtonRelease-1>',self.selectionItem)
 
     #-------------更新資料內容------------------------
     def update_content(self,site_datas):
@@ -68,6 +67,7 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
     #點擊treeView時，啟動此方法，回傳使用者點擊資料
     def selectionItem(self, event)->list:
        global t
+       print(f'全域變數到selectionItem{t}')
        selectedItem = self.focus()
        data_dict = self.item(selectedItem)
        t = data_dict['values']
@@ -76,10 +76,64 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
        #將資料傳入彈出視窗
        title_name = t[0]
        detail = ShowDetail(self.parent, data=t, title=title_name)
-       info = Player_info.frame(t)
+       #self.frame(t)
 
        return t
 
+#問題出在這！！！！！！！！！
+    def frame(self, **kwargs):
+        #global t
+        print(f'執行前的t={t}')
+        #t = cpblTreeView.selectionItem(self, event=None)
+        event = tk.Event()
+        print(f'走到frame{t}')
+        return t
+
+'''
+    def create_widgets(self, data, **kwargs):     
+        print(f'是否成功{data}')
+        self.Team = data[2]
+        self.Name = data[4]
+        self.B_t = data[19]                 
+        self.Number = data[20]
+        self.Ht_wt = data[21]
+        self.Born = data[21]
+        print(f'生日{self.Born}')
+     
+        tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
+        tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
+        tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
+        tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
+        tk.Label(self, text='身高體重：').grid(row=4, column=0,sticky='w')
+        tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
+
+      
+        TeamVar = tk.StringVar()
+        TeamVar.set(self.Team)
+        tk.Label(self,textvariable=TeamVar, state='disabled').grid(column=0,row=1)
+            
+        NameVar = tk.StringVar()
+        NameVar.set(self.Name)
+        tk.Label(self,textvariable=NameVar, state='disabled').grid(column=1,row=1)
+
+        NumberVar = tk.StringVar()
+        NumberVar.set(self.Number)
+        tk.Label(self,textvariable=NumberVar, state='disabled').grid(column=2,row=1)
+
+        B_tVar = tk.StringVar()
+        B_tVar.set(self.B_t)
+        tk.Label(self,textvariable=B_tVar, state='disabled').grid(column=3,row=1)
+
+        Ht_wtVar = tk.StringVar()
+        Ht_wtVar.set(self.Ht_wt)
+        tk.Label(self,textvariable=Ht_wtVar, state='disabled').grid(column=4,row=1)
+
+        BornVar = tk.StringVar()
+        BornVar.set(self.Born)
+        tk.Label(self,textvariable=BornVar, state='disabled').grid(column=5,row=1)
+
+        print(f'跑到這{self.Born}')
+'''
 class ShowDetail(Dialog):
     def __init__(self,parent, data:list,**kwargs):
         self.Year = data[0]                    
@@ -216,53 +270,3 @@ class ShowDetail(Dialog):
         box.pack()
 
 
-class Player_info(ttk.Frame):
-    #問題出在這！！！！！！！！！
-    def frame(self, **kwargs):
-        print(f'走到frame{t}')
-        return t
-
-    def create_widgets(self, data, **kwargs):     
-        print(f'是否成功{data}')
-        data = Player_info.frame(self.data)
-        self.Team = data[2]
-        self.Name = data[4]
-        self.B_t = data[19]                 
-        self.Number = data[20]
-        self.Ht_wt = data[21]
-        self.Born = data[21]
-        print(f'生日{self.Born}')
-     
-        tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
-        tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
-        tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
-        tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
-        tk.Label(self, text='身高體重：').grid(row=4, column=0,sticky='w')
-        tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
-
-      
-        TeamVar = tk.StringVar()
-        TeamVar.set(self.Team)
-        tk.Label(self,textvariable=TeamVar, state='disabled').grid(column=0,row=1)
-            
-        NameVar = tk.StringVar()
-        NameVar.set(self.Name)
-        tk.Label(self,textvariable=NameVar, state='disabled').grid(column=1,row=1)
-
-        NumberVar = tk.StringVar()
-        NumberVar.set(self.Number)
-        tk.Label(self,textvariable=NumberVar, state='disabled').grid(column=2,row=1)
-
-        B_tVar = tk.StringVar()
-        B_tVar.set(self.B_t)
-        tk.Label(self,textvariable=B_tVar, state='disabled').grid(column=3,row=1)
-
-        Ht_wtVar = tk.StringVar()
-        Ht_wtVar.set(self.Ht_wt)
-        tk.Label(self,textvariable=Ht_wtVar, state='disabled').grid(column=4,row=1)
-
-        BornVar = tk.StringVar()
-        BornVar.set(self.Born)
-        tk.Label(self,textvariable=BornVar, state='disabled').grid(column=5,row=1)
-
-        print(f'跑到這{self.Born}')

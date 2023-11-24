@@ -4,7 +4,7 @@ cpbl
 
 import tkinter as tk
 from tkinter import ttk
-from cpbl_treeview import cpblTreeView, Player_info
+from cpbl_treeview import cpblTreeView
 from tkinter import messagebox
 from threading import Timer
 import datasource
@@ -30,33 +30,23 @@ class Window(tk.Tk):
 
 #-----------------------------建立查詢介面-----------------------------------
         #建立容器元素
-        middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
+        middleFrame = ttk.LabelFrame(self,text='',relief=tk.GROOVE,borderwidth=1)
         
         #建立標籤
-        tk.Label(middleFrame,text='球員搜尋').pack(side='top',padx=5, pady=5)
+        tk.Label(middleFrame,text='球員搜尋').pack(side='left')
 
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
         search_entry.bind("<KeyRelease>", self.on_key_release)
-        search_entry.pack(side='top')     
+        search_entry.pack(side='left')     
         middleFrame.pack(fill='x',padx=20)
 
 #------------------------------球員個人資料、PR數據---------------------------------------
         infoFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        infoFrame.pack(side='top',anchor="n", expand=True)
+        infoFrame.pack()
 
-        prFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        prlabel = tk.Label(prFrame, text='所屬球隊：')
-        prlabel.pack()
-        prFrame.pack(side='top',anchor="n", expand=True)
-        
-        btn = tk.Button(self, text='球員資料查詢')
-        btn.pack()
-
-        btn.bind('<ButtonRelease-1>',Player_info.frame)
-
-        data = Player_info.frame(self)
-        print(f'外面的世界{data}')
+        #data = cpblTreeView.frame(self)
+        #print(f'外面的我{data}')
 
         data = [2022, '富邦', 368, '游霆崴', 12, 4, 8, 1, 1, 0, 0, '30.1', 125, 27, 3, 11, 22, 10, '右投右打', 80, '178(CM) / 68(KG)', '1997/10/11', 'https://www.cpbl.com.tw/files/atts/0L087781916872199278/80游霆崴.jpg']
 
@@ -98,7 +88,7 @@ class Window(tk.Tk):
         BornVar.set(self.Born)
         tk.Label(infoFrame,textvariable=BornVar, state='disabled').grid(row=5, column=1,  padx=5, pady=5)
 
-        #print(f'跑到這{self.Born}')
+        print(f'跑到這{self.Born}')
         
         
 
@@ -106,7 +96,7 @@ class Window(tk.Tk):
 
         middle1Frame = ttk.LabelFrame(self,text='選擇球隊',relief=tk.GROOVE,borderwidth=1)
         tk.Label(middle1Frame,text='選擇球隊').pack
-        middle1Frame.pack(side='top',fill='x', padx=20, pady=20, expand=True)
+        middle1Frame.pack(fill='x', padx=20, pady=20)
 
         def team_search(event:None, word:str):
             print(word)
@@ -123,9 +113,9 @@ class Window(tk.Tk):
         bottomFrame = tk.Frame(self)
         self.cpblTreeView = cpblTreeView(bottomFrame,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER'),show="headings",height=20)
         #設定捲動軸 
-        self.cpblTreeView.pack(side='left', fill='x', expand=True)
+        self.cpblTreeView.pack(side='left')
         vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.cpblTreeView.yview)
-        vsb.pack(side='left',fill='y', expand=True)
+        vsb.pack(side='left',fill='y')
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
         
