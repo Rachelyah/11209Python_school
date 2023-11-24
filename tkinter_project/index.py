@@ -44,11 +44,9 @@ class Window(tk.Tk):
 #------------------------------球員個人資料、PR數據---------------------------------------
         infoFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
         infoFrame.pack()
+
         data = cpblTreeView.frame(self)
-        print('傳入index{data}')
-        
-
-
+        print(f'外面的我{data}')
 
 
         label1 = tk.Label(infoFrame, text='測試').pack()
@@ -57,7 +55,6 @@ class Window(tk.Tk):
         label1 = tk.Label(infoFrame, text='測試').pack()
         label1 = tk.Label(infoFrame, text='測試').pack()
         label1 = tk.Label(infoFrame, text='測試').pack()
-
         
         
 

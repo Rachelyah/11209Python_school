@@ -6,8 +6,9 @@ import sqlite3
 #index：創造母盒，呼叫cpbl的grid，包含左邊的欄位跟右邊的變數欄位
 #cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
 
-#global data
+t = ['請選擇']
 class cpblTreeView(ttk.Treeview, tk.Frame):
+    
     def __init__(self,parent,**kwargs):   
         super().__init__(parent,**kwargs) 
         self.parent = parent
@@ -31,11 +32,13 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
         self.heading('ER', text="自責分")
 
         #self.callback = lambda data: None
-        self.callback = self.create_widgets
+        #self.callback = self.create_widgets
         #tree_view = cpblTreeView(parent)
         #self.details_frame = tk.Frame(self)
         #self.details_frame.pack(pady=10)
         #self.frame()
+        
+        
 
     #--------------設定欄位寬度-----------------------
         self.column('Year',width=70,anchor='center') #也可以用minwidth設定最小寬度
@@ -62,35 +65,37 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
 
     #-------------更新資料內容------------------------
     def update_content(self,site_datas):
-
         #必須先清除所有內容
         for i in self.get_children():
             self.delete(i)
         
         for index, site in enumerate(site_datas):
             self.insert('','end',text=f'abc{index}' ,values=site)
+        
 
     #點擊treeView時，啟動此方法，回傳使用者點擊資料
     def selectionItem(self, event:None)->list:
+       global t
+       print(f'全域變數到selectionItem{t}')
        selectedItem = self.focus()
        data_dict = self.item(selectedItem)
-       self.data = data_dict['values']
-       self.callback(self.data)
-       print(f'查詢結果{self.data}')
+       t = data_dict['values']
+       #self.callback(self.data)
+       print(f'selectionItem查詢結果{t}')
 
        #將資料傳入彈出視窗
-       title_name = self.data[0]
-       detail = ShowDetail(self.parent, data=self.data, title=title_name)
+       title_name = t[0]
+       detail = ShowDetail(self.parent, data=t, title=title_name)
 
-       data_frame = cpblTreeView.frame(self.data)
 
-       return self.data
+       return t
 
 #問題出在這！！！！！！！！！
-    def frame(self, **kwargs):
-        data = cpblTreeView.selectionItem(self, event=None)
-        print(f'資料成功輸出{data}')
-        return data
+    def frame(self,**kwargs):
+        print(f'走到frame{t}')
+        #print(f'資料成功輸出{data}')
+        #return data
+        return t
 
 '''
     def create_widgets(self, data, **kwargs):     
