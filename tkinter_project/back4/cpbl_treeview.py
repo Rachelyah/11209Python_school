@@ -6,7 +6,7 @@ import sqlite3
 #index：創造母盒，呼叫cpbl的grid，包含左邊的欄位跟右邊的變數欄位
 #cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
 
-t = [2022, '富邦', 363, '王溢正', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打', 2022, '富邦', 363, '陳仕朋', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打']
+t = [2022, '富邦', 363, '陳仕朋', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打', 2022, '富邦', 363, '陳仕朋', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打']
 class cpblTreeView(ttk.Treeview, tk.Frame):
 
     def __init__(self,parent,**kwargs):   
@@ -53,7 +53,6 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
 
     #--------------bind button1-------------------------
         self.bind('<ButtonRelease-1>',self.selectionItem)
-        
 
     #-------------更新資料內容------------------------
     def update_content(self,site_datas):
@@ -72,17 +71,15 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
        data_dict = self.item(selectedItem)
        t = data_dict['values']
        print(f'selectionItem查詢結果{t}')
-       
-       #player_info_window = Player_info()
-       #player_info_window.frame(t)
+       #info = Player_info.frame(t)
 
        #將資料傳入彈出視窗
-       title_name = t[3]
-       print(f'球員姓名{title_name}')
-       #detail = ShowDetail(self.parent, data=t, title=title_name)
-       
-       return t
+       title_name = t[0]
+       detail = ShowDetail(self.parent, data=t, title=title_name)
 
+       data = Player_info.frame(t)
+
+       return t
 
 class ShowDetail(Dialog):
     def __init__(self,parent, data:list,**kwargs):
@@ -220,12 +217,7 @@ class ShowDetail(Dialog):
         box.pack()
 
 
-class Player_info(tk.Toplevel):
-    def change_info(event):
-        player_info_window = Player_info()
-        player_info_window.frame()
-        
-    
+class Player_info(tk.Tk):
     #問題出在這！！！！！！！！！
     def frame(self,**kwargs):
         print(f'走到frame{t}')
@@ -248,36 +240,27 @@ class Player_info(tk.Toplevel):
 
         TeamVar = tk.StringVar()
         TeamVar.set(Team)
-        tk.Entry(self,textvariable=TeamVar,state='normal' ).grid(column=1,row=0)
+        tk.Label(self,textvariable=TeamVar).grid(column=1,row=0)
             
         NameVar = tk.StringVar()
         NameVar.set(Name)
-        tk.Entry(self,textvariable=NameVar,state='normal' ).grid(column=1,row=1)
+        tk.Label(self,textvariable=NameVar).grid(column=1,row=1)
 
         NumberVar = tk.StringVar()
         NumberVar.set(Number)
-        tk.Entry(self,textvariable=NumberVar,state='normal' ).grid(column=1,row=2)
+        tk.Label(self,textvariable=NumberVar).grid(column=1,row=2)
 
         B_tVar = tk.StringVar()
         B_tVar.set(B_t)
-        tk.Entry(self,textvariable=B_tVar,state='normal' ).grid(column=1,row=3)
+        tk.Label(self,textvariable=B_tVar).grid(column=1,row=3)
 
         Ht_wtVar = tk.StringVar()
         Ht_wtVar.set(Ht_wt)
-        tk.Entry(self,textvariable=Ht_wtVar,state='normal' ).grid(column=1,row=4)
+        tk.Label(self,textvariable=Ht_wtVar).grid(column=1,row=4)
 
         BornVar = tk.StringVar()
         BornVar.set(Born)
-        tk.Entry(self,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
+        tk.Label(self,textvariable=BornVar).grid(column=1,row=5)
 
         print(f'跑到這{Born}')
-        return t
 
-class player():
-
-    def player_name():
-        player_name_list = t[3]
-        return player_name_list
-
-
-#從t裡面判斷球員姓名>去img裡面找到照片>更新index裡面的照片
