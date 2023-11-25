@@ -47,7 +47,7 @@ class Window(tk.Tk):
         photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
         photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
         self.tk_img = None
-        self.show_image(photoFrame)
+        #self.show_image(photoFrame)
         
     
     def show_image(self, frame):    
@@ -136,7 +136,6 @@ class Window(tk.Tk):
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
         self.bind('<ButtonRelease-1>',info)
-        #self.bind('<ButtonRelease-1>',Window.show_image)
         
         
         
