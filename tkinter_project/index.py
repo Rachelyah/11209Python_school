@@ -33,33 +33,44 @@ class Window(tk.Tk):
         middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
         
         #建立標籤
-        tk.Label(middleFrame,text='球員搜尋').pack(side='top',padx=5, pady=5)
+        #tk.Label(middleFrame).pack(side='top')
 
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
         search_entry.bind("<KeyRelease>", self.on_key_release)
-        search_entry.pack(side='top')     
-        middleFrame.pack(fill='x',padx=20)
+        search_entry.pack()     
+        middleFrame.pack()
 
 #------------------------------球員個人資料、PR數據---------------------------------------
+        
         infoFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        infoFrame.pack(side='top',anchor="n", expand=True)
+        infoFrame.pack(fill='x',side='top',anchor="n", expand=True, padx=5, pady=5, ipadx=5,ipady=5)
 
-        prFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        prlabel = tk.Label(prFrame, text='所屬球隊：')
-        prlabel.pack()
-        prFrame.pack(side='top',anchor="n", expand=True)
+    
+
+        def info(event):
+            info =  Player_info.frame(infoFrame)
+            
+        
+        #prFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
+        #prlabel = tk.Label(prFrame, text='所屬球隊：')
+        #prlabel.pack()
+        #prFrame.pack(side='top',anchor="n", expand=True)
         
         btn = tk.Button(self, text='球員資料查詢')
         btn.pack()
+        btn.bind('<ButtonRelease-1>',info)
 
-        btn.bind('<ButtonRelease-1>',Player_info.frame)
+        
 
-        data = Player_info.frame(self)
-        print(f'外面的世界{data}')
+        #btn.bind('<ButtonRelease-1>',Player_info.create_widgets)
 
-        data = [2022, '富邦', 368, '游霆崴', 12, 4, 8, 1, 1, 0, 0, '30.1', 125, 27, 3, 11, 22, 10, '右投右打', 80, '178(CM) / 68(KG)', '1997/10/11', 'https://www.cpbl.com.tw/files/atts/0L087781916872199278/80游霆崴.jpg']
-
+        '''
+        data = []
+        Player_info.frame(self)
+        #data.pack()
+        #print(f'外面的世界{data}')
+        
         self.Team = data[1]
         self.Name = data[3]
         self.B_t = data[18]                 
@@ -98,8 +109,8 @@ class Window(tk.Tk):
         BornVar.set(self.Born)
         tk.Label(infoFrame,textvariable=BornVar, state='disabled').grid(row=5, column=1,  padx=5, pady=5)
 
-        #print(f'跑到這{self.Born}')
-        
+        print(f'跑到這{self.Born}')
+        '''
         
 
 ##-----------------------------建立隊伍按鈕-----------------------------------
@@ -147,12 +158,13 @@ class Window(tk.Tk):
         else:
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
             self.cpblTreeView.update_content(search_data)      
-
+    '''
     #傳球員資料的值
     def Paly_info():
         info = cpblTreeView.selectionItem()
         name = info[3]
         return name
+    '''
     
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     

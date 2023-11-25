@@ -2,12 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.simpledialog import Dialog
 import sqlite3
-#from tkinter.ttk import _Padding
 
 #index：創造母盒，呼叫cpbl的grid，包含左邊的欄位跟右邊的變數欄位
 #cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
 
-t = [None]
+t = [2022, '富邦', 363, '陳仕朋', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打', 2022, '富邦', 363, '陳仕朋', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打']
 class cpblTreeView(ttk.Treeview, tk.Frame):
 
     def __init__(self,parent,**kwargs):   
@@ -53,7 +52,7 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
         self.column('ER',width=70,anchor='center')
 
     #--------------bind button1-------------------------
-        self.bind('<ButtonRelease-1>',self.selectionItem, Player_info.frame)
+        self.bind('<ButtonRelease-1>',self.selectionItem)
 
     #-------------更新資料內容------------------------
     def update_content(self,site_datas):
@@ -72,11 +71,13 @@ class cpblTreeView(ttk.Treeview, tk.Frame):
        data_dict = self.item(selectedItem)
        t = data_dict['values']
        print(f'selectionItem查詢結果{t}')
+       #info = Player_info.frame(t)
 
        #將資料傳入彈出視窗
        title_name = t[0]
        detail = ShowDetail(self.parent, data=t, title=title_name)
-       info = Player_info.frame(t)
+
+       data = Player_info.frame(t)
 
        return t
 
@@ -216,53 +217,50 @@ class ShowDetail(Dialog):
         box.pack()
 
 
-class Player_info(ttk.Frame):
+class Player_info(tk.Tk):
     #問題出在這！！！！！！！！！
-    def frame(self, **kwargs):
+    def frame(self,**kwargs):
         print(f'走到frame{t}')
-        return t
+        print(type(t))
 
-    def create_widgets(self, data, **kwargs):     
-        print(f'是否成功{data}')
-        data = Player_info.frame(self.data)
-        self.Team = data[2]
-        self.Name = data[4]
-        self.B_t = data[19]                 
-        self.Number = data[20]
-        self.Ht_wt = data[21]
-        self.Born = data[21]
-        print(f'生日{self.Born}')
-     
-        tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
-        tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
-        tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
-        tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
-        tk.Label(self, text='身高體重：').grid(row=4, column=0,sticky='w')
-        tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
+        Team = t[1]
+        Name = t[3]
+        B_t = t[18]                 
+        Number = t[19]
+        Ht_wt = t[20]
+        Born = t[21]
+        print(f'生日{Born}')
 
-      
+        self.Team = tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
+        self.Name = tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
+        self.Number = tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
+        self.B_t = tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
+        self.Ht_wt = tk.Label(self, text='身高體重：').grid(row=4, column=0,sticky='w')
+        self.Born = tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
+
         TeamVar = tk.StringVar()
-        TeamVar.set(self.Team)
-        tk.Label(self,textvariable=TeamVar, state='disabled').grid(column=0,row=1)
+        TeamVar.set(Team)
+        tk.Label(self,textvariable=TeamVar).grid(column=1,row=0)
             
         NameVar = tk.StringVar()
-        NameVar.set(self.Name)
-        tk.Label(self,textvariable=NameVar, state='disabled').grid(column=1,row=1)
+        NameVar.set(Name)
+        tk.Label(self,textvariable=NameVar).grid(column=1,row=1)
 
         NumberVar = tk.StringVar()
-        NumberVar.set(self.Number)
-        tk.Label(self,textvariable=NumberVar, state='disabled').grid(column=2,row=1)
+        NumberVar.set(Number)
+        tk.Label(self,textvariable=NumberVar).grid(column=1,row=2)
 
         B_tVar = tk.StringVar()
-        B_tVar.set(self.B_t)
-        tk.Label(self,textvariable=B_tVar, state='disabled').grid(column=3,row=1)
+        B_tVar.set(B_t)
+        tk.Label(self,textvariable=B_tVar).grid(column=1,row=3)
 
         Ht_wtVar = tk.StringVar()
-        Ht_wtVar.set(self.Ht_wt)
-        tk.Label(self,textvariable=Ht_wtVar, state='disabled').grid(column=4,row=1)
+        Ht_wtVar.set(Ht_wt)
+        tk.Label(self,textvariable=Ht_wtVar).grid(column=1,row=4)
 
         BornVar = tk.StringVar()
-        BornVar.set(self.Born)
-        tk.Label(self,textvariable=BornVar, state='disabled').grid(column=5,row=1)
+        BornVar.set(Born)
+        tk.Label(self,textvariable=BornVar).grid(column=1,row=5)
 
-        print(f'跑到這{self.Born}')
+        print(f'跑到這{Born}')
+
