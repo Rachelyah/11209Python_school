@@ -50,11 +50,11 @@ class Window(tk.Tk):
         photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
         photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
         self.tk_img = None
-        self.show_image(photoFrame)
+        #info(self)
         
-        
+        '''   
     def show_image(self, photoFrame):    
-        for widget in photoFrame.winfo_children():
+        for widget in self.winfo_children():
             if isinstance(widget, tk.Canvas):
                 widget.destroy()
         
@@ -72,6 +72,7 @@ class Window(tk.Tk):
         canvas = tk.Canvas(photoFrame, width=120, height=160)
         canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
         canvas.pack()
+        ''' 
 
         self.infoFrame = ttk.LabelFrame(self, text='球員資料', relief=tk.GROOVE, borderwidth=1)
         self.infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
@@ -120,16 +121,29 @@ class Window(tk.Tk):
             tk.Entry(self.infoFrame,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
 
             print(f'跑到這{Born_info}')
-            self.show_image(self.infoFrame)
 
-            #self.tk_img = None
-            #photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
-            #photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-            #self.tk_img = None
+            for widget in photoFrame.winfo_children():
+                if isinstance(widget, tk.Canvas):
+                    widget.destroy()
+            
+            name = player.player_name()
+            photo_path = f'./img/{name}.jpg'
+            img = Image.open(photo_path)
+
+            # 調整圖片大小為 120x160，注意這裡的尺寸修改
+            img = img.resize((120, 160), Image.BILINEAR)
+
+            # 將圖片轉換為 Tkinter PhotoImage 對象，使用實例變數
+            self.tk_img = ImageTk.PhotoImage(img)
+
+            # 創建一個 Canvas 並在其中放入圖片
+            canvas = tk.Canvas(photoFrame, width=120, height=160)
+            canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
+            canvas.pack()
+
+
+        #def pic(event):
             #self.show_image(photoFrame)
-
-        def pic(event):
-            self.show_image(photoFrame)
 
         #prFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
         #prlabel = tk.Label(prFrame, text='所屬球隊：')
