@@ -221,15 +221,14 @@ class ShowDetail(Dialog):
         box.pack()
 
 
-#class Player_info(tk.Toplevel):
-    #def change_info(event):
-        #player_info_window = Player_info()
-        #player_info_window.frame()
+class Player_info(tk.Toplevel):
+    def change_info(event):
+        player_info_window = Player_info()
+        player_info_window.frame()
         
-    '''
+    
     #問題出在這！！！！！！！！！
     def frame(self,**kwargs):
-        
         print(f'走到frame{t}')
         print(type(t))
 
@@ -273,18 +272,13 @@ class ShowDetail(Dialog):
         tk.Entry(self,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
 
         print(f'跑到這{Born}')
-    '''
+        return t
+
 class player():
 
     def player_name():
         player_name_list = t[3]
         return player_name_list
-    
-    def list_info():
-        global t
-        print(f'list_info{t}')
-        player_info = t
-        return player_info
 
 
 #從t裡面判斷球員姓名>去img裡面找到照片>更新index裡面的照片

@@ -5,7 +5,7 @@ cpbl
 import tkinter as tk
 from tkinter import ttk
 from cpbl_treeview import cpblTreeView
-#from cpbl_treeview import Player_info
+from cpbl_treeview import Player_info
 from cpbl_treeview import player
 from tkinter import messagebox
 from threading import Timer
@@ -53,11 +53,7 @@ class Window(tk.Tk):
         self.show_image(photoFrame)
         
         
-    def show_image(self, photoFrame):    
-        for widget in photoFrame.winfo_children():
-            if isinstance(widget, tk.Canvas):
-                widget.destroy()
-        
+    def show_image(self, frame):    
         name = player.player_name()
         photo_path = f'./img/{name}.jpg'
         img = Image.open(photo_path)
@@ -69,123 +65,52 @@ class Window(tk.Tk):
         self.tk_img = ImageTk.PhotoImage(img)
 
         # 創建一個 Canvas 並在其中放入圖片
-        canvas = tk.Canvas(photoFrame, width=120, height=160)
+        canvas = tk.Canvas(frame, width=120, height=160)
         canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
         canvas.pack()
-        
 
         # 將 infoFrame 放入同一個父容器（一個新的 Frame）中
-        #self.container_frame = tk.Frame(self)
-        #self.container_frame.pack(side='left', anchor="n",fill='y', expand=True, padx=5, pady=5, ipadx=5, ipady=5)
+        container_frame = tk.Frame(frame)
+        container_frame.pack(side='left', anchor="n",fill='y', expand=True, padx=5, pady=5, ipadx=5, ipady=5)
 
-        self.infoFrame = ttk.LabelFrame(self, text='球員資料', relief=tk.GROOVE, borderwidth=1)
-        self.infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-        #info =  Player_info.frame(infoFrame)
+        infoFrame = ttk.LabelFrame(container_frame, text='球員資料', relief=tk.GROOVE, borderwidth=1)
+        infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
 
-        def info(event):  
-            data = player.list_info()
-            Team_info = data[1]
-            Name_info = data[3]
-            B_t_info = data[18]                 
-            Number_info = data[19]
-            Ht_wt_info = data[20]
-            Born_info = data[21]
-            print(f'生日{Born_info}')
 
-            Team = tk.Label(self.infoFrame, text='所屬球隊：').grid(row=0, column=0, sticky='w')
-            Name = tk.Label(self.infoFrame, text='球員姓名：').grid(row=1, column=0, sticky='w')
-            Number = tk.Label(self.infoFrame, text='背號：').grid(row=2, column=0, sticky='w')
-            B_t = tk.Label(self.infoFrame, text='投打習慣：').grid(row=3, column=0, sticky='w')
-            Ht_wt = tk.Label(self.infoFrame, text='身高體重：').grid(row=4, column=0,sticky='w')
-            Born = tk.Label(self.infoFrame, text='生日：').grid(row=5, column=0, sticky='w')
+        #infoFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
+        #infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
 
-            TeamVar = tk.StringVar()
-            TeamVar.set(Team_info)
-            print(f'Team{Team_info}')
-            tk.Entry(self.infoFrame,textvariable=TeamVar,state='normal' ).grid(column=1,row=0)
-                
-            NameVar = tk.StringVar()
-            NameVar.set(Name_info)
-            tk.Entry(self.infoFrame,textvariable=NameVar,state='normal' ).grid(column=1,row=1)
-
-            NumberVar = tk.StringVar()
-            NumberVar.set(Number_info)
-            tk.Entry(self.infoFrame,textvariable=NumberVar,state='normal' ).grid(column=1,row=2)
-
-            B_tVar = tk.StringVar()
-            B_tVar.set(B_t_info)
-            tk.Entry(self.infoFrame,textvariable=B_tVar,state='normal' ).grid(column=1,row=3)
-
-            Ht_wtVar = tk.StringVar()
-            Ht_wtVar.set(Ht_wt_info)
-            tk.Entry(self.infoFrame,textvariable=Ht_wtVar,state='normal' ).grid(column=1,row=4)
-
-            BornVar = tk.StringVar()
-            BornVar.set(Born_info)
-            tk.Entry(self.infoFrame,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
-
-            print(f'跑到這{Born_info}')
-            self.show_image(self.infoFrame)
-
-            self.tk_img = None
-            photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
-            photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-            self.tk_img = None
-            self.show_image(photoFrame)
-
-            def show_image(self, photoFrame):    
-                for widget in photoFrame.winfo_children():
-                    if isinstance(widget, tk.Canvas):
-                        widget.destroy()
-                
-                name = player.player_name()
-                photo_path = f'./img/{name}.jpg'
-                img = Image.open(photo_path)
-
-                # 調整圖片大小為 120x160，注意這裡的尺寸修改
-                img = img.resize((120, 160), Image.BILINEAR)
-
-                # 將圖片轉換為 Tkinter PhotoImage 對象，使用實例變數
-                self.tk_img = ImageTk.PhotoImage(img)
-
-                # 創建一個 Canvas 並在其中放入圖片
-                canvas = tk.Canvas(photoFrame, width=120, height=160)
-                canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
-                canvas.pack()
-
-                # 將 infoFrame 放入同一個父容器（一個新的 Frame）中
-                #self.container_frame = tk.Frame(self)
-                #self.container_frame.pack(side='left', anchor="n",fill='y', expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-
-                self.infoFrame = ttk.LabelFrame(self, text='球員資料', relief=tk.GROOVE, borderwidth=1)
-                self.infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-                #info =  Player_info.frame(infoFrame)
+        def info(event):
+            info =  Player_info.frame(infoFrame)
             
-            #info = Player_info.frame(infoFrame)
-            
-            '''
-            # 清除 infoFrame 中的 Label 和 Entry
-            for widget in infoFrame.winfo_children():
-                widget.destroy()
-
-            # 重新創建新的 Label 和 Entry
-            info = Player_info.frame(infoFrame)
-            '''
-
-        def pic(event):
-            self.show_image(photoFrame)
-
+        
         #prFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
         #prlabel = tk.Label(prFrame, text='所屬球隊：')
         #prlabel.pack()
         #prFrame.pack(side='top',anchor="n", expand=True)
         
-        #btn = tk.Button(container_frame, text='球員資料查詢')
+        btn = tk.Button(container_frame, text='球員資料查詢')
         #btn.pack(side='bottom', anchor="s", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
 
 
         #info =  Player_info.frame(infoFrame)
         #btn.bind('<ButtonRelease-1>',info)
+        
+        '''
+    #測試中：更新球員資料
+    def update_player_photo(self, data):
+        # data 中包含所選擇球員的相關資訊，例如姓名
+        # 在這裡根據球員姓名找到照片的檔案路徑
+        data = Player_info()
+        player_name = data[3]  # 假設姓名在 data 中的第四個位置
+        print(data)
+
+        # 假設照片檔案放在 './img/' 資料夾下，檔案名稱為球員姓名加上 '.jpg'
+        photo_path = f'./img/{player_name}.jpg'
+
+        # 更新球員照片
+        self.show_image(photo_path)
+        '''
 
 ##-----------------------------建立隊伍按鈕-----------------------------------
 
@@ -208,15 +133,15 @@ class Window(tk.Tk):
         bottomFrame = tk.Frame(self)
         self.cpblTreeView = cpblTreeView(bottomFrame,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER'),show="headings",height=20)
         #設定捲動軸 
-        self.cpblTreeView.pack(side='top', fill='x', expand=True)
+        self.cpblTreeView.pack(side='top', fill='both', expand=True)
         vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.cpblTreeView.yview)
         vsb.pack(side='left',fill='y', expand=True)
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
-        
         self.bind('<ButtonRelease-1>',info)
-        #self.bind('<ButtonRelease-1>',pic)
-            
+        
+        
+        
 #-----------------------------更新treeView資料--------------------------------------
         lastest_data = datasource.lastest_datetime_data()               
         self.cpblTreeView.update_content(site_datas=lastest_data)
