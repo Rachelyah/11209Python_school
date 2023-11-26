@@ -155,45 +155,9 @@ def search_by_team(event,word:str):
     conn = sqlite3.connect('cpbl.db')    
     cursor = conn.cursor() 
     sql = '''
-    SELECT 
-        年份, 
-        所屬球隊, 
-        球員編號, 
-        球員姓名, 
-        出場數, 
-        先發次數, 
-        中繼次數, 
-        勝場數, 
-        敗場數, 
-        救援成功, 
-        中繼成功, 
-        有效局數, 
-        面對打者數, 
-        被安打數, 
-        被全壘打數, 
-        保送數, 
-        三振數, 
-        自責分
+    SELECT *
     FROM cpbl_pitchings
     WHERE 所屬球隊 LIKE ?
-    GROUP BY 年份, 
-        所屬球隊, 
-        球員編號, 
-        球員姓名, 
-        出場數, 
-        先發次數, 
-        中繼次數, 
-        勝場數, 
-        敗場數, 
-        救援成功, 
-        中繼成功, 
-        有效局數, 
-        面對打者數, 
-        被安打數, 
-        被全壘打數, 
-        保送數, 
-        三振數, 
-        自責分;
     '''
     cursor.execute(sql, [f'%{word}%'])
     rows = cursor.fetchall()

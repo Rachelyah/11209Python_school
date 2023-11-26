@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter.simpledialog import Dialog
-import sqlite3
+from PIL import Image, ImageTk
 
 #index：創造母盒，呼叫cpbl的grid，包含左邊的欄位跟右邊的變數欄位
 #cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
@@ -73,9 +73,7 @@ class cpblTreeView(ttk.Treeview):
        data_dict = self.item(selectedItem)
        t = data_dict['values']
        print(f'selectionItem查詢結果{t}')
-       
-       #player_info_window = Player_info()
-       #player_info_window.frame(t)
+    
 
        #將資料傳入彈出視窗
        title_name = t[3]
@@ -83,7 +81,6 @@ class cpblTreeView(ttk.Treeview):
        #detail = ShowDetail(self.parent, data=t, title=title_name)
        
        return t
-
 
 class ShowDetail(Dialog):
     def __init__(self,parent, data:list,**kwargs):
@@ -220,11 +217,6 @@ class ShowDetail(Dialog):
         self.bind("<Return>", self.ok)
         box.pack()
 
-
-#class Player_info(tk.Toplevel):
-    #def change_info(event):
-        #player_info_window = Player_info()
-        #player_info_window.frame()
         
     '''
     #問題出在這！！！！！！！！！

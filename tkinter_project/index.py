@@ -34,9 +34,6 @@ class Window(tk.Tk):
 #-----------------------------建立查詢介面-----------------------------------
         #建立容器元素
         middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
-        
-        #建立標籤
-        #tk.Label(middleFrame).pack(side='top')
 
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
@@ -46,40 +43,22 @@ class Window(tk.Tk):
 
 #------------------------------球員個人資料、PR數據---------------------------------------
         
-        self.tk_img = None
         photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
         photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
         self.tk_img = None
-        #info(self)
-        
-        '''   
-    def show_image(self, photoFrame):    
-        for widget in self.winfo_children():
-            if isinstance(widget, tk.Canvas):
-                widget.destroy()
-        
-        name = player.player_name()
-        photo_path = f'./img/{name}.jpg'
-        img = Image.open(photo_path)
-
-        # 調整圖片大小為 120x160，注意這裡的尺寸修改
-        img = img.resize((120, 160), Image.BILINEAR)
-
-        # 將圖片轉換為 Tkinter PhotoImage 對象，使用實例變數
-        self.tk_img = ImageTk.PhotoImage(img)
-
-        # 創建一個 Canvas 並在其中放入圖片
-        canvas = tk.Canvas(photoFrame, width=120, height=160)
-        canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
-        canvas.pack()
-        ''' 
 
         self.infoFrame = ttk.LabelFrame(self, text='球員資料', relief=tk.GROOVE, borderwidth=1)
         self.infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
 
 
         def info(event):  
+            self.update_idletasks()
+
+            for widget in self.infoFrame.winfo_children():
+                widget.destroy()
+
             data = player.list_info()
+            print(f'查看資訊{data}')
             Team_info = data[1]
             Name_info = data[3]
             B_t_info = data[18]                 
@@ -141,21 +120,8 @@ class Window(tk.Tk):
             canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
             canvas.pack()
 
-
-        #def pic(event):
-            #self.show_image(photoFrame)
-
-        #prFrame = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        #prlabel = tk.Label(prFrame, text='所屬球隊：')
-        #prlabel.pack()
-        #prFrame.pack(side='top',anchor="n", expand=True)
-        
-        #btn = tk.Button(container_frame, text='球員資料查詢')
-        #btn.pack(side='bottom', anchor="s", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-
-
-        #info =  Player_info.frame(infoFrame)
-        #btn.bind('<ButtonRelease-1>',info)
+            # 使用 after 方法安排一個稍後執行的任務
+            #self.after(100, lambda: info(photoFrame, name))
 
 ##-----------------------------建立隊伍按鈕-----------------------------------
 
@@ -167,6 +133,7 @@ class Window(tk.Tk):
             print(word)
             rows = datasource.search_by_team(event=None, word=word)
             self.cpblTreeView.update_content(site_datas=rows)
+            self.bind('<ButtonRelease-1>',info)
 
         tk.Button(middle1Frame, text='中信兄弟', command=lambda: team_search(event=None,word='中信')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
         tk.Button(middle1Frame, text='樂天桃猿',command=lambda: team_search(event=None,word='樂天')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
@@ -184,12 +151,11 @@ class Window(tk.Tk):
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
         
-        self.bind('<ButtonRelease-1>',info)
-        #self.bind('<ButtonRelease-2>',pic)
             
 #-----------------------------更新treeView資料--------------------------------------
         lastest_data = datasource.lastest_datetime_data()               
         self.cpblTreeView.update_content(site_datas=lastest_data)
+        self.bind('<ButtonRelease-1>',info)
 
 #-----------------------------接收輸入的資料，並查詢&更新TreeView--------------------------------------
     def on_key_release(self, event):
@@ -199,15 +165,14 @@ class Window(tk.Tk):
         input_word = search_entry.get()
         print(input_word)
         
+        
         if input_word == '':                                          #如果是空的，就自動更新最新資料在TreeView
             lastest_data = datasource.lastest_datetime_data()
             self.cpblTreeView.update_content(lastest_data)
         else:
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
-            self.cpblTreeView.update_content(search_data) 
+            self.cpblTreeView.update_content(search_data)
 
-
-     
     
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
