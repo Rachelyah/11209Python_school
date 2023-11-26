@@ -72,15 +72,10 @@ class Window(tk.Tk):
         canvas = tk.Canvas(photoFrame, width=120, height=160)
         canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
         canvas.pack()
-        
-
-        # 將 infoFrame 放入同一個父容器（一個新的 Frame）中
-        #self.container_frame = tk.Frame(self)
-        #self.container_frame.pack(side='left', anchor="n",fill='y', expand=True, padx=5, pady=5, ipadx=5, ipady=5)
 
         self.infoFrame = ttk.LabelFrame(self, text='球員資料', relief=tk.GROOVE, borderwidth=1)
         self.infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-        #info =  Player_info.frame(infoFrame)
+
 
         def info(event):  
             data = player.list_info()
@@ -127,50 +122,11 @@ class Window(tk.Tk):
             print(f'跑到這{Born_info}')
             self.show_image(self.infoFrame)
 
-            self.tk_img = None
-            photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
-            photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-            self.tk_img = None
-            self.show_image(photoFrame)
-
-            def show_image(self, photoFrame):    
-                for widget in photoFrame.winfo_children():
-                    if isinstance(widget, tk.Canvas):
-                        widget.destroy()
-                
-                name = player.player_name()
-                photo_path = f'./img/{name}.jpg'
-                img = Image.open(photo_path)
-
-                # 調整圖片大小為 120x160，注意這裡的尺寸修改
-                img = img.resize((120, 160), Image.BILINEAR)
-
-                # 將圖片轉換為 Tkinter PhotoImage 對象，使用實例變數
-                self.tk_img = ImageTk.PhotoImage(img)
-
-                # 創建一個 Canvas 並在其中放入圖片
-                canvas = tk.Canvas(photoFrame, width=120, height=160)
-                canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
-                canvas.pack()
-
-                # 將 infoFrame 放入同一個父容器（一個新的 Frame）中
-                #self.container_frame = tk.Frame(self)
-                #self.container_frame.pack(side='left', anchor="n",fill='y', expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-
-                self.infoFrame = ttk.LabelFrame(self, text='球員資料', relief=tk.GROOVE, borderwidth=1)
-                self.infoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
-                #info =  Player_info.frame(infoFrame)
-            
-            #info = Player_info.frame(infoFrame)
-            
-            '''
-            # 清除 infoFrame 中的 Label 和 Entry
-            for widget in infoFrame.winfo_children():
-                widget.destroy()
-
-            # 重新創建新的 Label 和 Entry
-            info = Player_info.frame(infoFrame)
-            '''
+            #self.tk_img = None
+            #photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
+            #photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
+            #self.tk_img = None
+            #self.show_image(photoFrame)
 
         def pic(event):
             self.show_image(photoFrame)
@@ -215,7 +171,7 @@ class Window(tk.Tk):
         bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
         
         self.bind('<ButtonRelease-1>',info)
-        #self.bind('<ButtonRelease-1>',pic)
+        #self.bind('<ButtonRelease-2>',pic)
             
 #-----------------------------更新treeView資料--------------------------------------
         lastest_data = datasource.lastest_datetime_data()               
@@ -234,7 +190,10 @@ class Window(tk.Tk):
             self.cpblTreeView.update_content(lastest_data)
         else:
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
-            self.cpblTreeView.update_content(search_data)      
+            self.cpblTreeView.update_content(search_data) 
+
+
+     
     
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
