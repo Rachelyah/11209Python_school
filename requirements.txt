@@ -10,3 +10,4 @@ tkintermapview
 psycopg2-binary
 pyinstaller
 Pillow
+ttkbootstrap

@@ -14,7 +14,6 @@ from PIL import Image, ImageTk
 import ttkbootstrap as ttk
 from ttkbootstrap import Style
 
-#自定義class 呼叫datasource讀取csv檔案跟匯入資料庫的function
 class Window(tk.Tk):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -29,15 +28,11 @@ class Window(tk.Tk):
 #------------------------------最上面的標題---------------------------------------
         style = ttk.Style("cyborg")
         topFrame =tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
-        #只要裡面有內容，topFrame的邊框&預設大小就會失效，除非下Label的邊框距離設定
-        #建立Label標籤放在topFrame裡面，設定與邊框的距離
-        tk.Label(topFrame,text='中華職棒球員資料查詢',font=('arial,40'),bg='#333333',fg='#FFFFFF',pady=20).pack(fill='both', pady=10, padx=10,ipadx=10,ipady=10,expand=True)
+        tk.Label(topFrame,text='中華職棒球員資料',font=('arial,40'),bg='#333333',fg='#FFFFFF',pady=20).pack(fill='both', pady=10, padx=10,ipadx=10,ipady=10,expand=True)
         topFrame.pack(pady=30,expand=True)
 #----------------------------建立上層介面------------------------------------
-        container = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
+        container = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
         container.pack(ipadx=10,ipady=10,padx=10,pady=10,expand=True)
-
-
 #-----------------------------建立查詢介面-----------------------------------
         #建立容器元素
         middleFrame = ttk.LabelFrame(container,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
@@ -47,7 +42,6 @@ class Window(tk.Tk):
         search_entry.bind("<KeyRelease>", self.on_key_release)
         search_entry.pack(side='right',ipadx=10,ipady=10,padx=10,pady=10)     
         middleFrame.pack(side='right',fill='both',expand='True')
-
 #------------------------------球員個人資料、PR數據---------------------------------------
         
         photoFrame = ttk.LabelFrame(container,text='球員照片',relief=tk.GROOVE,borderwidth=1)
@@ -126,10 +120,7 @@ class Window(tk.Tk):
             canvas = tk.Canvas(photoFrame, width=120, height=160)
             canvas.create_image(0, 0, anchor='nw', image=self.tk_img)
             canvas.pack(ipadx=10,ipady=10,padx=10,pady=10)
-
-            # 使用 after 方法安排一個稍後執行的任務
-            #self.after(100, lambda: info(photoFrame, name))
-
+    
 ##-----------------------------建立隊伍按鈕-----------------------------------
 
         middle1Frame = ttk.LabelFrame(self,text='選擇球隊',relief=tk.GROOVE,borderwidth=1)
@@ -152,13 +143,11 @@ class Window(tk.Tk):
         bottomFrame = tk.Frame(self)
         self.cpblTreeView = cpblTreeView(bottomFrame,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER'),show="headings",height=20)
         #設定捲動軸 
-        self.cpblTreeView.pack(side='top', fill='x', expand=True)
+        self.cpblTreeView.pack(side='left', fill='x', expand=True)
         vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.cpblTreeView.yview)
-        vsb.pack(side='left',fill='y', expand=True)
+        vsb.pack(side='right',fill='y', expand=True)
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
-        bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)
-        
-            
+        bottomFrame.pack(pady=(0,30), padx=20) #pady=(與上段距離，與下段距離)  
 #-----------------------------更新treeView資料--------------------------------------
         lastest_data = datasource.lastest_datetime_data()               
         self.cpblTreeView.update_content(site_datas=lastest_data)
