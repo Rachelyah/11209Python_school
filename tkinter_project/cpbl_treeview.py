@@ -7,7 +7,8 @@ import sqlite3
 #cpbl：創建左邊欄位tk.Label，右邊的變數欄位（用sql語法查出結果）
 
 t = [2022, '富邦', 363, '王溢正', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打', 2022, '富邦', 363, '陳仕朋', 23, 18, 5, 8, 6, 0, 0, '113.2', 473, 108, 7, 37, 86, 34, '左投左打']
-class cpblTreeView(ttk.Treeview, tk.Frame):
+
+class cpblTreeView(ttk.Treeview):
 
     def __init__(self,parent,**kwargs):   
         super().__init__(parent,**kwargs) 

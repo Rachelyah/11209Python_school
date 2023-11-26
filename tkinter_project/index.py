@@ -4,7 +4,9 @@ cpbl
 
 import tkinter as tk
 from tkinter import ttk
-from cpbl_treeview import cpblTreeView, Player_info, player
+from cpbl_treeview import cpblTreeView
+from cpbl_treeview import Player_info
+from cpbl_treeview import player
 from tkinter import messagebox
 from threading import Timer
 import datasource
@@ -14,6 +16,7 @@ from PIL import Image, ImageTk
 class Window(tk.Tk):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        
         try:
             datasource.update_sqlite_data()
         except Exception: 
@@ -47,9 +50,9 @@ class Window(tk.Tk):
         photoFrame = ttk.LabelFrame(self,text='球員照片',relief=tk.GROOVE,borderwidth=1)
         photoFrame.pack(side='left', anchor="n", expand=True, padx=5, pady=5, ipadx=5, ipady=5)
         self.tk_img = None
-        #self.show_image(photoFrame)
+        self.show_image(photoFrame)
         
-    
+        
     def show_image(self, frame):    
         name = player.player_name()
         photo_path = f'./img/{name}.jpg'
@@ -92,7 +95,7 @@ class Window(tk.Tk):
 
         #info =  Player_info.frame(infoFrame)
         #btn.bind('<ButtonRelease-1>',info)
-
+        
         '''
     #測試中：更新球員資料
     def update_player_photo(self, data):
