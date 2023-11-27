@@ -36,14 +36,15 @@ class Window(tk.Tk):
         container.pack(fill='y', ipadx=5,ipady=5,padx=5,pady=5)
 #-----------------------------建立查詢介面-----------------------------------
         #建立容器元素
-        middleFrame = ttk.LabelFrame(container,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
+        middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
 
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
         search_entry.pack(side='top',ipadx=5,ipady=5,padx=5,pady=5, fill='y')     
-        middleFrame.pack(side='right', ipadx=5,ipady=5,padx=5,pady=5, fill='y')
-        #search_entry.bind("<KeyRelease>", self.on_key_release)
-        middleFrame.bind("<KeyRelease>", self.on_key_release)
+        middleFrame.pack(side='top', ipadx=5,ipady=5,padx=5,pady=5, fill='y')
+        search_entry.bind("<KeyPress>", self.on_key_release)
+        #search_entry.bind("<FocusIn>", self.on_key_release)
+
 
 #------------------------------球員個人資料、PR數據---------------------------------------
         
@@ -187,9 +188,7 @@ class Window(tk.Tk):
             
             canvasphoto = player.pr_value(prframe)
 
-    
-    
-    
+
 ##-----------------------------建立隊伍按鈕-----------------------------------
 
         middle1Frame = ttk.LabelFrame(self,text='選擇球隊',relief=tk.GROOVE,borderwidth=1)
@@ -239,6 +238,16 @@ class Window(tk.Tk):
         else:
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
             self.cpblTreeView.update_content(search_data)
+
+'''
+def on_search_entry_focus_in(self, event):
+        # 解除 <KeyRelease> 事件和 <ButtonRelease-1> 事件的綁定
+        self.search_entry.unbind("<ButtonRelease-1>")
+        self.unbind('<ButtonRelease-1>')
+
+        # 綁定 <KeyRelease> 事件到 on_key_release 方法
+        self.search_entry.bind("<KeyRelease>", self.on_key_release)
+'''
     
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
