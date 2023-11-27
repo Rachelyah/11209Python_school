@@ -310,14 +310,14 @@ class player():
             # 設定 Matplotlib 樣式
             plt.style.use('dark_background')
 
-            fig, ax = plt.subplots(figsize=(3, 2))
+            fig, ax = plt.subplots(figsize=(1, 1))
             
             # 繪製長條圖
             sns.barplot(x=['K9', 'ERA'], y=[k9_values, era_values], errorbar=None, ax=ax, color='#0F4C3A')
             
             # 在每一根長條上顯示 y 值
             for i, value in enumerate([k9_values, era_values]):
-                ax.text(i, value, f'{value:.2f}', ha='center', va='bottom', fontweight='bold', fontsize=10, color='white')
+                ax.text(i, value, f'{value:.2f}', ha='center', va='bottom', fontweight='bold', fontsize=2, color='white')
 
             # 叫出平均值
             average_k9, average_era = player.k9_era()
@@ -328,14 +328,15 @@ class player():
 
             # 設定 legend 的位置，將 bbox_to_anchor 設置為 (1.05, 1)
             ax.legend(bbox_to_anchor=(0.5, 0.5))
+            
 
             # 設定標題
             #ax.set_title('K9 & ERA')
             #ax.legend()
 
             # 調整 x 和 y 軸上的標籤大小
-            ax.tick_params(axis='x', labelsize=8)
-            ax.tick_params(axis='y', labelsize=8)
+            ax.tick_params(axis='x', labelsize=2)
+            ax.tick_params(axis='y', labelsize=2)
 
             # 创建 FigureCanvasTkAgg 对象
             canvas = FigureCanvasTkAgg(fig, master=container)

@@ -33,33 +33,39 @@ class Window(tk.Tk):
         topFrame.pack(pady=5,expand=True)
 #----------------------------建立上層介面------------------------------------
         container = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        container.pack(fill='y', ipadx=5,ipady=5,padx=5,pady=5)
+        container.pack(fill='y',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
 #-----------------------------建立查詢介面-----------------------------------
         #建立容器元素
         middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
 
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
-        search_entry.pack(side='top',ipadx=5,ipady=5,padx=5,pady=5, fill='y')     
-        middleFrame.pack(side='top', ipadx=5,ipady=5,padx=5,pady=5, fill='y')
-        search_entry.bind("<KeyPress>", self.on_key_release)
+        search_entry.pack(side='top',ipadx=10,ipady=10,padx=10,pady=10)
+
+        #輸入欄位搜尋按鈕
+        search_btn = ttk.Button(middleFrame, text='搜尋',bootstyle='Danger',command=lambda: self.on_key_release(event=None)).pack(ipadx=5, ipady=5, side='right')
+
+
+
+        middleFrame.pack(side='top', fill='x',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
+        #search_entry.bind("<KeyPress>", self.on_key_release)
         #search_entry.bind("<FocusIn>", self.on_key_release)
 
 
 #------------------------------球員個人資料、PR數據---------------------------------------
         
         photoFrame = ttk.LabelFrame(container,text='球員照片',relief=tk.GROOVE,borderwidth=1)
-        photoFrame.pack(side='left', anchor="n", expand=True, ipadx=5,ipady=5,padx=5,pady=5, fill='y')
+        photoFrame.pack(side='left', anchor="n", expand=True, fill='y',ipadx=10,ipady=10,padx=10,pady=10)
         self.tk_img = None
 
         self.infoFrame = ttk.LabelFrame(container, text='球員資料', relief=tk.GROOVE, borderwidth=1)
-        self.infoFrame.pack(side='left', anchor="n", expand=True, ipadx=5,ipady=5,padx=5,pady=5)
+        self.infoFrame.pack(side='left', anchor="n", expand=True,ipadx=10,ipady=10,padx=10,pady=10)
 
         self.player_data = ttk.LabelFrame(container, text='奪三振率(K9值)&防禦率(ERA)', relief=tk.GROOVE, borderwidth=1)
-        self.player_data.pack(side='left', anchor="n", ipadx=5,ipady=5,padx=5,pady=5, fill='y')
+        self.player_data.pack(side='left', anchor="n", fill='both',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
 
         prframe = ttk.LabelFrame(container, text='奪三振率(K9值)&防禦率(ERA)', relief=tk.GROOVE, borderwidth=1)
-        prframe.pack(side='left', anchor="n", ipadx=5,ipady=5,padx=5,pady=5, fill='y')
+        prframe.pack(side='left', anchor="n", fill='both',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
 
         def info(event):  
             self.update_idletasks()
