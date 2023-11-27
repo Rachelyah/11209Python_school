@@ -84,7 +84,7 @@ class cpblTreeView(ttk.Treeview):
        #將資料傳入彈出視窗
        title_name = t[3]
        print(f'球員姓名{title_name}')
-       detail = ShowDetail(self.parent, data=t, title=title_name)
+       #detail = ShowDetail(self.parent, data=t, title=title_name)
        
        return t
 
@@ -313,7 +313,7 @@ class player():
             fig, ax = plt.subplots(figsize=(3, 2))
             
             # 繪製長條圖
-            sns.barplot(x=['K9', 'ERA'], y=[k9_values, era_values], ci=None, ax=ax, color='#0F4C3A')
+            sns.barplot(x=['K9', 'ERA'], y=[k9_values, era_values], errorbar=None, ax=ax, color='#0F4C3A')
             
             # 在每一根長條上顯示 y 值
             for i, value in enumerate([k9_values, era_values]):

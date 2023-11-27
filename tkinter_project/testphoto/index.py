@@ -40,11 +40,10 @@ class Window(tk.Tk):
 
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
-        search_entry.pack(side='top',ipadx=10,ipady=10,padx=10,pady=10, fill='y')     
+        search_entry.pack(side='top',ipadx=5,ipady=5,padx=5,pady=5, fill='y')     
         middleFrame.pack(side='right', ipadx=5,ipady=5,padx=5,pady=5, fill='y')
-        search_entry.bind("<KeyRelease>", self.on_key_release)
-
-
+        #search_entry.bind("<KeyRelease>", self.on_key_release)
+        middleFrame.bind("<KeyRelease>", self.on_key_release)
 
 #------------------------------球員個人資料、PR數據---------------------------------------
         
@@ -54,6 +53,9 @@ class Window(tk.Tk):
 
         self.infoFrame = ttk.LabelFrame(container, text='球員資料', relief=tk.GROOVE, borderwidth=1)
         self.infoFrame.pack(side='left', anchor="n", expand=True, ipadx=5,ipady=5,padx=5,pady=5)
+
+        self.player_data = ttk.LabelFrame(container, text='奪三振率(K9值)&防禦率(ERA)', relief=tk.GROOVE, borderwidth=1)
+        self.player_data.pack(side='left', anchor="n", ipadx=5,ipady=5,padx=5,pady=5, fill='y')
 
         prframe = ttk.LabelFrame(container, text='奪三振率(K9值)&防禦率(ERA)', relief=tk.GROOVE, borderwidth=1)
         prframe.pack(side='left', anchor="n", ipadx=5,ipady=5,padx=5,pady=5, fill='y')
@@ -104,7 +106,56 @@ class Window(tk.Tk):
             BornVar = tk.StringVar()
             BornVar.set(Born_info)
             tk.Entry(self.infoFrame,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
+            
+            #詳細資料
+            for widget in self.player_data.winfo_children():
+                widget.destroy()
 
+
+            IP_info = data[15]
+            SV_info = data[13]
+            HLD_info = data[14]                 
+            H_info = data[18]
+            HR_info = data[19]
+            BB_info = data[20]
+
+
+            IP = tk.Label(self.player_data, text='有效局數：').grid(row=5, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+            SV = tk.Label(self.player_data, text='救援成功：').grid(row=0, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+            HLD = tk.Label(self.player_data, text='中繼成功：').grid(row=1, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+            H = tk.Label(self.player_data, text='被安打數：').grid(row=2, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+            HR = tk.Label(self.player_data, text='被全壘打數：').grid(row=3, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+            BB = tk.Label(self.player_data, text='保送數：').grid(row=4, column=0,sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+
+
+            TeamVar = tk.StringVar()
+            TeamVar.set(IP_info)
+            print(f'Team{IP_info}')
+            tk.Entry(self.player_data,textvariable=TeamVar,state='normal' ).grid(column=1,row=0)
+                
+            NameVar = tk.StringVar()
+            NameVar.set(SV_info)
+            tk.Entry(self.player_data,textvariable=NameVar,state='normal' ).grid(column=1,row=1)
+
+            NumberVar = tk.StringVar()
+            NumberVar.set(HLD_info)
+            tk.Entry(self.player_data,textvariable=NumberVar,state='normal' ).grid(column=1,row=2)
+
+            B_tVar = tk.StringVar()
+            B_tVar.set(H_info)
+            tk.Entry(self.player_data,textvariable=B_tVar,state='normal' ).grid(column=1,row=3)
+
+            Ht_wtVar = tk.StringVar()
+            Ht_wtVar.set(HR_info)
+            tk.Entry(self.player_data,textvariable=Ht_wtVar,state='normal' ).grid(column=1,row=4)
+
+            BornVar = tk.StringVar()
+            BornVar.set(BB_info)
+            tk.Entry(self.player_data,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
+
+
+
+            # 抓取球員照片
             for widget in photoFrame.winfo_children():
                 if isinstance(widget, tk.Canvas):
                     widget.destroy()
