@@ -89,8 +89,6 @@ def lastest_datetime_data()->list[tuple]:
 
     return rows
 
-
-
 #---------------------查詢功能------------------------
 
 def search_sitename(word:str) ->list[tuple]:
@@ -197,6 +195,37 @@ def search_by_team(event,word:str):
         三振數, 
         自責分;
     '''
+    cursor.execute(sql, [f'%{word}%'])
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    print(rows)
+    return rows
+
+def pr_value(player_data, ):
+    conn = sqlite3.connect('cpbl.db')    
+    cursor = conn.cursor() 
+    ER_sql = '''
+    SELECT 
+        勝場數, 
+        救援成功, 
+        中繼成功, 
+        被安打數, 
+        被全壘打數, 
+        保送數, 
+        三振數, 
+        自責分
+    FROM cpbl_pitchings
+    GROUP BY 
+        勝場數, 
+        救援成功, 
+        中繼成功, 
+        被安打數, 
+        被全壘打數, 
+        保送數, 
+        三振數, 
+        自責分
+        '''
     cursor.execute(sql, [f'%{word}%'])
     rows = cursor.fetchall()
     cursor.close()

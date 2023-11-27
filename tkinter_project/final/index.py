@@ -39,9 +39,10 @@ class Window(tk.Tk):
 
         #建立輸入欄位
         search_entry = tk.Entry(middleFrame)
-        search_entry.bind("<KeyRelease>", self.on_key_release)
         search_entry.pack(side='right',ipadx=10,ipady=10,padx=10,pady=10)     
         middleFrame.pack(side='right',fill='both',expand='True')
+        search_entry.bind("<KeyRelease>", self.on_key_release)
+
 #------------------------------球員個人資料、PR數據---------------------------------------
         
         photoFrame = ttk.LabelFrame(container,text='球員照片',relief=tk.GROOVE,borderwidth=1)
@@ -66,7 +67,6 @@ class Window(tk.Tk):
             Number_info = data[19]
             Ht_wt_info = data[20]
             Born_info = data[21]
-            print(f'生日{Born_info}')
 
             Team = tk.Label(self.infoFrame, text='所屬球隊：').grid(row=0, column=0, sticky='w')
             Name = tk.Label(self.infoFrame, text='球員姓名：').grid(row=1, column=0, sticky='w')
@@ -100,8 +100,6 @@ class Window(tk.Tk):
             BornVar.set(Born_info)
             tk.Entry(self.infoFrame,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
 
-            print(f'跑到這{Born_info}')
-
             for widget in photoFrame.winfo_children():
                 if isinstance(widget, tk.Canvas):
                     widget.destroy()
@@ -110,7 +108,7 @@ class Window(tk.Tk):
             photo_path = f'./img/{name}.jpg'
             img = Image.open(photo_path)
 
-            # 調整圖片大小為 120x160，注意這裡的尺寸修改
+            # 調整圖片大小為 120x160
             img = img.resize((120, 160), Image.BILINEAR)
 
             # 將圖片轉換為 Tkinter PhotoImage 對象，使用實例變數
@@ -152,8 +150,10 @@ class Window(tk.Tk):
         lastest_data = datasource.lastest_datetime_data()               
         self.cpblTreeView.update_content(site_datas=lastest_data)
         self.bind('<ButtonRelease-1>',info)
+        #self.cpblTreeView.bind('<ButtonRelease-1>',info)
 
 #-----------------------------接收輸入的資料，並查詢&更新TreeView--------------------------------------
+        
     def on_key_release(self, event):
         search_entry = event.widget  
         #print(search_entry)    
@@ -161,14 +161,13 @@ class Window(tk.Tk):
         input_word = search_entry.get()
         print(input_word)
         
-        
         if input_word == '':                                          #如果是空的，就自動更新最新資料在TreeView
             lastest_data = datasource.lastest_datetime_data()
             self.cpblTreeView.update_content(lastest_data)
+            #self.cpblTreeView.bind('<ButtonRelease-1>',info)
         else:
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
             self.cpblTreeView.update_content(search_data)
-
     
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     

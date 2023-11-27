@@ -7,7 +7,13 @@ matplotlib
 Pillow
 yfinance
 tkintermapview
+psycopg2
 psycopg2-binary
 pyinstaller
-Pillow
 ttkbootstrap
+seaborn
+pandas
+beautifulsoup4
+cycler
+matplotlib-inline
+numpy
