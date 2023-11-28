@@ -4,15 +4,14 @@ cpbl
 
 import tkinter as tk
 from tkinter import ttk
+#import ttkbootstrap as ttk
 from cpbl_treeview import cpblTreeView
-#from cpbl_treeview import Player_info
 from cpbl_treeview import player
 from tkinter import messagebox
-from threading import Timer
 import datasource
 from PIL import Image, ImageTk
-import ttkbootstrap as ttk
-from ttkbootstrap import Style
+
+#from ttkbootstrap import Style
 
 #自定義class 呼叫datasource讀取csv檔案跟匯入資料庫的function
 class Window(tk.Tk):

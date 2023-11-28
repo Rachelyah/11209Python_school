@@ -317,11 +317,11 @@ class player():
             # 設定 Matplotlib 樣式
             plt.style.use('dark_background')
 
-            fig, ax = plt.subplots(figsize=(1, 1))
+            fig, ax = plt.subplots(figsize=(1.3, 1.3))
             #ax.set_yticks([])
 
             # 繪製長條圖
-            sns.barplot(x=['奪三振率', 'ERA'], y=[k9_values, era_values], errorbar=None, ax=ax, color='#0F4C3A',width=0.5)
+            sns.barplot(x=['K9', 'ERA'], y=[k9_values, era_values], errorbar=None, ax=ax, color='#0F4C3A',width=0.5)
             sns.despine(top = True, right = True, left=True, bottom=True) # 移除上方跟右方的框線
             
             # 在每一根長條上顯示 y 值

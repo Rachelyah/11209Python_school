@@ -8,12 +8,12 @@ from cpbl_treeview import cpblTreeView
 #from cpbl_treeview import Player_info
 from cpbl_treeview import player
 from tkinter import messagebox
-from threading import Timer
+#from threading import Timer
 import datasource
 from PIL import Image, ImageTk
 import ttkbootstrap as ttk
-from ttkbootstrap import Style
-import pandas
+#from ttkbootstrap import Style
+#import pandas
 
 class Window(tk.Tk):
     def __init__(self, **kwargs):
@@ -31,9 +31,10 @@ class Window(tk.Tk):
         topFrame =tk.Frame(self,relief=tk.GROOVE,borderwidth=1)
         tk.Label(topFrame,text='中華職棒球員資料',font=('arial,40'),bg='#333333',fg='#FFFFFF',pady=20).pack(fill='both', pady=5, padx=5,ipadx=5,ipady=5,expand=True)
         topFrame.pack(pady=5,expand=True)
+
 #----------------------------建立上層介面------------------------------------
         container = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        container.pack(fill='both',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
+        container.pack(fill='y',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
 #-----------------------------建立查詢介面-----------------------------------
         #建立容器元素
         #middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
@@ -54,26 +55,28 @@ class Window(tk.Tk):
 #------------------------------球員個人資料、PR數據---------------------------------------
         
         photoFrame = ttk.LabelFrame(container,text='球員照片',relief=tk.GROOVE,borderwidth=1)
-        photoFrame.pack(side='left', anchor="n", expand=True, fill='y',ipadx=10,ipady=10,padx=10,pady=10)
+        photoFrame.pack(side='left', anchor="n", expand=True, fill='both',ipadx=5,ipady=5,padx=5,pady=5)
         self.tk_img = None
 
         self.infoFrame = ttk.LabelFrame(container, text='球員資料', relief=tk.GROOVE, borderwidth=1)
-        self.infoFrame.pack(side='left', anchor="n", fill='y', expand=True,ipadx=10,ipady=10,padx=10,pady=10)
+        self.infoFrame.pack(side='left', anchor="n", fill='y',ipadx=5,ipady=5,padx=5,pady=5, expand=True)
 
-        self.player_data = ttk.LabelFrame(container, text='奪三振率(K9值)&防禦率(ERA)', relief=tk.GROOVE, borderwidth=1)
-        self.player_data.pack(side='left', anchor="n", fill='both',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
+        self.player_data = ttk.LabelFrame(container, text='進階數據', relief=tk.GROOVE, borderwidth=1)
+        self.player_data.pack(side='left', anchor="n", fill='y',ipadx=5,ipady=5,padx=5,pady=5, expand=True)
 
         prframe = ttk.LabelFrame(container, text='奪三振率(K9值)&防禦率(ERA)', relief=tk.GROOVE, borderwidth=1)
-        prframe.pack(side='left', anchor="n", fill='both',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
-
+        prframe.pack(side='left', anchor="n", fill='both',ipadx=5,ipady=5,padx=5,pady=5, expand=True)
+        
+        #當滑鼠左鍵點擊時啟動球員詳細資料視窗
         def info(event):  
-            self.update_idletasks()
 
+            #球員基本資料
+            self.update_idletasks()
             for widget in self.infoFrame.winfo_children():
                 widget.destroy()
 
             data = player.list_info()
-            print(f'查看資訊{data}')
+            print(f'我需要看一下那個{data}')
             Team_info = data[1]
             Name_info = data[3]
             B_t_info = data[18]                 
@@ -81,12 +84,12 @@ class Window(tk.Tk):
             Ht_wt_info = data[20]
             Born_info = data[21]
 
-            Team = tk.Label(self.infoFrame, text='所屬球隊：').grid(row=0, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            Name = tk.Label(self.infoFrame, text='球員姓名：').grid(row=1, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            Number = tk.Label(self.infoFrame, text='背號：').grid(row=2, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            B_t = tk.Label(self.infoFrame, text='投打習慣：').grid(row=3, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            Ht_wt = tk.Label(self.infoFrame, text='身高體重：').grid(row=4, column=0,sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            Born = tk.Label(self.infoFrame, text='生日：').grid(row=5, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+            Team = tk.Label(self.infoFrame, text='所屬球隊：').grid(row=0, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            Name = tk.Label(self.infoFrame, text='球員姓名：').grid(row=1, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            Number = tk.Label(self.infoFrame, text='背號：').grid(row=2, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            B_t = tk.Label(self.infoFrame, text='投打習慣：').grid(row=3, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            Ht_wt = tk.Label(self.infoFrame, text='身高體重：').grid(row=4, column=0,sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            Born = tk.Label(self.infoFrame, text='生日：').grid(row=5, column=0, sticky='w',ipadx=5,ipady=5,padx=2,pady=2)
 
             TeamVar = tk.StringVar()
             TeamVar.set(Team_info)
@@ -113,51 +116,51 @@ class Window(tk.Tk):
             BornVar.set(Born_info)
             tk.Entry(self.infoFrame,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
             
-            #詳細資料
+            #球員詳細資料
             for widget in self.player_data.winfo_children():
                 widget.destroy()
 
-
-            IP_info = data[15]
-            SV_info = data[13]
-            HLD_info = data[14]                 
-            H_info = data[18]
-            HR_info = data[19]
-            BB_info = data[20]
-
-
-            IP = tk.Label(self.player_data, text='有效局數：').grid(row=5, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            SV = tk.Label(self.player_data, text='救援成功：').grid(row=0, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            HLD = tk.Label(self.player_data, text='中繼成功：').grid(row=1, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            H = tk.Label(self.player_data, text='被安打數：').grid(row=2, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            HR = tk.Label(self.player_data, text='被全壘打數：').grid(row=3, column=0, sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
-            BB = tk.Label(self.player_data, text='保送數：').grid(row=4, column=0,sticky='w', ipadx=5,ipady=5,padx=5,pady=5)
+            print(f'跑到{data}')
+            IP_info = data[11]
+            SV_info = data[9]
+            HLD_info = data[10]                 
+            H_info = data[13]
+            HR_info = data[14]
+            BB_info = data[15]
 
 
-            TeamVar = tk.StringVar()
-            TeamVar.set(IP_info)
+            IP = tk.Label(self.player_data, text='有效局數：').grid(row=0, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            SV = tk.Label(self.player_data, text='救援成功：').grid(row=1, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            HLD = tk.Label(self.player_data, text='中繼成功：').grid(row=2, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            H = tk.Label(self.player_data, text='被安打數：').grid(row=3, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            HR = tk.Label(self.player_data, text='被全壘打數：').grid(row=4, column=0, sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+            BB = tk.Label(self.player_data, text='保送數：').grid(row=5, column=0,sticky='w', ipadx=5,ipady=5,padx=2,pady=2)
+
+
+            IPVar = tk.StringVar()
+            IPVar.set(IP_info)
             print(f'Team{IP_info}')
-            tk.Entry(self.player_data,textvariable=TeamVar,state='normal' ).grid(column=1,row=0)
+            tk.Entry(self.player_data,textvariable=IPVar,state='normal' ).grid(column=1,row=0)
                 
-            NameVar = tk.StringVar()
-            NameVar.set(SV_info)
-            tk.Entry(self.player_data,textvariable=NameVar,state='normal' ).grid(column=1,row=1)
+            SVVar = tk.StringVar()
+            SVVar.set(SV_info)
+            tk.Entry(self.player_data,textvariable=SVVar,state='normal' ).grid(column=1,row=1)
 
-            NumberVar = tk.StringVar()
-            NumberVar.set(HLD_info)
-            tk.Entry(self.player_data,textvariable=NumberVar,state='normal' ).grid(column=1,row=2)
+            HLDVar = tk.StringVar()
+            HLDVar.set(HLD_info)
+            tk.Entry(self.player_data,textvariable=HLDVar,state='normal' ).grid(column=1,row=2)
 
-            B_tVar = tk.StringVar()
-            B_tVar.set(H_info)
-            tk.Entry(self.player_data,textvariable=B_tVar,state='normal' ).grid(column=1,row=3)
+            HVar = tk.StringVar()
+            HVar.set(H_info)
+            tk.Entry(self.player_data,textvariable=HVar,state='normal' ).grid(column=1,row=3)
 
-            Ht_wtVar = tk.StringVar()
-            Ht_wtVar.set(HR_info)
-            tk.Entry(self.player_data,textvariable=Ht_wtVar,state='normal' ).grid(column=1,row=4)
+            HRVar = tk.StringVar()
+            HRVar.set(HR_info)
+            tk.Entry(self.player_data,textvariable=HRVar,state='normal' ).grid(column=1,row=4)
 
-            BornVar = tk.StringVar()
-            BornVar.set(BB_info)
-            tk.Entry(self.player_data,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
+            BBVar = tk.StringVar()
+            BBVar.set(BB_info)
+            tk.Entry(self.player_data,textvariable=BBVar,state='normal' ).grid(column=1,row=5)
 
 
 
@@ -218,7 +221,7 @@ class Window(tk.Tk):
         bottomFrame = tk.Frame(self)
         self.cpblTreeView = cpblTreeView(bottomFrame,columns=('Year','Team Name','ID','Name','G', 'GS', 'GR', 'W', 'L', 'SV', 'HLD', 'IP', 'BF', 'H', 'HR', 'BB', 'SO', 'ER'),show="headings",height=20)
         #設定捲動軸 
-        self.cpblTreeView.pack(side='left', fill='x', expand=True)
+        self.cpblTreeView.pack(side='left', fill='both', expand=True)
         vsb = ttk.Scrollbar(bottomFrame, orient='vertical',command=self.cpblTreeView.yview)
         vsb.pack(side='right',fill='y', expand=True)
         self.cpblTreeView.configure(yscrollcommand=vsb.set)
