@@ -256,7 +256,7 @@ class player():
                 return 0.0
 
         # 原有的csv檔案
-        cpbl_pitchings_csv = 'pitchings_2022.csv'
+        cpbl_pitchings_csv = 'pitchings_2022_updated.csv'
 
         # 初始化變數以保存平均值
         total_k9 = 0.0
