@@ -33,23 +33,22 @@ class Window(tk.Tk):
         topFrame.pack(pady=5,expand=True)
 #----------------------------建立上層介面------------------------------------
         container = ttk.LabelFrame(self,text='球員資料',relief=tk.GROOVE,borderwidth=1)
-        container.pack(fill='y',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
+        container.pack(fill='both',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
 #-----------------------------建立查詢介面-----------------------------------
         #建立容器元素
-        middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
+        #middleFrame = ttk.LabelFrame(self,text='球員搜尋',relief=tk.GROOVE,borderwidth=1)
 
         #建立輸入欄位
-        search_entry = tk.Entry(middleFrame)
-        search_entry.pack(side='top',ipadx=10,ipady=10,padx=10,pady=10)
+        #search_entry = tk.Entry(self)
+        #search_entry.pack(side='top')
+        #search_entry.bind('<ButtonRelease-1>',self.on_key_release)
 
         #輸入欄位搜尋按鈕
-        search_btn = ttk.Button(middleFrame, text='搜尋',bootstyle='Danger',command=lambda: self.on_key_release(event=None)).pack(ipadx=5, ipady=5, side='right')
+        #search_btn = ttk.Button(self, text='搜尋',bootstyle='Danger',command=lambda: self.on_key_release(event=None)).pack(side='left')
 
-
-
-        middleFrame.pack(side='top', fill='x',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
+        #middleFrame.pack(side='top', fill='x',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
         #search_entry.bind("<KeyPress>", self.on_key_release)
-        #search_entry.bind("<FocusIn>", self.on_key_release)
+        #search_entry.bind("<FocusIn>", self.)
 
 
 #------------------------------球員個人資料、PR數據---------------------------------------
@@ -59,7 +58,7 @@ class Window(tk.Tk):
         self.tk_img = None
 
         self.infoFrame = ttk.LabelFrame(container, text='球員資料', relief=tk.GROOVE, borderwidth=1)
-        self.infoFrame.pack(side='left', anchor="n", expand=True,ipadx=10,ipady=10,padx=10,pady=10)
+        self.infoFrame.pack(side='left', anchor="n", fill='y', expand=True,ipadx=10,ipady=10,padx=10,pady=10)
 
         self.player_data = ttk.LabelFrame(container, text='奪三振率(K9值)&防禦率(ERA)', relief=tk.GROOVE, borderwidth=1)
         self.player_data.pack(side='left', anchor="n", fill='both',ipadx=10,ipady=10,padx=10,pady=10,expand=True)
@@ -179,12 +178,12 @@ class Window(tk.Tk):
 
             # 創建一個 Canvas 並在其中放入圖片
             canvas = tk.Canvas(photoFrame, width=120, height=160)
-            canvas.pack(side='top', fill='both', expand=True)
+            canvas.pack(side='top', fill='x', expand=True)
 
             # 計算圖片在 Canvas 中的座標
             img_width, img_height = 120, 160
-            x = (img_width - canvas.winfo_reqwidth()) / 2
-            y = (img_height - canvas.winfo_reqheight()) / 2
+            x = ((canvas.winfo_reqwidth() - img_width) / 2)+10
+            y = (canvas.winfo_reqheight() - img_height) / 2
 
             # 在 Canvas 中創建圖片
             canvas.create_image(x, y, anchor='nw', image=self.tk_img)
@@ -209,10 +208,10 @@ class Window(tk.Tk):
 
         ttk.Button(middle1Frame, text='中信兄弟', style='info', command=lambda: team_search(event=None, word='中信')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
 
-        ttk.Button(middle1Frame, text='樂天桃猿',bootstyle='Danger',command=lambda: team_search(event=None,word='樂天')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
-        ttk.Button(middle1Frame, text='統一7-ELEVEn獅',bootstyle='Warning',command=lambda: team_search(event=None,word='統一')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
-        ttk.Button(middle1Frame, text='富邦悍將',command=lambda: team_search(event=None,word='富邦')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
-        ttk.Button(middle1Frame, text='味全龍',bootstyle='success',command=lambda: team_search(event=None,word='味全')).pack(ipadx=25, ipady=10, side='left', expand='Yes')
+        ttk.Button(middle1Frame, text='樂天桃猿',bootstyle='Danger',command=lambda: team_search(event=None,word='樂天')).pack(ipadx=25, ipady=10, side='left',expand='Yes')
+        ttk.Button(middle1Frame, text='統一7-ELEVEn獅',bootstyle='Warning',command=lambda: team_search(event=None,word='統一')).pack(ipadx=25, ipady=10, side='left',expand='Yes')
+        ttk.Button(middle1Frame, text='富邦悍將',command=lambda: team_search(event=None,word='富邦')).pack(ipadx=25, ipady=10, side='left',expand='Yes')
+        ttk.Button(middle1Frame, text='味全龍',bootstyle='success',command=lambda: team_search(event=None,word='味全')).pack(ipadx=25, ipady=10, side='left',expand='Yes')
 
 
 #------------------------------建立treeView-----------------------------------------
@@ -231,7 +230,7 @@ class Window(tk.Tk):
 
 #-----------------------------接收輸入的資料，並查詢&更新TreeView--------------------------------------
         
-    def on_key_release(self, event):
+    def on_key_release(self,event):
         search_entry = event.widget  
         #print(search_entry)    
         #使用者輸入的文字  
@@ -245,16 +244,6 @@ class Window(tk.Tk):
             search_data = datasource.search_sitename(word=input_word)  #如果有輸入值，就把輸入的值傳回search_sitename中查詢，並傳回結果&更新TreeView 
             self.cpblTreeView.update_content(search_data)
 
-'''
-def on_search_entry_focus_in(self, event):
-        # 解除 <KeyRelease> 事件和 <ButtonRelease-1> 事件的綁定
-        self.search_entry.unbind("<ButtonRelease-1>")
-        self.unbind('<ButtonRelease-1>')
-
-        # 綁定 <KeyRelease> 事件到 on_key_release 方法
-        self.search_entry.bind("<KeyRelease>", self.on_key_release)
-'''
-    
 #-----------------------------主程式定期自動更新資料--------------------------------------
 def main():     
     def update_data(w:Window)->None:   

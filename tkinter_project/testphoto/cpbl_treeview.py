@@ -304,6 +304,13 @@ class player():
                 print("無法將 K9 或 ERA 值轉換為浮點數。")
                 return
 
+            # 在此設定中文字型的路徑
+            #font_path = '/Users/rachelyeh/Documents/Python應用實戰/課程資料/徐國堂/GitHub/11209Python_school/tkinter_project/testphoto/NotoSansTC-VariableFont_wght.ttf'  # 請替換成實際的字型檔案路徑
+
+            # 設定中文字型
+            #font_prop = FontProperties(fname=font_path)
+            #sns.set_style("whitegrid",{"font.sans-serif":['Microsoft JhengHei']})
+
             # 設定 Seaborn 樣式
             #sns.set(style="darkgrid", rc={"axes.facecolor": "#363636", "grid.color": "#363636", "text.color": "#363636"})
             
@@ -311,32 +318,37 @@ class player():
             plt.style.use('dark_background')
 
             fig, ax = plt.subplots(figsize=(1, 1))
-            
+            #ax.set_yticks([])
+
             # 繪製長條圖
-            sns.barplot(x=['K9', 'ERA'], y=[k9_values, era_values], errorbar=None, ax=ax, color='#0F4C3A')
+            sns.barplot(x=['奪三振率', 'ERA'], y=[k9_values, era_values], errorbar=None, ax=ax, color='#0F4C3A',width=0.5)
+            sns.despine(top = True, right = True, left=True, bottom=True) # 移除上方跟右方的框線
             
             # 在每一根長條上顯示 y 值
             for i, value in enumerate([k9_values, era_values]):
-                ax.text(i, value, f'{value:.2f}', ha='center', va='bottom', fontweight='bold', fontsize=2, color='white')
-
+                ax.text(i, value, f'{value:.2f}', ha='center', va='bottom', fontweight='bold', fontsize=5, color='white')
+            #fontproperties=font_prop
             # 叫出平均值
             average_k9, average_era = player.k9_era()
 
             # 加入平均線
-            ax.axhline(average_k9, color='#66BAB7', linestyle='dashed', linewidth=2, label='Average K9')
-            ax.axhline(average_era, color='#B1B479', linestyle='dashed', linewidth=2, label='Average ERA')
+            ax.axhline(average_k9, color='#66BAB7', linestyle='dashed', linewidth=1, label='Average K9')
+            ax.axhline(average_era, color='#B1B479', linestyle='dashed', linewidth=1, label='Average ERA')
 
             # 設定 legend 的位置，將 bbox_to_anchor 設置為 (1.05, 1)
-            ax.legend(bbox_to_anchor=(0.5, 0.5))
-            
+            #ax.legend(bbox_to_anchor=(7, 0.1))
+            #ax.legend(bbox_to_anchor=(-1.1, 1), loc='upper left', borderaxespad=2)
 
+            #legend = ax.legend(['Average K9', 'Average ERA'], bbox_to_anchor=(7, 0.1), fontsize=5, title_fontsize=5)
+            plt.legend(labels=["average_k9", "average_era"], loc='lower left',fontsize=5)
+            
             # 設定標題
             #ax.set_title('K9 & ERA')
             #ax.legend()
 
             # 調整 x 和 y 軸上的標籤大小
-            ax.tick_params(axis='x', labelsize=2)
-            ax.tick_params(axis='y', labelsize=2)
+            ax.tick_params(axis='x', labelsize=5)
+            ax.tick_params(axis='y', labelsize=5)
 
             # 创建 FigureCanvasTkAgg 对象
             canvas = FigureCanvasTkAgg(fig, master=container)
