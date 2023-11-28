@@ -2,8 +2,17 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.simpledialog import Dialog
 from PIL import Image, ImageTk
+import csv
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.font_manager import FontProperties
+from matplotlib.font_manager import fontManager
 
-t = [2022, '味全', 155, '游宗儒', 2, 0, 2, 0, 0, 0, 1, '1.1', 9, 5, 0, 1, 1, 4, '右投右打', 0, '181(CM) / 68(KG)', '1992/05/21', 'https://www.cpbl.com.tw/files/atts/0L087781882121355049/S0000000155.jpg']
+
+t = [2022, '楊志龍','ACN','中信',40,0,40,0,0,0,2,4,0,12,37.0,158,628,31,0,16,0,4,42,4,0,20,17,34,31,2022,'右投右打',56,'189(CM) / 102(KG)'
+     ,'1993/04/07','https://www.cpbl.com.tw/files/atts/0L087782012129886612/56楊志龍.jpg',10.22,4.14]
 
 class cpblTreeView(ttk.Treeview):
 
@@ -214,64 +223,141 @@ class ShowDetail(Dialog):
         self.bind("<Return>", self.ok)
         box.pack()
 
-        
-    '''
-    #問題出在這！！！！！！！！！
-    def frame(self,**kwargs):
-        
-        print(f'走到frame{t}')
-        print(type(t))
 
-        Team = t[1]
-        Name = t[3]
-        B_t = t[18]                 
-        Number = t[19]
-        Ht_wt = t[20]
-        Born = t[21]
-        print(f'生日{Born}')
-
-        self.Team = tk.Label(self, text='所屬球隊：').grid(row=0, column=0, sticky='w')
-        self.Name = tk.Label(self, text='球員姓名：').grid(row=1, column=0, sticky='w')
-        self.Number = tk.Label(self, text='背號：').grid(row=2, column=0, sticky='w')
-        self.B_t = tk.Label(self, text='投打習慣：').grid(row=3, column=0, sticky='w')
-        self.Ht_wt = tk.Label(self, text='身高體重：').grid(row=4, column=0,sticky='w')
-        self.Born = tk.Label(self, text='生日：').grid(row=5, column=0, sticky='w')
-
-        TeamVar = tk.StringVar()
-        TeamVar.set(Team)
-        tk.Entry(self,textvariable=TeamVar,state='normal' ).grid(column=1,row=0)
-            
-        NameVar = tk.StringVar()
-        NameVar.set(Name)
-        tk.Entry(self,textvariable=NameVar,state='normal' ).grid(column=1,row=1)
-
-        NumberVar = tk.StringVar()
-        NumberVar.set(Number)
-        tk.Entry(self,textvariable=NumberVar,state='normal' ).grid(column=1,row=2)
-
-        B_tVar = tk.StringVar()
-        B_tVar.set(B_t)
-        tk.Entry(self,textvariable=B_tVar,state='normal' ).grid(column=1,row=3)
-
-        Ht_wtVar = tk.StringVar()
-        Ht_wtVar.set(Ht_wt)
-        tk.Entry(self,textvariable=Ht_wtVar,state='normal' ).grid(column=1,row=4)
-
-        BornVar = tk.StringVar()
-        BornVar.set(Born)
-        tk.Entry(self,textvariable=BornVar,state='normal' ).grid(column=1,row=5)
-
-        print(f'跑到這{Born}')
-    '''
 class player():
-
+    
+    @staticmethod
     def player_name():
         player_name_list = t[3]
         return player_name_list
     
+    @staticmethod
     def list_info():
         global t
         print(f'list_info{t}')
         player_info = t
         return player_info
+    
+    @staticmethod
+    def k9_era():
+        # 與原本的 calculate_k9, calculate_era 方法一起移到這裡
+        def calculate_k9(so, ip):
+            try:
+                k9 = (so / ip) * 9
+                return round(k9, 2)
+            except ZeroDivisionError:
+                return 0.0
 
+        def calculate_era(er, ip):
+            try:
+                era = (er * 9) / ip
+                return round(era, 2)
+            except ZeroDivisionError:
+                return 0.0
+
+        # 原有的csv檔案
+        cpbl_pitchings_csv = 'pitchings_2022.csv'
+
+        # 初始化變數以保存平均值
+        total_k9 = 0.0
+        total_era = 0.0
+        count = 0
+
+        with open(cpbl_pitchings_csv, 'r', encoding='utf-8') as csvfile:
+            csv_reader = csv.DictReader(csvfile)
+
+            for row in csv_reader:
+                so = float(row['SO'])
+                ip = float(row['IP'])
+                er = float(row['ER'])
+
+                k9 = calculate_k9(so, ip)
+                era = calculate_era(er, ip)
+
+                total_k9 += k9
+                total_era += era
+                count += 1
+
+        # 計算平均值
+        average_k9 = round((total_k9 / count if count > 0 else 0.0), 2)
+        average_era = round((total_era / count if count > 0 else 0.0), 2)
+
+        print(f'平均 K9: {average_k9}')
+        print(f'平均 ERA: {average_era}')
+
+        return average_k9, average_era
+
+    
+    @staticmethod
+    def pr_value(container):
+        global t
+        data = t
+
+        if len(data) >= 20:
+            k9_value = data[23]
+            era_value = data[24]
+
+            try:
+                k9_values = float(k9_value)
+                era_values = float(era_value)
+            except ValueError:
+                print("無法將 K9 或 ERA 值轉換為浮點數。")
+                return
+
+            # 在此設定中文字型的路徑
+            #font_path = '/Users/rachelyeh/Documents/Python應用實戰/課程資料/徐國堂/GitHub/11209Python_school/tkinter_project/testphoto/NotoSansTC-VariableFont_wght.ttf'  # 請替換成實際的字型檔案路徑
+
+            # 設定中文字型
+            #font_prop = FontProperties(fname=font_path)
+            #sns.set_style("whitegrid",{"font.sans-serif":['Microsoft JhengHei']})
+
+            # 設定 Seaborn 樣式
+            #sns.set(style="darkgrid", rc={"axes.facecolor": "#363636", "grid.color": "#363636", "text.color": "#363636"})
+            
+            # 設定 Matplotlib 樣式
+            plt.style.use('dark_background')
+
+            fig, ax = plt.subplots(figsize=(1.3, 1.3))
+            #ax.set_yticks([])
+
+            # 繪製長條圖
+            sns.barplot(x=['K9', 'ERA'], y=[k9_values, era_values], errorbar=None, ax=ax, color='#0F4C3A',width=0.5)
+            sns.despine(top = True, right = True, left=True, bottom=True) # 移除上方跟右方的框線
+            
+            # 在每一根長條上顯示 y 值
+            for i, value in enumerate([k9_values, era_values]):
+                ax.text(i, value, f'{value:.2f}', ha='center', va='bottom', fontweight='bold', fontsize=5, color='white')
+            #fontproperties=font_prop
+            # 叫出平均值
+            average_k9, average_era = player.k9_era()
+
+            # 加入平均線
+            ax.axhline(average_k9, color='#66BAB7', linestyle='dashed', linewidth=1, label='Average K9')
+            ax.axhline(average_era, color='#B1B479', linestyle='dashed', linewidth=1, label='Average ERA')
+
+            # 設定 legend 的位置，將 bbox_to_anchor 設置為 (1.05, 1)
+            #ax.legend(bbox_to_anchor=(7, 0.1))
+            #ax.legend(bbox_to_anchor=(-1.1, 1), loc='upper left', borderaxespad=2)
+
+            #legend = ax.legend(['Average K9', 'Average ERA'], bbox_to_anchor=(7, 0.1), fontsize=5, title_fontsize=5)
+            plt.legend(labels=["average_k9", "average_era"], loc='lower left',fontsize=5)
+            
+            # 設定標題
+            #ax.set_title('K9 & ERA')
+            #ax.legend()
+
+            # 調整 x 和 y 軸上的標籤大小
+            ax.tick_params(axis='x', labelsize=5)
+            ax.tick_params(axis='y', labelsize=5)
+
+            # 创建 FigureCanvasTkAgg 对象
+            canvas = FigureCanvasTkAgg(fig, master=container)
+            canvas.draw()
+
+            # 获取 tkinter 的绘制区域并打包到容器中
+            canvas_widget = canvas.get_tk_widget()
+            canvas_widget.pack(side='left', fill='both', expand=True)
+
+            return canvas
+        else:
+            print("data 中的元素數量不足，無法取得 K9 與 ERA 數據。")

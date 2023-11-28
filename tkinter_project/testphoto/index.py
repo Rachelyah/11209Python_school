@@ -5,15 +5,12 @@ cpbl
 import tkinter as tk
 from tkinter import ttk
 from cpbl_treeview import cpblTreeView
-#from cpbl_treeview import Player_info
 from cpbl_treeview import player
 from tkinter import messagebox
-#from threading import Timer
 import datasource
 from PIL import Image, ImageTk
 import ttkbootstrap as ttk
 #from ttkbootstrap import Style
-#import pandas
 
 class Window(tk.Tk):
     def __init__(self, **kwargs):
