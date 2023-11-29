@@ -1,0 +1,166 @@
+{% extends "bs/base.html" %}
+
+{% block title %}test1{% endblock %}
+{% block csslink %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/bs/index.css')}}">
+{% endblock %}
+
+{% block head %}
+{{ super() }}
+<style>
+    .banner {
+        background-color: beige;
+    }
+
+    .banner .left {
+        background-color: rgb(176, 176, 30);
+    }
+
+    .banner .right {
+        background-color: rgb(161, 101, 158);
+    }
+
+    .four {
+        background-color: rgb(151, 82, 82);
+    }
+
+    .five {
+        background-color: rgb(99, 53, 53);
+    }
+
+    .six {
+        background-color: rgb(199, 108, 108);
+    }
+
+    @media (min-width: 576px) {
+        /*手機橫的(直的在上面)*/
+
+
+    }
+
+    @media (min-width: 768px) {
+        /*平板*/
+
+    }
+
+    @media (min-width: 992px) {
+
+        /*一般螢幕*/
+        .banner {
+            background-color: rgb(47, 64, 199)
+        }
+
+        .banner .left {
+            background-color: rgb(176, 30, 86);
+        }
+
+        .banner .right {
+            background-color: rgb(180, 160, 179);
+        }
+
+        .four {
+            background-color: rgb(151, 82, 82);
+        }
+
+        .five {
+            background-color: rgb(99, 53, 53);
+        }
+
+        .six {
+            background-color: rgb(199, 108, 108);
+        }
+    }
+
+    @media (min-width: 1200px) {
+        /*大螢幕*/
+
+    }
+
+    @media (min-width: 1400px) {
+        /*超大電競螢幕*/
+
+
+    }
+</style>
+{% endblock %}
+
+
+{% block main %}
+
+<div class="container">
+    <div class="row">
+        <div class="col banner">
+            <div class="container">
+                <div class="row justify-content-around">
+                    <div class="col-md-7 left">
+                        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img src="https://picsum.photos/id/1038/600/400" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://picsum.photos/id/237/600/400" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="https://picsum.photos/id/1003/600/400" class="d-block w-100" alt="">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-5 right">
+                        <div class="card">
+                            <img src="https://www.cpbl.com.tw/files/atts/0L087782019684432668/21彭識穎.jpg"
+                                class="card-img-top" alt="">
+                            <div class="card-body">
+                                <h5 class="card-title">Card title</h5>
+                                <p class="card-text">Some quick example text to build on the card title and make up the
+                                    bulk of the card's
+                                    content.</p>
+                                <a href="https://getbootstrap.com/docs/5.3/components/card/" class="btn btn-primary">Go
+                                    somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped" style="max-height: 500px; overflow-y:scroll ;">
+                        <thead>
+                            <tr> <!--th是欄位名稱-->
+                                <th scope="col">索引</th>
+                                <th scope="col">站點名稱</th>
+                                <th scope="col">時間</th>
+                                <th scope="col">區域</th>
+                                <th scope="col">地址</th>
+                                <th scope="col">數量</th>
+                                <th scope="col">可借</th>
+                                <th scope="col">可還</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rows in data %} <!--傳入data變數的資料，寫入rows-->
+                            <tr>
+                                <td>{{ loop.index }}</td> <!--自動新增索引，從1開始-->
+                                {% for item in rows %} <!--rows的資料寫入item-->
+                                    <td>{{ item }}</td> <!--在每個td欄位寫入item-->
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+           
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

@@ -46,3 +46,25 @@
 
 #### container
 - 除了breakpoints直接下尺寸之外，也可以寫container-(容器名稱)直接寫設定名稱
+
+#### row
+- 每一個row裡面可以放12個col，可以分配每一個盒子需要占用的比例e.g. col-5，col-7，如果你一個row裡面沒有占滿12個col，剩下的空間會被空著
+- 也有一種寫法是，在col-5前後都放col，那剩下的空間會在兩個col內被平分，會是剛好的勒奧
+- 也可以搭配justify-contect，設定在class，設定row裡面的col要擺在哪個位置
+- <div class="col-5 five"> <!--一欄固定五個，其它給上下的class分配，因為上下都是col，所以一定會平均分配，左右兩邊一樣大-->
+
+#### 假圖套件
+- Lorem Picsum photos snippets
+
+#### 讓flask網頁連結至postgre資料庫，並透過pandas把資料整理成圖表
+- 把之前youbike的datasource.py、password.py檔案放到bs資料夾中
+- 要注意引用時要寫from . import 從根目錄讀取
+- 寫入bootstrap.py的test方法中，新版的python可以在變數前面宣告資料類型
+
+#### 表格table標籤
+- table 表格本體
+    - thead 有點像是盒子的概念
+    - tbody 有點像是盒子的概念
+    - tfoot 有點像是盒子的概念
+        - tr 垂直列(row)
+        - td 水平欄(column)

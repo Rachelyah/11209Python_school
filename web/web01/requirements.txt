@@ -16,4 +16,3 @@ pandas
 beautifulsoup4
 cycler
 matplotlib-inline
-dash
