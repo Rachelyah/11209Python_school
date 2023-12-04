@@ -11,6 +11,9 @@
 </head>
 
 <body>
+    {% block navi %}
+    <div class="navigation"></div>
+    {% endblock %}
     {% block content %}
         <div id="footer">
             {% block footer %}
@@ -18,7 +21,6 @@
             {% endblock %}
         </div>
     {% endblock %}
-    
         <script src="{{url_for('static', filename = '/js/bootstrap.min.js')}}"></script>
 </body>
 
