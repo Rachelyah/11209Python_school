@@ -11,11 +11,14 @@
 </head>
 
 <body>
-    <div class="container-lg">{% block content %}{% endblock %}</div>
-    <div id="footer">
-        {% block footer %}
-        &copy; Copyright 2008 by <a href="http://domain.invalid/">you</a>.
-        {% endblock %}
+    {% block content %}
+        <div id="footer">
+            {% block footer %}
+            &copy; Copyright 2008 by <a href="http://domain.invalid/">you</a>.
+            {% endblock %}
+        </div>
+    {% endblock %}
+    
         <script src="{{url_for('static', filename = '/js/bootstrap.min.js')}}"></script>
 </body>
 
