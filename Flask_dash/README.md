@@ -20,3 +20,6 @@
 - 要改dash的東西，用python main.py直接執行，但它就不能直接看到更新
 
 [參考講義](https://github.com/roberthsu2003/python_dash_plotly)
+
+- 套用Dash的寫法加入html的內容
+- 在assets加入css跟js的設定
