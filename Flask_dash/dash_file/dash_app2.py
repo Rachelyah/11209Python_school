@@ -1,24 +1,18 @@
 from dash import Dash, html, dash_table
 import pandas as pd
 import dash_bootstrap_components as dbc
-from collections import OrderedDict
+from . import datasource
+
+lastest_data = datasource.lastest_datetime_data()
+lastest_df = pd.DataFrame(lastest_data,columns=['站點名稱','更新時間','行政區','地址','總數','可借','可還'])
+lastest_df1 = lastest_df.reset_index()
+lastest_df1['站點名稱'] = lastest_df1['站點名稱'].map(lambda name:name[11:])
 
 #建立一個Dash的實體，加入網址、style設定
 dash2 = Dash(requests_pathname_prefix="/dash/app2/", external_stylesheets=[dbc.themes.BOOTSTRAP])
 dash2.title='台北市'
-data = OrderedDict(
-    [
-        ("Date", ["2015-01-01", "2015-10-24", "2016-05-10", "2017-01-10", "2018-05-10", "2018-08-15"]),
-        ("Region", ["Montreal", "Toronto", "New York City", "Miami", "San Francisco", "London"]),
-        ("Temperature", [1, -20, 3.512, 4, 10423, -441.2]),
-        ("Humidity", [10, 20, 30, 40, 50, 60]),
-        ("Pressure", [2, 10924, 3912, -10, 3591.2, 15]),
-    ])
 
-#把上面的資料*10倍
-df = pd.DataFrame(
-    OrderedDict([(name, col_data * 10) for (name, col_data) in data.items()])
-)
+
 #dash.html的layout，不適合複雜的html結構
 dash2.layout = html.Div(
     [dbc.Container(
@@ -33,9 +27,24 @@ dash2.layout = html.Div(
         html.Div([
             html.Div([
                 dash_table.DataTable(
-                        data=df.to_dict('records'),
-                        columns=[{'id':column,'name':column} for column in df.columns],
-                        page_size=20 
+                        data=lastest_df1.to_dict('records'),
+                        columns=[{'id':column,'name':column} for column in lastest_df1.columns],
+                        page_size=20,
+                        style_table={'height': '300px', 'overflowY': 'auto'},
+                        fixed_rows={'headers': True},
+                        style_cell_conditional=[
+                                {   'if': {'column_id': 'index'},
+                                 'width': '5%'
+                                },
+                                {   'if': {'column_id': '站點名稱'},
+                                 'width': '25%'},
+                                {   'if': {'column_id': '總數'},
+                                 'width': '5%'},
+                                {   'if': {'column_id': '可借'},
+                                 'width': '5%'},
+                                {   'if': {'column_id': '可還'},
+                                 'width': '5%'},
+                        ]
                 ),
         ],className="col text-center")
         ],
