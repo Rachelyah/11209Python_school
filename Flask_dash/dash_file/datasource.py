@@ -1,6 +1,7 @@
 import requests
 import psycopg2
 from . import render_password as rpw
+#import render_password as rpw
 
 #從資料庫中呼叫最新的資料
 def lastest_datetime_data()->list[tuple]: 
