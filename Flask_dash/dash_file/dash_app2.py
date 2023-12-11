@@ -1,4 +1,4 @@
-from dash import Dash, html, dash_table
+from dash import Dash, html, dash_table, callback, Input, Output
 import pandas as pd
 import dash_bootstrap_components as dbc
 from . import datasource
@@ -15,11 +15,12 @@ dash2.title='台北市'
 
 #dash.html的layout，不適合複雜的html結構
 dash2.layout = html.Div(
-    [dbc.Container(
-        [html.Div([
+[
+    dbc.Container([
+        html.Div([
             html.Div([
-                html.H1("台北市youbike查詢"),
-            ],className="col text-center")
+                    html.H1("台北市youbike查詢"),
+                ],className="col text-center")
         ],
         className="row",
         style={'paddingTop':'2rem'}),
@@ -27,6 +28,7 @@ dash2.layout = html.Div(
         html.Div([
             html.Div([
                 dash_table.DataTable(
+                        id = 'main_table',
                         data=lastest_df1.to_dict('records'),
                         columns=[{'id':column,'name':column} for column in lastest_df1.columns],
                         page_size=20,
@@ -44,13 +46,32 @@ dash2.layout = html.Div(
                                  'width': '5%'},
                                 {   'if': {'column_id': '可還'},
                                  'width': '5%'},
-                        ]
-                ),
-        ],className="col text-center")
+                        ], 
+                        row_selectable='single', #新增可點選的欄位，推定一次點一個欄位
+                        selected_rows=[]     #預設一開始不要點選，要的話可以在[]中新增預設索引值
+                        ),
+                ],className="col text-center")
         ],
         className="row",
-        style={'paddingTop':'2rem'}),
+        style={"paddingTop":'2rem'}),
+        html.Div([
+            html.H5("這是第3列",className="col",id='showMessage')
+            ],
+            className="row",
+            style={"paddingTop":'2rem'})
         ])
     ],
     className="container-lg"
     )
+
+@callback(
+    Output('showMessage','children'),
+    Input('main_table','selected_rows'),
+    
+
+)
+
+def selected_Rows(selected_rows):
+        print(selected_rows)
+        print('2')
+        return str(selected_rows)
