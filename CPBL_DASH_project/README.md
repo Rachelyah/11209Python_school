@@ -23,3 +23,5 @@
 
 - 套用Dash的寫法加入html的內容
 - 在assets加入css跟js的設定
+
+[環境變數設定](https://www.youtube.com/watch?v=KzDpfLdJo7U)

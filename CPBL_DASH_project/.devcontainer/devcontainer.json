@@ -12,7 +12,7 @@
 	},
 	"runArgs": [
 		"--name",
-		"Flask_dash"
+		"Flask_dash_CPBL"
 	],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
