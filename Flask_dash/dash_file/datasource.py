@@ -1,6 +1,6 @@
 import requests
 import psycopg2
-from . import render_password as rpw
+#from . import render_password as rpw
 #import render_password as rpw
 import socket
 import os
