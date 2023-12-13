@@ -2,13 +2,33 @@ import requests
 import psycopg2
 from . import render_password as rpw
 #import render_password as rpw
+import socket
+import os
+
+myip = socket.gethostbyname(socket.gethostname())
+
+if '172.17.0.2' <= myip <= '172.17.255.255':
+    print(f'本機{myip}')
+    from . import render_password as rpw
+    DATABASE=rpw.DATABASE
+    USER=rpw.USER
+    PASSWORD=rpw.PASSWORD
+    HOST=rpw.HOST
+
+
+else:
+    print(f'server{myip}')
+    DATABASE=os.environ['DATABASE']
+    USER=os.environ['USER']
+    PASSWORD=os.environ['PASSWORD'] 
+    HOST=os.environ['HOST']
 
 #從資料庫中呼叫最新的資料
 def lastest_datetime_data()->list[tuple]: 
-    conn = psycopg2.connect(database=rpw.DATABASE, 
-                                user=rpw.USER, 
-                                password=rpw.PASSWORD, 
-                                host=rpw.HOST, 
+    conn = psycopg2.connect(database=DATABASE, 
+                                user=USER, 
+                                password=PASSWORD, 
+                                host=HOST, 
                                 port="5432")   
     cursor = conn.cursor() 
     #匯入SQL語法：抓出1322個站點最新資料（待更新）
@@ -27,10 +47,10 @@ def lastest_datetime_data()->list[tuple]:
 #查詢第一個關鍵字
 #SQL內的要查詢的資訊先寫問號
 def search_sitename(word:str) ->list[tuple]:
-    conn = psycopg2.connect(database=rpw.DATABASE,
-                            user=rpw.USER, 
-                            password=rpw.PASSWORD, 
-                            host=rpw.HOST, 
+    conn = psycopg2.connect(database=DATABASE,
+                            user=USER, 
+                            password=PASSWORD, 
+                            host=HOST, 
                             port="5432")    
     cursor = conn.cursor() 
     sql = '''
