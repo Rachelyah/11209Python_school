@@ -27,7 +27,7 @@ def lastest_datetime_data()->list[tuple]:
 #查詢第一個關鍵字
 #SQL內的要查詢的資訊先寫問號
 def search_sitename(word:str) ->list[tuple]:
-    conn = psycopg2.connect(database=rpw.DATABASE, 
+    conn = psycopg2.connect(database=rpw.DATABASE,
                             user=rpw.USER, 
                             password=rpw.PASSWORD, 
                             host=rpw.HOST, 

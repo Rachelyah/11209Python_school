@@ -1,14 +1,14 @@
 import requests
 import psycopg2
-from . import render_password as rpw
-#import render_password as rpw
+#from . import render_password as rpw
+import os
 
 #從資料庫中呼叫最新的資料
 def lastest_datetime_data()->list[tuple]: 
-    conn = psycopg2.connect(database=rpw.DATABASE, 
-                                user=rpw.USER, 
-                                password=rpw.PASSWORD, 
-                                host=rpw.HOST, 
+    conn = psycopg2.connect(database=os.environ['DATABASE'], 
+                                user=os.environ['USER'], 
+                                password=os.environ['PASSWORD'], 
+                                host=os.environ['HOST'], 
                                 port="5432")   
     cursor = conn.cursor() 
     #匯入SQL語法：抓出1322個站點最新資料（待更新）
