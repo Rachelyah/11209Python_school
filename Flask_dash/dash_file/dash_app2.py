@@ -53,6 +53,9 @@ dash2.layout = html.Div(
                         style_table={'height': '300px', 'overflowY': 'auto'},
                         fixed_rows={'headers': True},
                         style_cell_conditional=[
+                                {   'if': {'column_id': ''},
+                                 'width': '5%'
+                                },
                                 {   'if': {'column_id': 'index'},
                                  'width': '5%'
                                 },

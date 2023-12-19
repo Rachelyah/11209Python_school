@@ -23,3 +23,11 @@
 
 - 套用Dash的寫法加入html的內容
 - 在assets加入css跟js的設定
+
+### GET：所有的訊息放在網址最後面，會混合著Key、value
+- 瀏覽器所有點擊的動作都是get，透過網址連線
+![Alt text](image-2.png)
+
+
+### POST：傳資料比較適合，把資料包在http的body裡面傳給server，並不會顯示給使用者
+- 裡面通常會寫表格，裡面有input的欄位，就會蒐集資料，傳給html server
